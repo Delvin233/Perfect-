@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { LuClock1 } from "react-icons/lu";
 import { SiProgress } from "react-icons/si";
@@ -14,12 +13,42 @@ interface UserStats {
   averageScore: number;
 }
 
+interface ScoreData {
+  level: number;
+  score: number;
+}
+
 export default function Home() {
-  const router = useRouter();
   const { address, isConnected } = useAppKitAccount();
   const { open } = useAppKit();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchUserStats = useCallback(async () => {
+    if (!address) return;
+
+    try {
+      const response = await fetch(`/api/scores?address=${address}`);
+      const data = await response.json();
+
+      const scores: ScoreData[] = data.scores || [];
+      const totalGames = scores.length;
+      const highestLevel = Math.max(...scores.map((s) => s.level), 0);
+      const bestScore = Math.max(...scores.map((s) => s.score), 0);
+      const averageScore =
+        totalGames > 0
+          ? Math.round(
+              scores.reduce((sum: number, s) => sum + s.score, 0) / totalGames,
+            )
+          : 0;
+
+      setStats({ totalGames, highestLevel, bestScore, averageScore });
+    } catch (error) {
+      console.error("Failed to fetch stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [address]);
 
   useEffect(() => {
     if (address) {
@@ -27,30 +56,7 @@ export default function Home() {
     } else {
       setLoading(false);
     }
-  }, [address]);
-
-  const fetchUserStats = async () => {
-    if (!address) return;
-    
-    try {
-      const response = await fetch(`/api/scores?address=${address}`);
-      const data = await response.json();
-      
-      const scores = data.scores || [];
-      const totalGames = scores.length;
-      const highestLevel = Math.max(...scores.map((s: any) => s.level), 0);
-      const bestScore = Math.max(...scores.map((s: any) => s.score), 0);
-      const averageScore = totalGames > 0 
-        ? Math.round(scores.reduce((sum: number, s: any) => sum + s.score, 0) / totalGames)
-        : 0;
-      
-      setStats({ totalGames, highestLevel, bestScore, averageScore });
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [address, fetchUserStats]);
 
   if (!isConnected) {
     return (
@@ -62,7 +68,7 @@ export default function Home() {
           <p className="text-xl text-gray-400 mb-8">
             Stop the timer at the perfect moment to progress through levels
           </p>
-          
+
           <button
             onClick={() => open()}
             className="btn btn-primary text-xl mb-12"
@@ -103,12 +109,12 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2 text-red-500">
-          YOUR STATS
-        </h1>
-        <p className="text-gray-400">
-          {address.slice(0, 6)}...{address.slice(-4)}
-        </p>
+        <h1 className="text-4xl font-bold mb-2 text-red-500">YOUR STATS</h1>
+        {address && (
+          <p className="text-gray-400">
+            {address.slice(0, 6)}...{address.slice(-4)}
+          </p>
+        )}
       </div>
 
       {loading ? (
