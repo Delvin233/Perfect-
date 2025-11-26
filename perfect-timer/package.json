@@ -6,10 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy:sepolia": "npx hardhat run scripts/deploy.ts --network baseSepolia",
-    "deploy:base": "npx hardhat run scripts/deploy.ts --network base",
-    "compile": "npx hardhat compile"
+    "lint": "next lint"
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.30.0",
@@ -26,16 +23,13 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@farcaster/quick-auth": "^0.0.7",
     "@next/eslint-plugin-next": "^15.3.4",
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.20",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
-    "hardhat": "^3.0.15",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
