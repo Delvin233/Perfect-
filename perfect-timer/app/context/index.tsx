@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import { wagmiAdapter, projectId, networks } from '../config/wagmi'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createAppKit } from '@reown/appkit/react'
-import React, { type ReactNode } from 'react'
-import { WagmiProvider, type Config } from 'wagmi'
+import { wagmiAdapter, projectId, networks } from "../config/wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createAppKit } from "@reown/appkit/react";
+import React, { type ReactNode } from "react";
+import { WagmiProvider, type Config } from "wagmi";
 
 // Set up queryClient
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 if (!projectId) {
-  console.warn('Project ID is not defined')
+  console.warn("Project ID is not defined");
 }
 
 // Set up metadata
 const metadata = {
-  name: 'Perfect Timer',
-  description: 'Stop the timer at the perfect moment',
-  url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
-  icons: ['https://avatars.githubusercontent.com/u/179229932']
-}
+  name: "Perfect Timer",
+  description: "Stop the timer at the perfect moment",
+  url: process.env.NEXT_PUBLIC_URL || "http://localhost:3000",
+  icons: ["https://avatars.githubusercontent.com/u/179229932"],
+};
 
 // Create the modal
 createAppKit({
@@ -30,28 +30,25 @@ createAppKit({
   metadata: metadata,
   features: {
     analytics: true,
-    socials: ['google', 'x', 'discord', 'farcaster', 'github'],
+    socials: ["google", "x", "discord", "farcaster", "github"],
     email: true,
-    emailShowWallets: true
+    emailShowWallets: true,
   },
-  themeMode: 'dark',
+  themeMode: "dark",
   themeVariables: {
-    '--w3m-z-index': '9999',
-    '--w3m-accent': '#ef4444',
-    '--w3m-color-mix': '#ef4444',
-    '--w3m-color-mix-strength': 20,
-    '--w3m-border-radius-master': '8px'
-  }
-})
+    "--w3m-accent": "#ef4444",
+    "--w3m-color-mix": "#ef4444",
+    "--w3m-color-mix-strength": 20,
+    "--w3m-border-radius-master": "8px",
+  },
+});
 
 function ContextProvider({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={wagmiAdapter.wagmiConfig as Config}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
-  )
+  );
 }
 
-export default ContextProvider
+export default ContextProvider;
