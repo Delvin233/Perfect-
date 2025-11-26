@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-3270: '3270 Nerd Font', 'Courier New', monospace;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
+  }
+
+  body {
+    background-color: hsl(222 84% 4.9%);
+    @apply text-gray-100 min-h-screen;
+    font-family: var(--font-3270);
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 transition-all hover:border-red-500 hover:-translate-y-1;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all border-2;
+  }
+
+  .btn-primary {
+    @apply bg-red-500 text-white border-red-500 hover:bg-red-600 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-cyan-500 text-white border-cyan-500 hover:bg-cyan-600 hover:scale-105;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+  }
+}
