@@ -17,12 +17,23 @@ export default function Header() {
   const { address } = useAppKitAccount();
 
   return (
-    <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
+    <header
+      className="sticky top-0 z-50 backdrop-blur-sm border-b"
+      style={{
+        backgroundColor: "var(--color-background-secondary)",
+        borderColor: "var(--color-card-border)",
+      }}
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-red-500">PERFECT?</span>
+            <span
+              className="text-2xl font-bold"
+              style={{ color: "var(--color-primary)" }}
+            >
+              PERFECT?
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -33,11 +44,15 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-red-500 text-white"
-                      : "text-gray-400 hover:text-white hover:bg-gray-800"
-                  }`}
+                  className="px-4 py-2 rounded-lg transition-all"
+                  style={{
+                    backgroundColor: isActive
+                      ? "var(--color-primary)"
+                      : "transparent",
+                    color: isActive
+                      ? "var(--color-background)"
+                      : "var(--color-text-secondary)",
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -50,7 +65,10 @@ export default function Header() {
             <ThemeSelector />
             {address && (
               <>
-                <span className="hidden sm:block text-sm text-gray-400">
+                <span
+                  className="hidden sm:block text-sm"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
                   {address.slice(0, 6)}...{address.slice(-4)}
                 </span>
                 <appkit-button />
