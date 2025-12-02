@@ -21,11 +21,11 @@ export default function LeaderboardPage() {
 
   const fetchScores = async () => {
     try {
-      const response = await fetch('/api/scores');
+      const response = await fetch("/api/scores");
       const data = await response.json();
       setScores(data.scores || []);
     } catch (error) {
-      console.error('Failed to fetch scores:', error);
+      console.error("Failed to fetch scores:", error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,9 @@ export default function LeaderboardPage() {
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[var(--color-primary)] border-t-transparent"></div>
-          <p className="mt-4 text-[var(--color-text-secondary)]">Loading scores...</p>
+          <p className="mt-4 text-[var(--color-text-secondary)]">
+            Loading scores...
+          </p>
         </div>
       ) : scores.length === 0 ? (
         <div className="card text-center py-12">
@@ -59,30 +61,51 @@ export default function LeaderboardPage() {
       ) : (
         <div className="space-y-2">
           {scores.map((score, index) => {
-            const isCurrentUser = address && score.address.toLowerCase() === address.toLowerCase();
+            const isCurrentUser =
+              address && score.address.toLowerCase() === address.toLowerCase();
             const rank = index + 1;
-            const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
+            const medal =
+              rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
 
             return (
               <div
                 key={`${score.address}-${score.timestamp}`}
                 className={`card flex items-center justify-between ${
                   isCurrentUser ? "border-[var(--color-primary)]" : ""
-                }`}
+                } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""}`}
               >
                 <div className="flex items-center gap-4">
                   <span className="text-2xl font-bold text-[var(--color-text-secondary)] w-12">
                     {medal || `#${rank}`}
                   </span>
-                  <div>
-                    <p className="font-bold">
-                      {score.address.slice(0, 6)}...{score.address.slice(-4)}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold">
+                        {score.address.slice(0, 6)}...{score.address.slice(-4)}
+                      </p>
                       {isCurrentUser && (
-                        <span className="ml-2 text-xs text-[var(--color-primary)]">(You)</span>
+                        <span className="text-xs px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded">
+                          You
+                        </span>
                       )}
-                    </p>
+                      {/* Stage badge */}
+                      {score.level >= 21 && (
+                        <span className="text-xs px-2 py-0.5 bg-red-500/20 text-red-400 rounded font-bold">
+                          💀 Stage 3
+                        </span>
+                      )}
+                      {score.level >= 11 && score.level < 21 && (
+                        <span className="text-xs px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded font-bold">
+                          🔥 Stage 2
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-[var(--color-text-secondary)]">
                       Level {score.level}
+                      {score.level >= 21 && " • Extreme Mode"}
+                      {score.level >= 11 &&
+                        score.level < 21 &&
+                        " • Master Mode"}
                     </p>
                   </div>
                 </div>
@@ -90,7 +113,9 @@ export default function LeaderboardPage() {
                   <p className="text-2xl font-bold text-[var(--color-primary)]">
                     {score.score}
                   </p>
-                  <p className="text-xs text-[var(--color-text-secondary)]">points</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    points
+                  </p>
                 </div>
               </div>
             );
@@ -100,10 +125,7 @@ export default function LeaderboardPage() {
 
       {!loading && scores.length > 0 && (
         <div className="mt-8 text-center">
-          <button
-            onClick={fetchScores}
-            className="btn btn-secondary"
-          >
+          <button onClick={fetchScores} className="btn btn-secondary">
             🔄 Refresh
           </button>
         </div>
