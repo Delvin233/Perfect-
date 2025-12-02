@@ -73,35 +73,25 @@ export default function LeaderboardPage() {
               rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
 
             return (
-              <div
+              <a
+                href={`/profile/${score.address}`}
                 key={`${score.address}-${score.timestamp}`}
-                className={`card flex items-center justify-between ${
+                className={`card flex items-center justify-between cursor-pointer transition-all hover:scale-[1.02] ${
                   isCurrentUser ? "border-[var(--color-primary)]" : ""
                 } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""}`}
               >
-                <div className="flex items-center gap-4">
-                  <span className="text-2xl font-bold text-[var(--color-text-secondary)] w-12">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <span className="text-2xl font-bold text-[var(--color-text-secondary)] w-12 flex-shrink-0">
                     {medal || `#${rank}`}
                   </span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-bold truncate">
                         {score.address.slice(0, 6)}...{score.address.slice(-4)}
                       </p>
                       {isCurrentUser && (
-                        <span className="text-xs px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded">
+                        <span className="text-xs px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded flex-shrink-0">
                           You
-                        </span>
-                      )}
-                      {/* Stage badge */}
-                      {score.level >= 21 && (
-                        <span className="text-xs px-2 py-0.5 bg-red-500/20 text-red-400 rounded font-bold">
-                          💀 Stage 3
-                        </span>
-                      )}
-                      {score.level >= 11 && score.level < 21 && (
-                        <span className="text-xs px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded font-bold">
-                          🔥 Stage 2
                         </span>
                       )}
                     </div>
@@ -116,45 +106,16 @@ export default function LeaderboardPage() {
                       >
                         {getRankForLevel(score.level).name}
                       </span>
-                      <span className="text-[var(--color-text-secondary)]">
-                        • Level {score.level}
-                      </span>
-                    </div>
-                    {/* Additional stats */}
-                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                      {score.totalAttempts && (
-                        <span>🎮 {score.totalAttempts} attempts</span>
-                      )}
-                      {score.stagesCompleted !== undefined &&
-                        score.stagesCompleted > 0 && (
-                          <span>✅ {score.stagesCompleted} stages</span>
-                        )}
-                      {score.perfectHits !== undefined &&
-                        score.totalHits !== undefined &&
-                        score.totalHits > 0 && (
-                          <span>
-                            🎯{" "}
-                            {Math.round(
-                              (score.perfectHits / score.totalHits) * 100,
-                            )}
-                            % perfect
-                          </span>
-                        )}
-                      <span>
-                        🕐 {new Date(score.timestamp).toLocaleDateString()}
-                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right flex-shrink-0">
                   <p className="text-2xl font-bold text-[var(--color-primary)]">
                     {score.score.toLocaleString()}
                   </p>
-                  <p className="text-xs text-[var(--color-text-secondary)]">
-                    points
-                  </p>
+                  <p className="text-xs text-gray-500">→ View details</p>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
