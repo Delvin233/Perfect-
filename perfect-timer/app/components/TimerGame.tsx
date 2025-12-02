@@ -192,8 +192,24 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">
             Stage
           </p>
-          <p className="text-3xl font-bold text-[var(--color-primary)]">
-            {stage}
+          <div className="flex items-center justify-center gap-2">
+            <p
+              className={`text-3xl font-bold ${
+                stage === 1
+                  ? "text-cyan-500"
+                  : stage === 2
+                    ? "text-purple-500"
+                    : "text-red-500"
+              }`}
+            >
+              {stage}
+            </p>
+            <span className="text-2xl">
+              {stage === 1 ? "⚡" : stage === 2 ? "🔥" : "💀"}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            {stage === 1 ? "Learning" : stage === 2 ? "Master" : "Extreme"}
           </p>
         </div>
         <div className="card text-center">
@@ -203,12 +219,18 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           <p className="text-3xl font-bold text-[var(--color-secondary)]">
             {level}
           </p>
+          <p className="text-xs text-gray-500 mt-1">
+            {((level - 1) % 10) + 1}/10 in stage
+          </p>
         </div>
         <div className="card text-center">
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">
             Score
           </p>
-          <p className="text-3xl font-bold text-orange-500">{score}</p>
+          <p className="text-3xl font-bold text-orange-500">
+            {score.toLocaleString()}
+          </p>
+          <p className="text-xs text-gray-500 mt-1">points</p>
         </div>
       </div>
 
