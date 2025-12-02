@@ -76,30 +76,62 @@ export default function PlayPage() {
       </div>
 
       <div className="card mb-8">
-        <ul className="space-y-4 text-gray-300">
+        <ul className="space-y-4">
           <li className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold">
+            <span
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--color-background)",
+              }}
+            >
               1
             </span>
-            <p>Watch the timer count up from 0.000s</p>
+            <p style={{ color: "var(--color-text)" }}>
+              Watch the timer count up from 0.000s
+            </p>
           </li>
           <li className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold">
+            <span
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--color-background)",
+              }}
+            >
               2
             </span>
-            <p>Stop it exactly at the target time (e.g., 5.000s)</p>
+            <p style={{ color: "var(--color-text)" }}>
+              Stop it exactly at the target time (e.g., 5.000s)
+            </p>
           </li>
           <li className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold">
+            <span
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--color-background)",
+              }}
+            >
               3
             </span>
-            <p>Each level has a tighter tolerance window</p>
+            <p style={{ color: "var(--color-text)" }}>
+              Each level has a tighter tolerance window
+            </p>
           </li>
           <li className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold">
+            <span
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "var(--color-background)",
+              }}
+            >
               4
             </span>
-            <p>Miss the window and you start over</p>
+            <p style={{ color: "var(--color-text)" }}>
+              Miss the window and you start over
+            </p>
           </li>
         </ul>
       </div>
