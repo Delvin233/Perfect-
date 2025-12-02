@@ -2,25 +2,28 @@
 
 import { useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
-import { useRouter } from "next/navigation";
 import TimerGame from "../components/TimerGame";
 
 export default function PlayPage() {
-  const router = useRouter();
   const { address, isConnected } = useAppKitAccount();
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleScoreUpdate = async (score: number, level: number) => {
+  const handleScoreUpdate = async (
+    score: number,
+    level: number,
+    perfectHits?: number,
+    totalHits?: number,
+  ) => {
     if (!address) return;
-    
+
     try {
-      await fetch('/api/scores', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address, score, level })
+      await fetch("/api/scores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address, score, level, perfectHits, totalHits }),
       });
     } catch (error) {
-      console.error('Failed to save score:', error);
+      console.error("Failed to save score:", error);
     }
   };
 
@@ -57,9 +60,7 @@ export default function PlayPage() {
   return (
     <div className="max-w-2xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-red-500">
-          HOW TO PLAY
-        </h1>
+        <h1 className="text-4xl font-bold mb-4 text-red-500">HOW TO PLAY</h1>
       </div>
 
       <div className="card mb-8">

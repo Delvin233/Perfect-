@@ -12,7 +12,11 @@ export async function initDatabase() {
       address TEXT PRIMARY KEY,
       score INTEGER NOT NULL,
       level INTEGER NOT NULL,
-      timestamp INTEGER NOT NULL
+      timestamp INTEGER NOT NULL,
+      total_attempts INTEGER DEFAULT 1,
+      stages_completed INTEGER DEFAULT 0,
+      perfect_hits INTEGER DEFAULT 0,
+      total_hits INTEGER DEFAULT 0
     )
   `);
 

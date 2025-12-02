@@ -4,7 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
 
 interface TimerGameProps {
-  onScoreUpdate: (score: number, level: number) => void;
+  onScoreUpdate: (
+    score: number,
+    level: number,
+    perfectHits?: number,
+    totalHits?: number,
+  ) => void;
 }
 
 export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
@@ -18,6 +23,8 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
   const [accuracy, setAccuracy] = useState<number | null>(null);
   const [targetTime, setTargetTime] = useState(5.0);
   const [showStageComplete, setShowStageComplete] = useState(false);
+  const [perfectHits, setPerfectHits] = useState(0);
+  const [totalHits, setTotalHits] = useState(0);
 
   const startTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>(0);
@@ -99,7 +106,14 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
       setScore(newScore);
       const isPerfect = diff <= 0.01;
       setResult(isPerfect ? "perfect" : "close");
-      onScoreUpdate(newScore, level);
+
+      // Track stats
+      const newTotalHits = totalHits + 1;
+      const newPerfectHits = isPerfect ? perfectHits + 1 : perfectHits;
+      setTotalHits(newTotalHits);
+      setPerfectHits(newPerfectHits);
+
+      onScoreUpdate(newScore, level, newPerfectHits, newTotalHits);
 
       // Visual feedback - flash screen
       triggerFlash(isPerfect ? "perfect" : "success");
@@ -150,6 +164,8 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
     // Arcade style: fail = start over from level 1
     setLevel(1);
     setScore(0);
+    setPerfectHits(0);
+    setTotalHits(0);
     setResult(null);
     setAccuracy(null);
     setTime(0);

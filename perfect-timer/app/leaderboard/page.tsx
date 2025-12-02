@@ -9,6 +9,10 @@ interface Score {
   score: number;
   level: number;
   timestamp: number;
+  totalAttempts?: number;
+  stagesCompleted?: number;
+  perfectHits?: number;
+  totalHits?: number;
 }
 
 export default function LeaderboardPage() {
@@ -116,11 +120,35 @@ export default function LeaderboardPage() {
                         • Level {score.level}
                       </span>
                     </div>
+                    {/* Additional stats */}
+                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                      {score.totalAttempts && (
+                        <span>🎮 {score.totalAttempts} attempts</span>
+                      )}
+                      {score.stagesCompleted !== undefined &&
+                        score.stagesCompleted > 0 && (
+                          <span>✅ {score.stagesCompleted} stages</span>
+                        )}
+                      {score.perfectHits !== undefined &&
+                        score.totalHits !== undefined &&
+                        score.totalHits > 0 && (
+                          <span>
+                            🎯{" "}
+                            {Math.round(
+                              (score.perfectHits / score.totalHits) * 100,
+                            )}
+                            % perfect
+                          </span>
+                        )}
+                      <span>
+                        🕐 {new Date(score.timestamp).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-bold text-[var(--color-primary)]">
-                    {score.score}
+                    {score.score.toLocaleString()}
                   </p>
                   <p className="text-xs text-[var(--color-text-secondary)]">
                     points
