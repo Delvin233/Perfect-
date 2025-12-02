@@ -1,36 +1,84 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { turso, initDatabase } from "@/lib/turso";
 
-const dbPath = path.join(process.cwd(), 'lib', 'db.json');
+// Initialize database on first request
+let dbInitialized = false;
 
-export async function GET() {
-  const data = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-  const topScores = data.scores
-    .sort((a: any, b: any) => b.score - a.score)
-    .slice(0, 10);
-  return NextResponse.json(topScores);
+async function ensureDatabase() {
+  if (!dbInitialized) {
+    await initDatabase();
+    dbInitialized = true;
+  }
+}
+
+export async function GET(request: Request) {
+  await ensureDatabase();
+
+  const { searchParams } = new URL(request.url);
+  const address = searchParams.get("address");
+
+  // If address is provided, return user-specific scores
+  if (address) {
+    const result = await turso.execute({
+      sql: "SELECT * FROM leaderboard WHERE LOWER(address) = LOWER(?)",
+      args: [address],
+    });
+
+    const scores = result.rows.map((row) => ({
+      address: row.address as string,
+      score: row.score as number,
+      level: row.level as number,
+      timestamp: row.timestamp as number,
+    }));
+
+    return NextResponse.json({ scores });
+  }
+
+  // Otherwise return top 10 scores
+  const result = await turso.execute(
+    "SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10",
+  );
+
+  const scores = result.rows.map((row) => ({
+    address: row.address as string,
+    score: row.score as number,
+    level: row.level as number,
+    timestamp: row.timestamp as number,
+  }));
+
+  return NextResponse.json({ scores });
 }
 
 export async function POST(request: Request) {
+  await ensureDatabase();
+
   const { address, score, level } = await request.json();
-  
-  const data = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-  
+
   // Check if user already has a score
-  const existingIndex = data.scores.findIndex((s: any) => s.address === address);
-  
-  if (existingIndex >= 0) {
-    // Update if new score is higher
-    if (score > data.scores[existingIndex].score) {
-      data.scores[existingIndex] = { address, score, level, timestamp: Date.now() };
+  const existing = await turso.execute({
+    sql: "SELECT score FROM leaderboard WHERE address = ?",
+    args: [address],
+  });
+
+  const timestamp = Date.now();
+
+  if (existing.rows.length > 0) {
+    const currentScore = existing.rows[0].score as number;
+
+    // Only update if new score is higher
+    if (score > currentScore) {
+      await turso.execute({
+        sql: "UPDATE leaderboard SET score = ?, level = ?, timestamp = ? WHERE address = ?",
+        args: [score, level, timestamp, address],
+      });
     }
   } else {
-    // Add new score
-    data.scores.push({ address, score, level, timestamp: Date.now() });
+    // Insert new score
+    await turso.execute({
+      sql: "INSERT INTO leaderboard (address, score, level, timestamp) VALUES (?, ?, ?, ?)",
+      args: [address, score, level, timestamp],
+    });
   }
-  
-  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-  
+
   return NextResponse.json({ success: true });
 }
