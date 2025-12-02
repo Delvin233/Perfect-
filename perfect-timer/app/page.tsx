@@ -62,10 +62,16 @@ export default function Home() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
         <div className="text-center max-w-2xl animate-fade-in px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-red-500">
+          <h1
+            className="text-5xl md:text-6xl font-bold mb-4"
+            style={{ color: "var(--color-primary)" }}
+          >
             PERFECT?
           </h1>
-          <p className="text-xl text-gray-400 mb-4">
+          <p
+            className="text-xl mb-4"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
             Stop the timer at the perfect moment to progress through levels
           </p>
           <div className="flex items-center justify-center gap-4 mb-8 text-sm">
