@@ -96,11 +96,32 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
       const points = Math.round(1000 * level * (1 + accuracyPercent / 100));
       const newScore = score + points;
       setScore(newScore);
-      setResult(diff <= 0.01 ? "perfect" : "close");
+      const isPerfect = diff <= 0.01;
+      setResult(isPerfect ? "perfect" : "close");
       onScoreUpdate(newScore, level);
+
+      // Visual feedback - flash screen
+      triggerFlash(isPerfect ? "perfect" : "success");
     } else {
       setResult("fail");
+      // Visual feedback - flash screen red
+      triggerFlash("fail");
     }
+  };
+
+  const triggerFlash = (type: "perfect" | "success" | "fail") => {
+    const flash = document.createElement("div");
+    flash.className = `fixed inset-0 pointer-events-none z-50 ${
+      type === "perfect"
+        ? "bg-green-500"
+        : type === "success"
+          ? "bg-cyan-500"
+          : "bg-red-500"
+    }`;
+    flash.style.opacity = "0.3";
+    flash.style.animation = "flash 0.3s ease-out";
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 300);
   };
 
   const nextLevel = () => {
@@ -302,7 +323,11 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
                 ? "bg-green-500"
                 : Math.abs(time - targetTime) <= tolerance * 2
                   ? "bg-yellow-500"
-                  : "bg-[var(--color-primary)]"
+                  : stage === 1
+                    ? "bg-cyan-500"
+                    : stage === 2
+                      ? "bg-purple-500"
+                      : "bg-red-500"
             }`}
             style={{ width: `${Math.min((time / targetTime) * 100, 100)}%` }}
           />
