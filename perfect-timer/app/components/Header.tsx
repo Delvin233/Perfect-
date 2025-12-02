@@ -63,17 +63,7 @@ export default function Header() {
           {/* Theme Selector & Wallet Button */}
           <div className="flex items-center gap-4">
             <ThemeSelector />
-            {address && (
-              <>
-                <span
-                  className="hidden sm:block text-sm"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  {address.slice(0, 6)}...{address.slice(-4)}
-                </span>
-                <appkit-button />
-              </>
-            )}
+            {address && <appkit-button />}
           </div>
         </div>
       </div>
