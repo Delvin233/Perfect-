@@ -31,10 +31,13 @@ export default function PlayPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4 text-red-500">
+          <h1
+            className="text-3xl font-bold mb-4"
+            style={{ color: "var(--color-primary)" }}
+          >
             Connect to Play
           </h1>
-          <p className="text-gray-400 mb-6">
+          <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>
             Connect your wallet to start playing
           </p>
           <appkit-button />
@@ -48,7 +51,8 @@ export default function PlayPage() {
       <div className="max-w-2xl mx-auto">
         <button
           onClick={() => setIsPlaying(false)}
-          className="mb-4 text-gray-400 hover:text-white"
+          className="mb-4 transition-colors"
+          style={{ color: "var(--color-text-secondary)" }}
         >
           ← Back
         </button>
@@ -60,7 +64,12 @@ export default function PlayPage() {
   return (
     <div className="max-w-2xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-red-500">HOW TO PLAY</h1>
+        <h1
+          className="text-4xl font-bold mb-4"
+          style={{ color: "var(--color-primary)" }}
+        >
+          HOW TO PLAY
+        </h1>
       </div>
 
       <div className="card mb-8">
