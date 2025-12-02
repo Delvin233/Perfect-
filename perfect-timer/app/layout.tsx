@@ -51,7 +51,7 @@ export default function RootLayout({
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1 pb-20 lg:pb-4">
-              <div className="container py-4">{children}</div>
+              <div className="container mx-auto px-4 py-4">{children}</div>
             </main>
             <BottomNavigation />
           </div>
