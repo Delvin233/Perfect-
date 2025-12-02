@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { minikitConfig } from "@/minikit.config";
 import ContextProvider from "./context";
 import dynamic from "next/dynamic";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const Header = dynamic(() => import("@/app/components/Header"), { ssr: false });
@@ -56,6 +57,7 @@ export default function RootLayout({
             <BottomNavigation />
           </div>
         </ContextProvider>
+        <Analytics />
       </body>
     </html>
   );
