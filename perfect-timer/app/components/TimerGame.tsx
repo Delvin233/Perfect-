@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { getRankForLevel, getRankColor } from "@/lib/ranks";
 
 interface TimerGameProps {
   onScoreUpdate: (score: number, level: number) => void;
@@ -235,13 +236,18 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
         </div>
         <div className="card text-center">
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">
-            Level
+            Rank
           </p>
-          <p className="text-3xl font-bold text-[var(--color-secondary)]">
-            {level}
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-xl">{getRankForLevel(level).emoji}</span>
+            <p
+              className={`text-xl font-bold ${getRankColor(getRankForLevel(level).tier)}`}
+            >
+              {getRankForLevel(level).name}
+            </p>
+          </div>
           <p className="text-xs text-gray-500 mt-1">
-            {((level - 1) % 10) + 1}/10 in stage
+            Level {level} • {((level - 1) % 10) + 1}/10 in stage
           </p>
         </div>
         <div className="card text-center">

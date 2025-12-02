@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
+import { getRankForLevel, getRankColor } from "@/lib/ranks";
 
 interface Score {
   address: string;
@@ -100,13 +101,21 @@ export default function LeaderboardPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-[var(--color-text-secondary)]">
-                      Level {score.level}
-                      {score.level >= 21 && " • Extreme Mode"}
-                      {score.level >= 11 &&
-                        score.level < 21 &&
-                        " • Master Mode"}
-                    </p>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-xs">
+                        {getRankForLevel(score.level).emoji}
+                      </span>
+                      <span
+                        className={getRankColor(
+                          getRankForLevel(score.level).tier,
+                        )}
+                      >
+                        {getRankForLevel(score.level).name}
+                      </span>
+                      <span className="text-[var(--color-text-secondary)]">
+                        • Level {score.level}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
