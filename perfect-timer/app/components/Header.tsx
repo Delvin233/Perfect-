@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppKitAccount } from "@reown/appkit/react";
+import ThemeSelector from "./ThemeSelector";
 
 const menuLinks = [
   { label: "Home", href: "/" },
@@ -21,9 +22,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-red-500">
-              PERFECT?
-            </span>
+            <span className="text-2xl font-bold text-red-500">PERFECT?</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,15 +45,18 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Wallet Button - Only show if connected */}
-          {address && (
-            <div className="flex items-center gap-4">
-              <span className="hidden sm:block text-sm text-gray-400">
-                {address.slice(0, 6)}...{address.slice(-4)}
-              </span>
-              <appkit-button />
-            </div>
-          )}
+          {/* Theme Selector & Wallet Button */}
+          <div className="flex items-center gap-4">
+            <ThemeSelector />
+            {address && (
+              <>
+                <span className="hidden sm:block text-sm text-gray-400">
+                  {address.slice(0, 6)}...{address.slice(-4)}
+                </span>
+                <appkit-button />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>

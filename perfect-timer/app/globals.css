@@ -5,28 +5,38 @@
 @layer base {
   :root {
     --font-jetbrains: "JetBrains Mono", monospace;
-    --background: 222 84% 4.9%;
-    --foreground: 210 40% 98%;
 
-    /* Game colors */
-    --color-primary: #ef4444;
-    --color-secondary: #06b6d4;
+    /* Theme colors - delvin233's default (Soft Minimal) */
+    --color-primary: #f5f5f0;
+    --color-secondary: #d4c5b9;
+    --color-accent: #a89f91;
+    --color-background: #1c1c1e;
+    --color-background-secondary: #2c2c2e;
+    --color-text: #faf9f6;
+    --color-text-secondary: #d4c5b9;
+    --color-card-bg: rgba(212, 197, 185, 0.1);
+    --color-card-border: #a89f91;
     --color-success: #10b981;
     --color-error: #ef4444;
-    --color-text-secondary: #9ca3af;
-    --color-bg-tertiary: #1f2937;
   }
 
   body {
-    background-color: hsl(222 84% 4.9%);
-    @apply text-gray-100 min-h-screen;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    @apply min-h-screen;
     font-family: var(--font-jetbrains);
   }
 }
 
 @layer components {
   .card {
-    @apply bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 transition-all hover:border-red-500 hover:-translate-y-1;
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    @apply backdrop-blur-sm rounded-xl p-6 transition-all hover:-translate-y-1;
+  }
+
+  .card:hover {
+    border-color: var(--color-primary);
   }
 
   .btn {
@@ -34,11 +44,17 @@
   }
 
   .btn-primary {
-    @apply bg-red-500 text-white border-red-500 hover:bg-red-600 hover:scale-105;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-background);
+    @apply hover:scale-105 font-bold;
   }
 
   .btn-secondary {
-    @apply bg-cyan-500 text-white border-cyan-500 hover:bg-cyan-600 hover:scale-105;
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-background);
+    @apply hover:scale-105 font-bold;
   }
 }
 
