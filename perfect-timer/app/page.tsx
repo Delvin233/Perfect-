@@ -75,13 +75,31 @@ export default function Home() {
             Stop the timer at the perfect moment to progress through levels
           </p>
           <div className="flex items-center justify-center gap-4 mb-8 text-sm">
-            <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full font-semibold">
+            <span
+              className="px-3 py-1 rounded-full font-semibold"
+              style={{
+                backgroundColor: "var(--color-stage-1-bg)",
+                color: "var(--color-stage-1)",
+              }}
+            >
               ⚡ 3 Stages
             </span>
-            <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full font-semibold">
+            <span
+              className="px-3 py-1 rounded-full font-semibold"
+              style={{
+                backgroundColor: "var(--color-stage-2-bg)",
+                color: "var(--color-stage-2)",
+              }}
+            >
               🔥 30 Levels
             </span>
-            <span className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full font-semibold">
+            <span
+              className="px-3 py-1 rounded-full font-semibold"
+              style={{
+                backgroundColor: "var(--color-stage-3-bg)",
+                color: "var(--color-stage-3)",
+              }}
+            >
               💀 One Life
             </span>
           </div>
@@ -95,25 +113,58 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mb-8">
             <div className="card">
-              <LuClock1 className="text-4xl mb-2 text-red-500" />
-              <h3 className="text-lg font-bold mb-2">Precision Timing</h3>
-              <p className="text-sm text-gray-400">
+              <LuClock1
+                className="text-4xl mb-2"
+                style={{ color: "var(--color-primary)" }}
+              />
+              <h3
+                className="text-lg font-bold mb-2"
+                style={{ color: "var(--color-text)" }}
+              >
+                Precision Timing
+              </h3>
+              <p
+                className="text-sm"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 Test your reflexes with millisecond accuracy
               </p>
             </div>
 
             <div className="card">
-              <SiProgress className="text-4xl mb-2 text-cyan-500" />
-              <h3 className="text-lg font-bold mb-2">Progressive Difficulty</h3>
-              <p className="text-sm text-gray-400">
+              <SiProgress
+                className="text-4xl mb-2"
+                style={{ color: "var(--color-secondary)" }}
+              />
+              <h3
+                className="text-lg font-bold mb-2"
+                style={{ color: "var(--color-text)" }}
+              >
+                Progressive Difficulty
+              </h3>
+              <p
+                className="text-sm"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 Each stage gets harder with tighter timing windows
               </p>
             </div>
 
             <div className="card">
-              <FaRankingStar className="text-4xl mb-2 text-orange-500" />
-              <h3 className="text-lg font-bold mb-2">Global Leaderboard</h3>
-              <p className="text-sm text-gray-400">
+              <FaRankingStar
+                className="text-4xl mb-2"
+                style={{ color: "var(--color-accent)" }}
+              />
+              <h3
+                className="text-lg font-bold mb-2"
+                style={{ color: "var(--color-text)" }}
+              >
+                Global Leaderboard
+              </h3>
+              <p
+                className="text-sm"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 Compete with players worldwide for the top spot
               </p>
             </div>
@@ -121,43 +172,87 @@ export default function Home() {
 
           {/* Difficulty Progression */}
           <div className="card max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold mb-4 text-center">
+            <h3
+              className="text-xl font-bold mb-4 text-center"
+              style={{ color: "var(--color-text)" }}
+            >
               How Hard Is It?
             </h3>
             <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30">
+              <div
+                className="flex items-center gap-3 p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "var(--color-stage-1-bg)",
+                  borderColor: "var(--color-stage-1)",
+                }}
+              >
                 <span className="text-2xl">⚡</span>
                 <div className="flex-1">
-                  <p className="font-bold text-cyan-400">Stage 1: Learning</p>
-                  <p className="text-xs text-gray-400">
+                  <p
+                    className="font-bold"
+                    style={{ color: "var(--color-stage-1)" }}
+                  >
+                    Stage 1: Learning
+                  </p>
+                  <p
+                    className="text-xs"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
                     Levels 1-10 • Target: 5.000s • Tolerance: 50ms → 10ms
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
+              <div
+                className="flex items-center gap-3 p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "var(--color-stage-2-bg)",
+                  borderColor: "var(--color-stage-2)",
+                }}
+              >
                 <span className="text-2xl">🔥</span>
                 <div className="flex-1">
-                  <p className="font-bold text-purple-400">
+                  <p
+                    className="font-bold"
+                    style={{ color: "var(--color-stage-2)" }}
+                  >
                     Stage 2: Master Mode
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p
+                    className="text-xs"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
                     Levels 11-20 • Random targets • Tolerance: ±8ms
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-red-500/10 rounded-lg border border-red-500/30">
+              <div
+                className="flex items-center gap-3 p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "var(--color-stage-3-bg)",
+                  borderColor: "var(--color-stage-3)",
+                }}
+              >
                 <span className="text-2xl">💀</span>
                 <div className="flex-1">
-                  <p className="font-bold text-red-400">
+                  <p
+                    className="font-bold"
+                    style={{ color: "var(--color-stage-3)" }}
+                  >
                     Stage 3: Extreme Mode
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p
+                    className="text-xs"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
                     Levels 21-30 • New random targets • Tolerance: ±5ms
                   </p>
                 </div>
               </div>
             </div>
-            <p className="text-center text-xs text-gray-500 mt-4">
+            <p
+              className="text-center text-xs mt-4"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
               One mistake = Start over from Level 1
             </p>
           </div>

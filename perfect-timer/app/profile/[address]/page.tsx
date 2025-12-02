@@ -45,8 +45,16 @@ export default function ProfilePage() {
     return (
       <div className="max-w-4xl mx-auto animate-fade-in">
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-500 border-t-transparent"></div>
-          <p className="mt-4 text-gray-400">Loading player data...</p>
+          <div
+            className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-t-transparent"
+            style={{
+              borderColor: "var(--color-primary)",
+              borderTopColor: "transparent",
+            }}
+          ></div>
+          <p className="mt-4" style={{ color: "var(--color-text-secondary)" }}>
+            Loading player data...
+          </p>
         </div>
       </div>
     );
@@ -56,7 +64,9 @@ export default function ProfilePage() {
     return (
       <div className="max-w-4xl mx-auto animate-fade-in">
         <div className="card text-center py-12">
-          <p className="text-gray-400 mb-4">Player not found</p>
+          <p className="mb-4" style={{ color: "var(--color-text-secondary)" }}>
+            Player not found
+          </p>
           <button onClick={() => router.back()} className="btn btn-secondary">
             ← Go Back
           </button>
@@ -77,7 +87,14 @@ export default function ProfilePage() {
       {/* Back button */}
       <button
         onClick={() => router.back()}
-        className="mb-4 text-gray-400 hover:text-white transition-colors"
+        className="mb-4 transition-colors"
+        style={{ color: "var(--color-text-secondary)" }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.color = "var(--color-text)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.color = "var(--color-text-secondary)")
+        }
       >
         ← Back to Leaderboard
       </button>
@@ -89,34 +106,83 @@ export default function ProfilePage() {
           <h1 className={`text-3xl font-bold mb-2 ${getRankColor(rank.tier)}`}>
             {rank.name}
           </h1>
-          <p className="text-gray-400 font-mono">
+          <p
+            className="font-mono"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
             {player.address.slice(0, 10)}...{player.address.slice(-10)}
           </p>
         </div>
 
         {/* Main Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-gray-800/50 rounded-lg">
-            <p className="text-3xl font-bold text-orange-500 mb-1">
+          <div
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "var(--color-card-bg)" }}
+          >
+            <p
+              className="text-3xl font-bold mb-1"
+              style={{ color: "var(--color-primary)" }}
+            >
               {player.score.toLocaleString()}
             </p>
-            <p className="text-sm text-gray-400">Total Score</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Total Score
+            </p>
           </div>
-          <div className="text-center p-4 bg-gray-800/50 rounded-lg">
-            <p className="text-3xl font-bold text-cyan-500 mb-1">
+          <div
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "var(--color-card-bg)" }}
+          >
+            <p
+              className="text-3xl font-bold mb-1"
+              style={{ color: "var(--color-secondary)" }}
+            >
               {player.level}
             </p>
-            <p className="text-sm text-gray-400">Highest Level</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Highest Level
+            </p>
           </div>
-          <div className="text-center p-4 bg-gray-800/50 rounded-lg">
-            <p className="text-3xl font-bold text-purple-500 mb-1">{stage}</p>
-            <p className="text-sm text-gray-400">Stage Reached</p>
+          <div
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "var(--color-card-bg)" }}
+          >
+            <p
+              className="text-3xl font-bold mb-1"
+              style={{ color: "var(--color-accent)" }}
+            >
+              {stage}
+            </p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Stage Reached
+            </p>
           </div>
-          <div className="text-center p-4 bg-gray-800/50 rounded-lg">
-            <p className="text-3xl font-bold text-green-500 mb-1">
+          <div
+            className="text-center p-4 rounded-lg"
+            style={{ backgroundColor: "var(--color-card-bg)" }}
+          >
+            <p
+              className="text-3xl font-bold mb-1"
+              style={{ color: "var(--color-primary)" }}
+            >
               {accuracy}%
             </p>
-            <p className="text-sm text-gray-400">Perfect Accuracy</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Perfect Accuracy
+            </p>
           </div>
         </div>
       </div>
@@ -124,39 +190,87 @@ export default function ProfilePage() {
       {/* Detailed Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="card">
-          <h3 className="text-lg font-bold mb-4 text-red-500">🎮 Game Stats</h3>
+          <h3
+            className="text-lg font-bold mb-4"
+            style={{ color: "var(--color-primary)" }}
+          >
+            🎮 Game Stats
+          </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-400">Total Attempts</span>
-              <span className="font-bold">{player.totalAttempts || 0}</span>
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Total Attempts
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
+                {player.totalAttempts || 0}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Stages Completed</span>
-              <span className="font-bold">{player.stagesCompleted || 0}</span>
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Stages Completed
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
+                {player.stagesCompleted || 0}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Perfect Hits</span>
-              <span className="font-bold">{player.perfectHits || 0}</span>
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Perfect Hits
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
+                {player.perfectHits || 0}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Total Hits</span>
-              <span className="font-bold">{player.totalHits || 0}</span>
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Total Hits
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
+                {player.totalHits || 0}
+              </span>
             </div>
           </div>
         </div>
 
         <div className="card">
-          <h3 className="text-lg font-bold mb-4 text-cyan-500">
+          <h3
+            className="text-lg font-bold mb-4"
+            style={{ color: "var(--color-secondary)" }}
+          >
             📊 Performance
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-400">Rank Tier</span>
-              <span className="font-bold">{rank.tier}</span>
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Rank Tier
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
+                {rank.tier}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Current Stage</span>
-              <span className="font-bold">
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Current Stage
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
                 {stage === 1
                   ? "⚡ Learning"
                   : stage === 2
@@ -165,14 +279,24 @@ export default function ProfilePage() {
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Last Played</span>
-              <span className="font-bold">
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Last Played
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
                 {new Date(player.timestamp).toLocaleDateString()}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Avg Score/Attempt</span>
-              <span className="font-bold">
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                Avg Score/Attempt
+              </span>
+              <span
+                className="font-bold"
+                style={{ color: "var(--color-text)" }}
+              >
                 {player.totalAttempts
                   ? Math.round(
                       player.score / player.totalAttempts,
@@ -186,23 +310,40 @@ export default function ProfilePage() {
 
       {/* Stage Progress */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-4">🏆 Stage Progress</h3>
+        <h3
+          className="text-lg font-bold mb-4"
+          style={{ color: "var(--color-primary)" }}
+        >
+          🏆 Stage Progress
+        </h3>
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <span className="text-2xl">⚡</span>
             <div className="flex-1">
               <div className="flex justify-between mb-1">
-                <span className="text-sm font-semibold">Stage 1: Learning</span>
-                <span className="text-sm text-gray-400">
+                <span
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--color-text)" }}
+                >
+                  Stage 1: Learning
+                </span>
+                <span
+                  className="text-sm"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
                   {player.level >= 10
                     ? "✓ Complete"
                     : `${Math.min(player.level, 10)}/10`}
                 </span>
               </div>
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div
+                className="w-full h-2 rounded-full overflow-hidden"
+                style={{ backgroundColor: "var(--color-card-bg)" }}
+              >
                 <div
-                  className="h-full bg-cyan-500"
+                  className="h-full"
                   style={{
+                    backgroundColor: "var(--color-stage-1)",
                     width: `${Math.min((player.level / 10) * 100, 100)}%`,
                   }}
                 />
@@ -214,10 +355,16 @@ export default function ProfilePage() {
             <span className="text-2xl">🔥</span>
             <div className="flex-1">
               <div className="flex justify-between mb-1">
-                <span className="text-sm font-semibold">
+                <span
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--color-text)" }}
+                >
                   Stage 2: Master Mode
                 </span>
-                <span className="text-sm text-gray-400">
+                <span
+                  className="text-sm"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
                   {player.level >= 20
                     ? "✓ Complete"
                     : player.level >= 11
@@ -225,10 +372,14 @@ export default function ProfilePage() {
                       : "Locked"}
                 </span>
               </div>
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div
+                className="w-full h-2 rounded-full overflow-hidden"
+                style={{ backgroundColor: "var(--color-card-bg)" }}
+              >
                 <div
-                  className="h-full bg-purple-500"
+                  className="h-full"
                   style={{
+                    backgroundColor: "var(--color-stage-2)",
                     width: `${player.level >= 11 ? Math.min(((player.level - 10) / 10) * 100, 100) : 0}%`,
                   }}
                 />
@@ -240,10 +391,16 @@ export default function ProfilePage() {
             <span className="text-2xl">💀</span>
             <div className="flex-1">
               <div className="flex justify-between mb-1">
-                <span className="text-sm font-semibold">
+                <span
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--color-text)" }}
+                >
                   Stage 3: Extreme Mode
                 </span>
-                <span className="text-sm text-gray-400">
+                <span
+                  className="text-sm"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
                   {player.level >= 30
                     ? "✓ Complete"
                     : player.level >= 21
@@ -251,10 +408,14 @@ export default function ProfilePage() {
                       : "Locked"}
                 </span>
               </div>
-              <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div
+                className="w-full h-2 rounded-full overflow-hidden"
+                style={{ backgroundColor: "var(--color-card-bg)" }}
+              >
                 <div
-                  className="h-full bg-red-500"
+                  className="h-full"
                   style={{
+                    backgroundColor: "var(--color-stage-3)",
                     width: `${player.level >= 21 ? Math.min(((player.level - 20) / 10) * 100, 100) : 0}%`,
                   }}
                 />
