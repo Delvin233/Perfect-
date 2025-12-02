@@ -169,46 +169,84 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2 text-red-500">YOUR STATS</h1>
-        {address && (
-          <p className="text-gray-400">
-            {address.slice(0, 6)}...{address.slice(-4)}
-          </p>
-        )}
+        <h1
+          className="text-4xl font-bold mb-2"
+          style={{ color: "var(--color-primary)" }}
+        >
+          YOUR STATS
+        </h1>
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-500 border-t-transparent"></div>
+          <div
+            className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-t-transparent"
+            style={{
+              borderColor: "var(--color-primary)",
+              borderTopColor: "transparent",
+            }}
+          ></div>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="card text-center">
-            <p className="text-4xl font-bold text-red-500 mb-2">
+            <p
+              className="text-4xl font-bold mb-2"
+              style={{ color: "var(--color-primary)" }}
+            >
               {stats?.totalGames || 0}
             </p>
-            <p className="text-sm text-gray-400">Total Games</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Total Games
+            </p>
           </div>
 
           <div className="card text-center">
-            <p className="text-4xl font-bold text-cyan-500 mb-2">
+            <p
+              className="text-4xl font-bold mb-2"
+              style={{ color: "var(--color-secondary)" }}
+            >
               {stats?.highestLevel || 0}
             </p>
-            <p className="text-sm text-gray-400">Highest Level</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Highest Level
+            </p>
           </div>
 
           <div className="card text-center">
-            <p className="text-4xl font-bold text-orange-500 mb-2">
+            <p
+              className="text-4xl font-bold mb-2"
+              style={{ color: "var(--color-accent)" }}
+            >
               {stats?.bestScore || 0}
             </p>
-            <p className="text-sm text-gray-400">Best Score</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Best Score
+            </p>
           </div>
 
           <div className="card text-center">
-            <p className="text-4xl font-bold text-green-500 mb-2">
+            <p
+              className="text-4xl font-bold mb-2"
+              style={{ color: "var(--color-primary)" }}
+            >
               {stats?.averageScore || 0}
             </p>
-            <p className="text-sm text-gray-400">Avg Score</p>
+            <p
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Avg Score
+            </p>
           </div>
         </div>
       )}
