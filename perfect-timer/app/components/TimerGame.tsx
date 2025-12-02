@@ -342,14 +342,66 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           )}
           {result === "fail" && (
             <>
-              <p className="text-4xl font-bold text-[var(--color-error)] mb-2">
+              <p className="text-4xl font-bold text-[var(--color-error)] mb-4">
                 💀 GAME OVER
               </p>
-              <p className="text-[var(--color-text-secondary)] mb-2">
-                Off by: {Math.abs(time - targetTime).toFixed(3)}s
-              </p>
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Final Score: {score} | Reached Level {level}
+
+              {/* Stage reached */}
+              <div className="mb-4">
+                <span
+                  className={`inline-block px-4 py-2 rounded-lg font-bold ${
+                    stage === 1
+                      ? "bg-cyan-500/20 text-cyan-400"
+                      : stage === 2
+                        ? "bg-purple-500/20 text-purple-400"
+                        : "bg-red-500/20 text-red-400"
+                  }`}
+                >
+                  {stage === 1
+                    ? "⚡ Stage 1"
+                    : stage === 2
+                      ? "🔥 Stage 2"
+                      : "💀 Stage 3"}
+                  {" • "}
+                  Level {level}
+                </span>
+              </div>
+
+              {/* Stats */}
+              <div className="space-y-2 mb-4">
+                <p className="text-lg text-[var(--color-text-secondary)]">
+                  You were{" "}
+                  <span className="text-red-400 font-bold">
+                    {Math.abs(time - targetTime).toFixed(3)}s
+                  </span>{" "}
+                  off
+                </p>
+                <p className="text-sm text-gray-500">
+                  Target: {targetTime.toFixed(3)}s • Your time:{" "}
+                  {time.toFixed(3)}s
+                </p>
+                <p className="text-sm text-gray-500">
+                  Tolerance: ±{(tolerance * 1000).toFixed(0)}ms
+                </p>
+              </div>
+
+              {/* Final score */}
+              <div className="pt-4 border-t border-gray-700">
+                <p className="text-sm text-gray-400 mb-1">Final Score</p>
+                <p className="text-3xl font-bold text-orange-500">
+                  {score.toLocaleString()}
+                </p>
+              </div>
+
+              {/* Encouraging message */}
+              <p className="text-xs text-gray-500 mt-4 italic">
+                {level >= 21
+                  ? "You're a legend! Stage 3 is brutal."
+                  : level >= 11
+                    ? "Impressive! You made it to Master Mode."
+                    : level >= 5
+                      ? "Good effort! Keep practicing."
+                      : "Don't give up! You'll get better."}
               </p>
             </>
           )}
