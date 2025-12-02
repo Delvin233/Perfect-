@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { minikitConfig } from "@/minikit.config";
 import ContextProvider from "./context";
 import dynamic from "next/dynamic";
 import "./globals.css";
 
 const Header = dynamic(() => import("@/app/components/Header"), { ssr: false });
-const BottomNavigation = dynamic(() => import("@/app/components/BottomNavigation"), { ssr: false });
+const BottomNavigation = dynamic(
+  () => import("@/app/components/BottomNavigation"),
+  { ssr: false },
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -28,22 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Using 3270 Nerd Font from local files
-const nerdFont3270 = localFont({
-  src: [
-    {
-      path: '../3270/3270NerdFont-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../3270/3270NerdFont-SemiCondensed.ttf',
-      weight: '600',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-3270',
-  display: 'swap',
+// Using JetBrains Mono from Google Fonts
+import { JetBrains_Mono } from "next/font/google";
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -53,14 +46,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={nerdFont3270.variable}>
+      <body className={jetbrainsMono.variable}>
         <ContextProvider>
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1 pb-20 lg:pb-4">
-              <div className="container py-4">
-                {children}
-              </div>
+              <div className="container py-4">{children}</div>
             </main>
             <BottomNavigation />
           </div>

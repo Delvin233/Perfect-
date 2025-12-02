@@ -11,14 +11,40 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [result, setResult] = useState<"perfect" | "close" | "fail" | null>(null);
+  const [result, setResult] = useState<"perfect" | "close" | "fail" | null>(
+    null,
+  );
   const [accuracy, setAccuracy] = useState<number | null>(null);
-  
+  const [targetTime, setTargetTime] = useState(5.0);
+  const [showStageComplete, setShowStageComplete] = useState(false);
+
   const startTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>(0);
 
-  const targetTime = 5.0; // Target: 5.000 seconds
-  const tolerance = Math.max(0.05 - (level - 1) * 0.005, 0.01); // Gets tighter each level
+  // Stage system
+  const stage = Math.ceil(level / 10);
+
+  // Stage 2 target times (levels 11-20)
+  const stage2Targets = [3.5, 4.2, 6.8, 2.9, 5.5, 7.3, 4.8, 3.2, 6.1, 8.0];
+
+  // Stage 3 target times (levels 21-30) - EXTREME MODE
+  const stage3Targets = [4.7, 2.3, 7.5, 3.8, 6.2, 5.1, 8.5, 2.7, 4.1, 9.0];
+
+  // Calculate tolerance based on stage
+  const getTolerance = () => {
+    if (stage === 1) {
+      // Stage 1: 50ms → 10ms
+      return Math.max(0.05 - (level - 1) * 0.005, 0.01);
+    } else if (stage === 2) {
+      // Stage 2: Fixed 8ms
+      return 0.008;
+    } else {
+      // Stage 3+: Fixed 5ms - EXTREME PRECISION
+      return 0.005;
+    }
+  };
+
+  const tolerance = getTolerance();
 
   useEffect(() => {
     if (isRunning) {
@@ -41,6 +67,20 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
     setTime(0);
     setResult(null);
     setAccuracy(null);
+
+    // Set target time based on stage
+    if (stage === 1) {
+      setTargetTime(5.0);
+    } else if (stage === 2) {
+      // Stage 2: Use varied target times
+      const stage2Index = (level - 11) % 10;
+      setTargetTime(stage2Targets[stage2Index]);
+    } else {
+      // Stage 3: Use different varied target times
+      const stage3Index = (level - 21) % 10;
+      setTargetTime(stage3Targets[stage3Index]);
+    }
+
     startTimeRef.current = performance.now();
     setIsRunning(true);
   };
@@ -64,19 +104,28 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
   };
 
   const nextLevel = () => {
-    setLevel(level + 1);
-    setResult(null);
-    setAccuracy(null);
-    setTime(0);
+    const newLevel = level + 1;
+
+    // Check if completing a stage
+    if (newLevel === 11 || newLevel === 21) {
+      setShowStageComplete(true);
+      setTimeout(() => {
+        setShowStageComplete(false);
+        setLevel(newLevel);
+        setResult(null);
+        setAccuracy(null);
+        setTime(0);
+      }, 3000);
+    } else {
+      setLevel(newLevel);
+      setResult(null);
+      setAccuracy(null);
+      setTime(0);
+    }
   };
 
-  const retry = () => {
-    setResult(null);
-    setAccuracy(null);
-    setTime(0);
-  };
-
-  const reset = () => {
+  const gameOver = () => {
+    // Arcade style: fail = start over from level 1
     setLevel(1);
     setScore(0);
     setResult(null);
@@ -85,34 +134,165 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
     setIsRunning(false);
   };
 
+  // Stage completion overlay
+  if (showStageComplete) {
+    const completedStage = Math.floor((level - 1) / 10);
+
+    return (
+      <div className="max-w-2xl mx-auto animate-fade-in">
+        <div className="card text-center py-16">
+          <div className="text-6xl mb-4">
+            {completedStage === 1 ? "🎉" : "🔥"}
+          </div>
+          <h2
+            className="text-4xl font-bold mb-4"
+            style={{ color: completedStage === 1 ? "#a855f7" : "#ef4444" }}
+          >
+            STAGE {completedStage} COMPLETE!
+          </h2>
+          {completedStage === 1 && (
+            <>
+              <p className="text-xl text-[var(--color-text-secondary)] mb-2">
+                You&apos;ve mastered the basics
+              </p>
+              <p className="text-lg text-purple-400">
+                Entering Stage 2: Master Mode
+              </p>
+              <div className="mt-6 text-sm text-[var(--color-text-secondary)]">
+                <p>New challenge: Random target times</p>
+                <p>Tolerance: ±8ms</p>
+              </div>
+            </>
+          )}
+          {completedStage === 2 && (
+            <>
+              <p className="text-xl text-[var(--color-text-secondary)] mb-2">
+                You are truly skilled
+              </p>
+              <p className="text-lg text-red-400">
+                Entering Stage 3: Extreme Mode
+              </p>
+              <div className="mt-6 text-sm text-[var(--color-text-secondary)]">
+                <p>Final challenge: New random times</p>
+                <p className="text-red-400 font-bold">Tolerance: ±5ms</p>
+                <p className="text-xs mt-2">Only the perfect survive</p>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fade-in">
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="card text-center">
-          <p className="text-sm text-[var(--color-text-secondary)] mb-1">Level</p>
-          <p className="text-3xl font-bold text-[var(--color-primary)]">{level}</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+            Stage
+          </p>
+          <p className="text-3xl font-bold text-[var(--color-primary)]">
+            {stage}
+          </p>
         </div>
         <div className="card text-center">
-          <p className="text-sm text-[var(--color-text-secondary)] mb-1">Score</p>
-          <p className="text-3xl font-bold text-[var(--color-secondary)]">{score}</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+            Level
+          </p>
+          <p className="text-3xl font-bold text-[var(--color-secondary)]">
+            {level}
+          </p>
+        </div>
+        <div className="card text-center">
+          <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+            Score
+          </p>
+          <p className="text-3xl font-bold text-orange-500">{score}</p>
         </div>
       </div>
 
       {/* Timer Display */}
-      <div className="card text-center py-12">
-        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
-          Target: {targetTime.toFixed(3)}s
-        </p>
-        <p className="text-6xl font-bold font-mono mb-4">
-          {time.toFixed(3)}s
-        </p>
-        <div className="w-full bg-[var(--color-bg-tertiary)] h-2 rounded-full overflow-hidden">
+      <div
+        className={`card text-center py-12 transition-all ${
+          isRunning && Math.abs(time - targetTime) <= tolerance
+            ? "ring-4 ring-green-500 ring-opacity-50 animate-pulse"
+            : ""
+        }`}
+      >
+        <div className="mb-6">
+          {stage === 2 && (
+            <span className="inline-block px-4 py-2 bg-purple-500/20 text-purple-400 rounded-full text-sm font-bold mb-3">
+              🔥 STAGE 2: MASTER MODE
+            </span>
+          )}
+          {stage === 3 && (
+            <span className="inline-block px-4 py-2 bg-red-500/20 text-red-400 rounded-full text-sm font-bold mb-3">
+              💀 STAGE 3: EXTREME MODE
+            </span>
+          )}
+          <p className="text-lg text-[var(--color-text-secondary)] font-semibold">
+            Target: {targetTime.toFixed(3)}s
+          </p>
+        </div>
+
+        {/* Main Timer - BIGGER */}
+        <div className="relative mb-6">
+          <p
+            className={`text-8xl md:text-9xl font-bold font-mono transition-all ${
+              isRunning && Math.abs(time - targetTime) <= tolerance * 2
+                ? "text-yellow-400"
+                : isRunning && Math.abs(time - targetTime) <= tolerance
+                  ? "text-green-400 scale-110"
+                  : "text-white"
+            }`}
+          >
+            {time.toFixed(3)}
+          </p>
+          <p className="text-2xl text-gray-500 mt-2">seconds</p>
+        </div>
+
+        {/* Progress Bar with Danger Zones */}
+        <div className="relative w-full h-4 bg-[var(--color-bg-tertiary)] rounded-full overflow-hidden">
+          {/* Tolerance zone indicator */}
+          {targetTime > 0 && (
+            <>
+              <div
+                className="absolute h-full bg-green-500/30"
+                style={{
+                  left: `${Math.max(0, ((targetTime - tolerance) / targetTime) * 100)}%`,
+                  width: `${((tolerance * 2) / targetTime) * 100}%`,
+                }}
+              />
+              <div
+                className="absolute h-full bg-green-500/50 border-x-2 border-green-400"
+                style={{
+                  left: `${Math.max(0, ((targetTime - tolerance) / targetTime) * 100)}%`,
+                  width: `${((tolerance * 2) / targetTime) * 100}%`,
+                }}
+              />
+            </>
+          )}
+          {/* Current time indicator */}
           <div
-            className="h-full bg-[var(--color-primary)] transition-all duration-100"
+            className={`h-full transition-all duration-100 ${
+              Math.abs(time - targetTime) <= tolerance
+                ? "bg-green-500"
+                : Math.abs(time - targetTime) <= tolerance * 2
+                  ? "bg-yellow-500"
+                  : "bg-[var(--color-primary)]"
+            }`}
             style={{ width: `${Math.min((time / targetTime) * 100, 100)}%` }}
           />
         </div>
+
+        {/* Distance from target (when running) */}
+        {isRunning && time > 0 && (
+          <p className="text-sm text-gray-400 mt-3">
+            {time < targetTime ? "↓ " : "↑ "}
+            {Math.abs(time - targetTime).toFixed(3)}s from target
+          </p>
+        )}
       </div>
 
       {/* Result */}
@@ -141,10 +321,13 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           {result === "fail" && (
             <>
               <p className="text-4xl font-bold text-[var(--color-error)] mb-2">
-                ✗ MISSED
+                💀 GAME OVER
               </p>
-              <p className="text-[var(--color-text-secondary)]">
+              <p className="text-[var(--color-text-secondary)] mb-2">
                 Off by: {Math.abs(time - targetTime).toFixed(3)}s
+              </p>
+              <p className="text-sm text-[var(--color-text-secondary)]">
+                Final Score: {score} | Reached Level {level}
               </p>
             </>
           )}
@@ -154,30 +337,37 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
       {/* Controls */}
       <div className="flex gap-4">
         {!isRunning && !result && (
-          <button onClick={startTimer} className="btn btn-primary flex-1 text-xl py-6">
+          <button
+            onClick={startTimer}
+            className="btn btn-primary flex-1 text-xl py-6"
+          >
             START
           </button>
         )}
 
         {isRunning && (
-          <button onClick={stopTimer} className="btn btn-primary flex-1 text-xl py-6 animate-pulse">
+          <button
+            onClick={stopTimer}
+            className="btn btn-primary flex-1 text-xl py-6 animate-pulse"
+          >
             STOP
           </button>
         )}
 
         {result === "perfect" || result === "close" ? (
-          <button onClick={nextLevel} className="btn btn-secondary flex-1 text-xl py-6">
+          <button
+            onClick={nextLevel}
+            className="btn btn-secondary flex-1 text-xl py-6"
+          >
             NEXT LEVEL →
           </button>
         ) : result === "fail" ? (
-          <>
-            <button onClick={retry} className="btn btn-secondary flex-1">
-              RETRY
-            </button>
-            <button onClick={reset} className="btn flex-1">
-              RESET
-            </button>
-          </>
+          <button
+            onClick={gameOver}
+            className="btn btn-primary flex-1 text-xl py-6"
+          >
+            TRY AGAIN
+          </button>
         ) : null}
       </div>
 

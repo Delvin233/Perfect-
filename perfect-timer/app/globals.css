@@ -4,15 +4,23 @@
 
 @layer base {
   :root {
-    --font-3270: '3270 Nerd Font', 'Courier New', monospace;
+    --font-jetbrains: "JetBrains Mono", monospace;
     --background: 222 84% 4.9%;
     --foreground: 210 40% 98%;
+
+    /* Game colors */
+    --color-primary: #ef4444;
+    --color-secondary: #06b6d4;
+    --color-success: #10b981;
+    --color-error: #ef4444;
+    --color-text-secondary: #9ca3af;
+    --color-bg-tertiary: #1f2937;
   }
 
   body {
     background-color: hsl(222 84% 4.9%);
     @apply text-gray-100 min-h-screen;
-    font-family: var(--font-3270);
+    font-family: var(--font-jetbrains);
   }
 }
 
