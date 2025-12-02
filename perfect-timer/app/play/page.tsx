@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useAppKitAccount } from "@reown/appkit/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import TimerGame from "../components/TimerGame";
 
 export default function PlayPage() {
+  const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -37,10 +38,12 @@ export default function PlayPage() {
           >
             Connect to Play
           </h1>
-          <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>
+          <p className="mb-8" style={{ color: "var(--color-text-secondary)" }}>
             Connect your wallet to start playing
           </p>
-          <appkit-button />
+          <button onClick={() => open()} className="btn btn-primary text-xl">
+            Sign In
+          </button>
         </div>
       </div>
     );

@@ -1,8 +1,9 @@
 "use client";
 
-import { useAppKitAccount } from "@reown/appkit/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 
 export default function ProfilePage() {
+  const { open } = useAppKit();
   const { isConnected } = useAppKitAccount();
 
   if (!isConnected) {
@@ -15,10 +16,12 @@ export default function ProfilePage() {
           >
             Connect to View Profile
           </h1>
-          <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>
+          <p className="mb-8" style={{ color: "var(--color-text-secondary)" }}>
             Connect your wallet to access settings
           </p>
-          <appkit-button />
+          <button onClick={() => open()} className="btn btn-primary text-xl">
+            Sign In
+          </button>
         </div>
       </div>
     );
