@@ -24,6 +24,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetchPlayerData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
   const fetchPlayerData = async () => {
