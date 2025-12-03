@@ -81,20 +81,6 @@ Open [http://localhost:3000](http://localhost:3000) to play!
 5. Each level gets harder with shorter target times
 6. Submit your high score to the on-chain leaderboard
 
-## Hackathon Requirements
-
-### Base Hackathon ✅
-- ✅ Deployed as Base Mini App
-- ✅ Smart contracts deployed on Base (generates fees)
-- ✅ Public GitHub repository
-- ✅ Uses OnchainKit
-
-### WalletConnect Hackathon ✅
-- ✅ Integrates Reown AppKit SDK
-- ✅ Smart contracts deployed (generates fees)
-- ✅ Public GitHub repository
-- ✅ Wallet connectivity features
-
 ## Smart Contracts
 
 ### PerfectLeaderboard.sol
