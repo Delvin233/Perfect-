@@ -1,14 +1,14 @@
-# Perfect? ⏱️
+# Perfect?
 
-A precision timing game built for Base and WalletConnect hackathons. Stop the timer at the exact moment to progress through levels and climb the leaderboard!
+A precision timing game built for Base and WalletConnect hackathons. Stop the timer at the exact moment to progress through levels and climb the leaderboard.
 
 ## Features
 
-- 🎮 Addictive timer-based gameplay
-- 🏆 On-chain leaderboard on Base
-- 🔗 WalletConnect/Reown AppKit integration
-- 📱 Base Mini App compatible
-- ⛓️ Smart contract score tracking
+- Addictive timer-based gameplay with progressive difficulty
+- On-chain leaderboard on Base network
+- WalletConnect/Reown AppKit integration for seamless wallet connectivity
+- Base Mini App compatible
+- Smart contract score tracking and verification
 
 ## Tech Stack
 
