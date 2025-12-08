@@ -30,18 +30,18 @@ export default function PlayPage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="text-center">
           <h1
-            className="text-3xl font-bold mb-4"
+            className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4"
             style={{ color: "var(--color-primary)" }}
           >
             Connect to Play
           </h1>
-          <p className="mb-8" style={{ color: "var(--color-text-secondary)" }}>
+          <p className="mb-6 sm:mb-8 text-sm sm:text-base" style={{ color: "var(--color-text-secondary)" }}>
             Connect your wallet to start playing
           </p>
-          <button onClick={() => open()} className="btn btn-primary text-xl">
+          <button onClick={() => open()} className="btn btn-primary text-lg sm:text-xl active:scale-95">
             Sign In
           </button>
         </div>
@@ -54,7 +54,7 @@ export default function PlayPage() {
       <div className="max-w-2xl mx-auto">
         <button
           onClick={() => setIsPlaying(false)}
-          className="mb-4 transition-colors"
+          className="mb-3 sm:mb-4 transition-colors text-sm sm:text-base active:scale-95"
           style={{ color: "var(--color-text-secondary)" }}
         >
           ← Back
@@ -66,20 +66,20 @@ export default function PlayPage() {
 
   return (
     <div className="max-w-2xl mx-auto animate-fade-in">
-      <div className="text-center mb-8">
+      <div className="text-center mb-6 sm:mb-8">
         <h1
-          className="text-4xl font-bold mb-4"
+          className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4"
           style={{ color: "var(--color-primary)" }}
         >
           HOW TO PLAY
         </h1>
       </div>
 
-      <div className="card mb-8">
-        <ul className="space-y-4">
-          <li className="flex items-start gap-3">
+      <div className="card mb-6 sm:mb-8 p-4 sm:p-6">
+        <ul className="space-y-3 sm:space-y-4">
+          <li className="flex items-start gap-2 sm:gap-3">
             <span
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "var(--color-background)",
@@ -87,13 +87,13 @@ export default function PlayPage() {
             >
               1
             </span>
-            <p style={{ color: "var(--color-text)" }}>
+            <p className="text-sm sm:text-base pt-0.5" style={{ color: "var(--color-text)" }}>
               Watch the timer count up from 0.000s
             </p>
           </li>
-          <li className="flex items-start gap-3">
+          <li className="flex items-start gap-2 sm:gap-3">
             <span
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "var(--color-background)",
@@ -101,13 +101,13 @@ export default function PlayPage() {
             >
               2
             </span>
-            <p style={{ color: "var(--color-text)" }}>
+            <p className="text-sm sm:text-base pt-0.5" style={{ color: "var(--color-text)" }}>
               Stop it exactly at the target time (e.g., 5.000s)
             </p>
           </li>
-          <li className="flex items-start gap-3">
+          <li className="flex items-start gap-2 sm:gap-3">
             <span
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "var(--color-background)",
@@ -115,13 +115,13 @@ export default function PlayPage() {
             >
               3
             </span>
-            <p style={{ color: "var(--color-text)" }}>
+            <p className="text-sm sm:text-base pt-0.5" style={{ color: "var(--color-text)" }}>
               Each level has a tighter tolerance window
             </p>
           </li>
-          <li className="flex items-start gap-3">
+          <li className="flex items-start gap-2 sm:gap-3">
             <span
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold"
+              className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base"
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "var(--color-background)",
@@ -129,7 +129,7 @@ export default function PlayPage() {
             >
               4
             </span>
-            <p style={{ color: "var(--color-text)" }}>
+            <p className="text-sm sm:text-base pt-0.5" style={{ color: "var(--color-text)" }}>
               Miss the window and you start over
             </p>
           </li>
@@ -138,7 +138,7 @@ export default function PlayPage() {
 
       <button
         onClick={() => setIsPlaying(true)}
-        className="w-full btn btn-primary text-2xl py-6"
+        className="w-full btn btn-primary text-xl sm:text-2xl py-5 sm:py-6 active:scale-95"
       >
         START GAME
       </button>

@@ -25,6 +25,19 @@
     color: var(--color-text);
     @apply min-h-screen;
     font-family: var(--font-jetbrains);
+    /* Prevent text selection on mobile for better UX */
+    -webkit-touch-callout: none;
+    /* Improve font rendering on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Improve touch targets on mobile */
+  @media (max-width: 640px) {
+    button, a {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }
 
@@ -32,29 +45,61 @@
   .card {
     background-color: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
-    @apply backdrop-blur-sm rounded-xl p-6 transition-all hover:-translate-y-1;
+    @apply backdrop-blur-sm rounded-xl p-6 transition-all;
   }
 
-  .card:hover {
-    border-color: var(--color-primary);
+  /* Desktop hover effect */
+  @media (hover: hover) {
+    .card:hover {
+      border-color: var(--color-primary);
+      @apply -translate-y-1;
+    }
+  }
+
+  /* Mobile tap effect */
+  @media (hover: none) {
+    .card:active {
+      @apply scale-[0.98];
+    }
   }
 
   .btn {
     @apply px-6 py-3 rounded-lg font-semibold transition-all border-2;
+    /* Prevent text selection on buttons */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Prevent tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-primary {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     color: var(--color-background);
-    @apply hover:scale-105 font-bold;
+    @apply font-bold;
   }
 
   .btn-secondary {
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
     color: var(--color-background);
-    @apply hover:scale-105 font-bold;
+    @apply font-bold;
+  }
+
+  /* Desktop hover effect */
+  @media (hover: hover) {
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      @apply scale-105;
+    }
+  }
+
+  /* Mobile tap effect */
+  @media (hover: none) {
+    .btn-primary:active,
+    .btn-secondary:active {
+      @apply scale-95;
+    }
   }
 }
 

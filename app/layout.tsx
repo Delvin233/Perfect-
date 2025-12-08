@@ -15,6 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: minikitConfig.miniapp.name,
     description: minikitConfig.miniapp.description,
+    viewport: {
+      width: "device-width",
+      initialScale: 1,
+      maximumScale: 1,
+      userScalable: false,
+    },
     other: {
       "fc:miniapp": JSON.stringify({
         version: minikitConfig.miniapp.version,
@@ -52,7 +58,7 @@ export default function RootLayout({
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1 pb-20 lg:pb-4">
-              <div className="container mx-auto px-4 py-4">{children}</div>
+              <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">{children}</div>
             </main>
             <BottomNavigation />
           </div>
