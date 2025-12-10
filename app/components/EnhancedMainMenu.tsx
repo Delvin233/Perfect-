@@ -182,7 +182,7 @@ export default function EnhancedMainMenu({
       />
 
       <div
-        className={`min-h-screen transition-all duration-500 relative ${
+        className={`fixed inset-0 transition-all duration-500 ${
           isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
         }`}
       >
