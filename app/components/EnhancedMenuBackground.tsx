@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface Particle {
   x: number;
@@ -29,7 +29,6 @@ export default function EnhancedMenuBackground({
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>(0);
-  const [gradientPhase, setGradientPhase] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -46,13 +45,18 @@ export default function EnhancedMenuBackground({
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Adjust particle count based on device and intensity
+    // Adjust particle count based on device and intensity with performance limits
     const isMobile = window.innerWidth < 768;
+    const isLowEnd =
+      navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
     const intensityMultiplier =
       intensity === "low" ? 0.5 : intensity === "high" ? 1.5 : 1;
-    const count = Math.floor(
-      (isMobile ? particleCount / 2.5 : particleCount) * intensityMultiplier,
-    );
+
+    let baseCount = particleCount;
+    if (isMobile) baseCount = baseCount / 2.5;
+    if (isLowEnd) baseCount = baseCount / 1.5;
+
+    const count = Math.floor(Math.min(baseCount * intensityMultiplier, 100)); // Cap at 100 particles
 
     // Enhanced particle colors
     const colors = [
@@ -86,27 +90,30 @@ export default function EnhancedMenuBackground({
     };
     window.addEventListener("mousemove", handleMouseMove);
 
-    // Gradient animation
-    const gradientInterval = setInterval(() => {
-      setGradientPhase((prev) => (prev + 1) % 360);
-    }, 100);
+    // Enhanced animation loop with internal gradient phase
+    let internalGradientPhase = 0;
+    let lastTime = 0;
 
-    // Enhanced animation loop
-    const animate = () => {
+    const animate = (currentTime: number) => {
+      // Throttle to ~60fps and update gradient phase
+      if (currentTime - lastTime > 16) {
+        internalGradientPhase = (internalGradientPhase + 1) % 360;
+        lastTime = currentTime;
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Enhanced gradient background with animation
       const gradient = ctx.createRadialGradient(
-        canvas.width / 2 + Math.sin(gradientPhase * 0.01) * 100,
-        canvas.height / 2 + Math.cos(gradientPhase * 0.01) * 100,
+        canvas.width / 2 + Math.sin(internalGradientPhase * 0.01) * 100,
+        canvas.height / 2 + Math.cos(internalGradientPhase * 0.01) * 100,
         0,
         canvas.width / 2,
         canvas.height / 2,
         Math.max(canvas.width, canvas.height),
       );
 
-      const hue1 = (gradientPhase * 0.5) % 360;
-      const hue2 = (gradientPhase * 0.3 + 60) % 360;
+      const hue1 = (internalGradientPhase * 0.5) % 360;
+      const hue2 = (internalGradientPhase * 0.3 + 60) % 360;
 
       gradient.addColorStop(0, `hsla(${hue1}, 20%, 15%, 0.95)`);
       gradient.addColorStop(0.5, `hsla(${hue2}, 15%, 12%, 0.97)`);
@@ -166,17 +173,16 @@ export default function EnhancedMenuBackground({
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animate(0);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("mousemove", handleMouseMove);
-      clearInterval(gradientInterval);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [particleCount, enableParallax, intensity, gradientPhase]);
+  }, [particleCount, enableParallax, intensity]);
 
   return (
     <canvas
