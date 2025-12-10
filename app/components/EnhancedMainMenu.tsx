@@ -43,7 +43,7 @@ export default function EnhancedMainMenu({
   const [screenEffect, setScreenEffect] = useState<
     "shake" | "flash" | "confetti" | null
   >(null);
-  const { toasts, removeToast, info, success } = useToast();
+  const { toasts, removeToast, success } = useToast();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -111,9 +111,6 @@ export default function EnhancedMainMenu({
     setScreenEffect("flash");
     setTimeout(() => {
       success("🛒 Marketplace coming soon!");
-      setTimeout(() => {
-        info("NFTs will transfer all stats to buyers when ready!");
-      }, 1500);
     }, 300);
   };
 
