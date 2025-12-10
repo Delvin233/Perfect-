@@ -136,6 +136,29 @@ export default function Home() {
     return <AttractMode onExit={handleAttractModeExit} />;
   }
 
+  // Show blank page when waiting for wallet connection
+  if (!isConnected && !showAttractMode) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div
+            className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-transparent mb-4"
+            style={{
+              borderColor: "var(--color-primary)",
+              borderTopColor: "transparent",
+            }}
+          ></div>
+          <p
+            className="text-sm"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Connecting wallet...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="text-center mb-6 sm:mb-8">
