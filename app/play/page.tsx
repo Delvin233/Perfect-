@@ -65,7 +65,7 @@ export default function PlayPage() {
     return (
       <div className="max-w-2xl mx-auto">
         <BackButton
-          label="← EXIT GAME"
+          label=" EXIT GAME"
           onClick={() => setIsPlaying(false)}
           className="mb-3 sm:mb-4"
         />

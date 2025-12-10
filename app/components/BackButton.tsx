@@ -12,7 +12,7 @@ interface BackButtonProps {
 }
 
 export default function BackButton({
-  label = "← BACK",
+  label = "BACK",
   to,
   onClick,
   className = "",
@@ -66,9 +66,7 @@ export default function BackButton({
         boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
       }}
     >
-      <span className="text-lg group-hover:translate-x-[-2px] transition-transform duration-200">
-        ←
-      </span>
+      <span className="text-lg group-hover:translate-x-[-2px] transition-transform duration-200"></span>
       <span className="group-hover:text-[var(--color-primary)] transition-colors duration-200">
         {label}
       </span>
