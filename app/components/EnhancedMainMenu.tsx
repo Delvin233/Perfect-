@@ -153,7 +153,9 @@ export default function EnhancedMainMenu({
         />
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
+          }}
         >
           <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden">
             {/* Animated border */}
