@@ -142,59 +142,6 @@ export default function EnhancedMainMenu({
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [showDisconnectConfirm]);
 
-  // Disconnect confirmation modal with enhanced animations
-  if (showDisconnectConfirm) {
-    return (
-      <>
-        <ToastContainer toasts={toasts} onRemove={removeToast} />
-        <ScreenEffects
-          effect={screenEffect}
-          onComplete={() => setScreenEffect(null)}
-        />
-        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-          <div className="pointer-events-auto">
-            <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden shadow-2xl">
-              {/* Animated border */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 via-orange-500/20 to-red-500/20 animate-pulse" />
-
-              <div className="relative z-10">
-                <h2
-                  className="text-2xl font-bold text-center mb-4"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  Disconnect Wallet?
-                </h2>
-                <p
-                  className="text-center mb-6"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  Are you sure? Any unsaved progress will be lost.
-                </p>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setShowDisconnectConfirm(false)}
-                    className="btn btn-secondary flex-1 menu-item-enhanced"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleDisconnect}
-                    className="btn btn-primary flex-1 menu-item-enhanced"
-                  >
-                    Disconnect
-                  </button>
-                </div>
-                <p className="text-xs text-center text-gray-500 mt-4">
-                  Press ESC to cancel
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <ToastContainer toasts={toasts} onRemove={removeToast} />
@@ -351,6 +298,50 @@ export default function EnhancedMainMenu({
           </div>
         </div>
       </div>
+
+      {/* Disconnect confirmation modal overlay */}
+      {showDisconnectConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="pointer-events-auto">
+            <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden shadow-2xl">
+              {/* Animated border */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 via-orange-500/20 to-red-500/20 animate-pulse" />
+
+              <div className="relative z-10">
+                <h2
+                  className="text-2xl font-bold text-center mb-4"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  Disconnect Wallet?
+                </h2>
+                <p
+                  className="text-center mb-6"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Are you sure? Any unsaved progress will be lost.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowDisconnectConfirm(false)}
+                    className="btn btn-secondary flex-1 menu-item-enhanced"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDisconnect}
+                    className="btn btn-primary flex-1 menu-item-enhanced"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+                <p className="text-xs text-center text-gray-500 mt-4">
+                  Press ESC to cancel
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
