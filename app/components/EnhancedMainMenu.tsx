@@ -301,7 +301,10 @@ export default function EnhancedMainMenu({
 
       {/* Disconnect confirmation modal overlay */}
       {showDisconnectConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+          style={{ backdropFilter: "blur(50px)" }}
+        >
           <div className="pointer-events-auto">
             <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden shadow-2xl">
               {/* Animated border */}
