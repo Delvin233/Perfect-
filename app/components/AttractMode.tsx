@@ -4,27 +4,16 @@ import { useEffect, useState, useCallback } from "react";
 import { useAppKit } from "@reown/appkit/react";
 import EnhancedMenuBackground from "./EnhancedMenuBackground";
 
-interface Score {
-  address: string;
-  score: number;
-  level: number;
-}
-
 interface AttractModeProps {
   onExit: () => void;
-  leaderboardScores?: Score[];
 }
 
-export default function AttractMode({
-  onExit,
-  leaderboardScores = [],
-}: AttractModeProps) {
+export default function AttractMode({ onExit }: AttractModeProps) {
   const { open } = useAppKit();
   const [logoScale, setLogoScale] = useState(1);
   const [ctaPulse, setCtaPulse] = useState(true);
   const [showDemo, setShowDemo] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [scrollingScores, setScrollingScores] = useState<Score[]>([]);
 
   // Enhanced entrance animation
   useEffect(() => {
@@ -59,15 +48,6 @@ export default function AttractMode({
     return () => clearTimeout(demoTimer);
   }, []);
 
-  // Prepare scrolling scores
-  useEffect(() => {
-    if (leaderboardScores.length > 0) {
-      // Duplicate scores for continuous scrolling
-      const duplicatedScores = [...leaderboardScores, ...leaderboardScores];
-      setScrollingScores(duplicatedScores);
-    }
-  }, [leaderboardScores]);
-
   // Handle any interaction to exit attract mode
   const handleInteraction = useCallback(() => {
     onExit();
@@ -85,7 +65,7 @@ export default function AttractMode({
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [handleInteraction]);
 
-  // Demo mode - show leaderboard showcase
+  // Demo mode - show game preview
   if (showDemo) {
     return (
       <div
@@ -107,29 +87,39 @@ export default function AttractMode({
               textShadow: "0 0 30px rgba(245, 245, 240, 0.5)",
             }}
           >
-            LEADERBOARD SHOWCASE
+            GAME PREVIEW
           </h1>
 
-          {/* Top scores display */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {leaderboardScores.slice(0, 6).map((score, index) => (
-              <div
-                key={index}
-                className="card p-4 animate-fade-in"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <div className="text-2xl font-bold text-orange-500 mb-1">
-                  #{index + 1}
-                </div>
-                <div className="text-lg font-semibold mb-1">
-                  {score.score.toLocaleString()}
-                </div>
-                <div className="text-sm text-gray-400">Level {score.level}</div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {score.address.slice(0, 6)}...{score.address.slice(-4)}
-                </div>
-              </div>
-            ))}
+          {/* Game features showcase */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="card p-6 animate-fade-in">
+              <div className="text-4xl mb-4">⚡</div>
+              <h3 className="text-xl font-bold text-cyan-400 mb-2">Stage 1</h3>
+              <p className="text-sm text-gray-400">Master the 5.000s rhythm</p>
+              <p className="text-xs text-gray-500 mt-2">
+                Tolerance: 50ms → 10ms
+              </p>
+            </div>
+            <div
+              className="card p-6 animate-fade-in"
+              style={{ animationDelay: "0.2s" }}
+            >
+              <div className="text-4xl mb-4">🔥</div>
+              <h3 className="text-xl font-bold text-purple-400 mb-2">
+                Stage 2
+              </h3>
+              <p className="text-sm text-gray-400">Random target times</p>
+              <p className="text-xs text-gray-500 mt-2">Tolerance: ±8ms</p>
+            </div>
+            <div
+              className="card p-6 animate-fade-in"
+              style={{ animationDelay: "0.4s" }}
+            >
+              <div className="text-4xl mb-4">💀</div>
+              <h3 className="text-xl font-bold text-red-400 mb-2">Stage 3</h3>
+              <p className="text-sm text-gray-400">Extreme precision</p>
+              <p className="text-xs text-gray-500 mt-2">Tolerance: ±5ms</p>
+            </div>
           </div>
 
           {/* Return to attract mode */}
@@ -137,7 +127,7 @@ export default function AttractMode({
             className="text-lg animate-pulse"
             style={{ color: "var(--color-text-secondary)" }}
           >
-            Press any key to start your journey to the top!
+            Press any key to start your precision journey!
           </p>
         </div>
       </div>
@@ -183,33 +173,6 @@ export default function AttractMode({
         >
           Stop Time. Prove Perfection.
         </p>
-
-        {/* High score ticker */}
-        {scrollingScores.length > 0 && (
-          <div
-            className={`mb-8 h-16 overflow-hidden transition-all duration-700 delay-500 ${
-              isLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div className="animate-scroll-up space-y-2">
-              {scrollingScores.map((score, index) => (
-                <div
-                  key={index}
-                  className="flex justify-center items-center gap-4 text-sm"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  <span className="text-orange-500 font-bold">
-                    {score.score.toLocaleString()}
-                  </span>
-                  <span>Level {score.level}</span>
-                  <span className="text-gray-500">
-                    {score.address.slice(0, 6)}...{score.address.slice(-4)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Call to action */}
         <div

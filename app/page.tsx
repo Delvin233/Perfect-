@@ -24,12 +24,6 @@ interface ScoreData {
   score: number;
 }
 
-interface Score {
-  address: string;
-  score: number;
-  level: number;
-}
-
 export default function Home() {
   const { address, isConnected } = useAppKitAccount();
   const { disconnect } = useDisconnect();
@@ -37,18 +31,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [leaderboardScores, setLeaderboardScores] = useState<Score[]>([]);
   const [showAttractMode, setShowAttractMode] = useState(true);
-
-  const fetchLeaderboard = useCallback(async () => {
-    try {
-      const response = await fetch("/api/scores");
-      const data = await response.json();
-      setLeaderboardScores(data.scores || []);
-    } catch (error) {
-      console.error("Failed to fetch leaderboard:", error);
-    }
-  }, []);
 
   const fetchUserStats = useCallback(async () => {
     if (!address) return;
@@ -87,11 +70,6 @@ export default function Home() {
       setLoading(false);
     }
   }, [address]);
-
-  // Fetch leaderboard on component mount
-  useEffect(() => {
-    fetchLeaderboard();
-  }, [fetchLeaderboard]);
 
   useEffect(() => {
     if (address) {
@@ -143,12 +121,7 @@ export default function Home() {
 
   // Show attract mode when not connected
   if (!isConnected && showAttractMode) {
-    return (
-      <AttractMode
-        onExit={handleAttractModeExit}
-        leaderboardScores={leaderboardScores}
-      />
-    );
+    return <AttractMode onExit={handleAttractModeExit} />;
   }
 
   return (
