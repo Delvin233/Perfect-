@@ -6,6 +6,8 @@ import { useKeyboardNav } from "@/app/hooks/useKeyboardNav";
 import StatsPanel from "./StatsPanel";
 import EnhancedMenuBackground from "./EnhancedMenuBackground";
 import ScreenEffects from "./ScreenEffects";
+import { useToast } from "../hooks/useToast";
+import ToastContainer from "./ToastContainer";
 
 interface UserStats {
   address: string;
@@ -41,6 +43,7 @@ export default function EnhancedMainMenu({
   const [screenEffect, setScreenEffect] = useState<
     "shake" | "flash" | "confetti" | null
   >(null);
+  const { toasts, removeToast, info, success } = useToast();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -55,35 +58,35 @@ export default function EnhancedMainMenu({
       id: "play",
       label: "PROVE PERFECTION",
       description: "Test your precision. One mistake = Game Over.",
-      icon: "🎯",
+      icon: "",
       action: () => handleNavigate("/play"),
     },
     {
       id: "leaderboard",
       label: "LEADERBOARD",
       description: "View top players worldwide. Ranks explained.",
-      icon: "🏆",
+      icon: "",
       action: () => handleNavigate("/leaderboard"),
     },
     {
       id: "profile",
       label: "PROFILE",
       description: "Your stats, achievements, and NFT collection",
-      icon: "👤",
+      icon: "",
       action: () => handleNavigate("/profile"),
     },
     {
       id: "settings",
       label: "SETTINGS",
       description: "Customize theme, sound, and preferences",
-      icon: "⚙️",
-      action: () => handleSettingsClick(),
+      icon: "",
+      action: () => handleNavigate("/settings"),
     },
     {
       id: "marketplace",
       label: "MARKETPLACE",
       description: "Trade Perfection NFTs. Stats transfer to buyer.",
-      icon: "🛒",
+      icon: "",
       badge: "COMING SOON",
       action: () => handleMarketplaceClick(),
     },
@@ -91,7 +94,7 @@ export default function EnhancedMainMenu({
       id: "disconnect",
       label: "DISCONNECT",
       description: "Sign out of your wallet",
-      icon: "🚪",
+      icon: "",
       action: () => setShowDisconnectConfirm(true),
     },
   ];
@@ -104,17 +107,13 @@ export default function EnhancedMainMenu({
     }, 300);
   };
 
-  const handleSettingsClick = () => {
-    setScreenEffect("shake");
-    setTimeout(() => {
-      alert("Settings coming soon!");
-    }, 500);
-  };
-
   const handleMarketplaceClick = () => {
     setScreenEffect("confetti");
     setTimeout(() => {
-      alert("Marketplace coming soon! NFTs will transfer all stats to buyers.");
+      success("🛒 Marketplace coming soon!");
+      setTimeout(() => {
+        info("NFTs will transfer all stats to buyers when ready!");
+      }, 1500);
     }, 1000);
   };
 
@@ -140,6 +139,7 @@ export default function EnhancedMainMenu({
   if (showDisconnectConfirm) {
     return (
       <>
+        <ToastContainer toasts={toasts} onRemove={removeToast} />
         <ScreenEffects
           effect={screenEffect}
           onComplete={() => setScreenEffect(null)}
@@ -154,7 +154,7 @@ export default function EnhancedMainMenu({
                 className="text-2xl font-bold text-center mb-4"
                 style={{ color: "var(--color-primary)" }}
               >
-                ⚠️ Disconnect Wallet?
+                Disconnect Wallet?
               </h2>
               <p
                 className="text-center mb-6"
@@ -188,6 +188,7 @@ export default function EnhancedMainMenu({
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
       <ScreenEffects
         effect={screenEffect}
         onComplete={() => setScreenEffect(null)}
