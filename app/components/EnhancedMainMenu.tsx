@@ -73,7 +73,8 @@ export default function EnhancedMainMenu({
       label: "PROFILE",
       description: "Your stats, achievements, and NFT collection",
       icon: "",
-      action: () => handleNavigate("/profile"),
+      badge: "COMING SOON",
+      action: () => handleProfileClick(),
     },
     {
       id: "settings",
@@ -105,6 +106,10 @@ export default function EnhancedMainMenu({
   };
 
   const handleMarketplaceClick = () => {
+    // Do nothing - "COMING SOON" badge is already visible
+  };
+
+  const handleProfileClick = () => {
     // Do nothing - "COMING SOON" badge is already visible
   };
 
