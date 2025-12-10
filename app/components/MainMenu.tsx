@@ -40,35 +40,35 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
       id: "play",
       label: "PROVE PERFECTION",
       description: "Test your precision. One mistake = Game Over.",
-      icon: "🎯",
+      icon: "",
       action: () => handleNavigate("/play"),
     },
     {
       id: "leaderboard",
       label: "LEADERBOARD",
       description: "View top players worldwide. Ranks explained.",
-      icon: "🏆",
+      icon: "",
       action: () => handleNavigate("/leaderboard"),
     },
     {
       id: "profile",
       label: "PROFILE",
       description: "Your stats, achievements, and NFT collection",
-      icon: "👤",
+      icon: "",
       action: () => handleNavigate("/profile"),
     },
     {
       id: "settings",
       label: "SETTINGS",
       description: "Customize theme, sound, and preferences",
-      icon: "⚙️",
+      icon: "",
       action: () => alert("Settings coming soon!"),
     },
     {
       id: "marketplace",
       label: "MARKETPLACE",
       description: "Trade Perfection NFTs. Stats transfer to buyer.",
-      icon: "🛒",
+      icon: "",
       badge: "COMING SOON",
       action: () => alert("Marketplace coming soon!"),
     },
@@ -76,7 +76,7 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
       id: "disconnect",
       label: "DISCONNECT",
       description: "Sign out of your wallet",
-      icon: "🚪",
+      icon: "",
       action: () => setShowDisconnectConfirm(true),
     },
   ];
@@ -113,7 +113,10 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
           >
             Disconnect Wallet?
           </h2>
-          <p className="text-center" style={{ color: "var(--color-text-secondary)" }}>
+          <p
+            className="text-center"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
             Are you sure? Any unsaved progress will be lost.
           </p>
           <div className="flex gap-3">
@@ -123,11 +126,16 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
             >
               Cancel
             </button>
-            <button onClick={handleDisconnect} className="btn btn-primary flex-1">
+            <button
+              onClick={handleDisconnect}
+              className="btn btn-primary flex-1"
+            >
               Disconnect
             </button>
           </div>
-          <p className="text-xs text-center text-gray-500">Press ESC to cancel</p>
+          <p className="text-xs text-center text-gray-500">
+            Press ESC to cancel
+          </p>
         </div>
       </div>
     );
@@ -151,7 +159,10 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
             PERFECT?
           </h1>
           {userStats && (
-            <div className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
+            <div
+              className="text-sm"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
               {userStats.address.slice(0, 6)}...{userStats.address.slice(-4)}
             </div>
           )}
@@ -264,10 +275,7 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
           </div>
 
           {/* Stats panel - Right side */}
-          <div
-            className="animate-fade-in"
-            style={{ animationDelay: "0.5s" }}
-          >
+          <div className="animate-fade-in" style={{ animationDelay: "0.5s" }}>
             <StatsPanel stats={userStats} />
           </div>
         </div>

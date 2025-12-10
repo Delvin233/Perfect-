@@ -5,7 +5,10 @@ import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const Header = dynamic(() => import("@/app/components/Header"), { ssr: false });
+const ConditionalHeader = dynamic(
+  () => import("@/app/components/ConditionalHeader"),
+  { ssr: false },
+);
 const BottomNavigation = dynamic(
   () => import("@/app/components/BottomNavigation"),
   { ssr: false },
@@ -55,7 +58,7 @@ export default function RootLayout({
       <body className={jetbrainsMono.variable}>
         <ContextProvider>
           <div className="min-h-screen flex flex-col">
-            <Header />
+            <ConditionalHeader />
             <main className="flex-1 pb-20 lg:pb-4">
               <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
                 {children}

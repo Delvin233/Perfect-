@@ -10,8 +10,8 @@ import { LuClock1 } from "react-icons/lu";
 import { SiProgress } from "react-icons/si";
 import { FaRankingStar } from "react-icons/fa6";
 import { getRankForLevel } from "@/lib/ranks";
-import MainMenu from "./components/MainMenu";
-import LoadingScreen from "./components/LoadingScreen";
+import EnhancedMainMenu from "./components/EnhancedMainMenu";
+import EnhancedLoadingScreen from "./components/EnhancedLoadingScreen";
 
 interface UserStats {
   address: string;
@@ -108,12 +108,14 @@ export default function Home() {
 
   // Show loading screen when connecting
   if (showLoading && !loading) {
-    return <LoadingScreen onComplete={handleLoadingComplete} />;
+    return <EnhancedLoadingScreen onComplete={handleLoadingComplete} />;
   }
 
   // Show main menu when connected and loaded
   if (isConnected && showMenu && stats) {
-    return <MainMenu userStats={stats} onDisconnect={handleDisconnect} />;
+    return (
+      <EnhancedMainMenu userStats={stats} onDisconnect={handleDisconnect} />
+    );
   }
 
   if (!isConnected) {

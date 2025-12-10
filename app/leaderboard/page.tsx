@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
+import BackButton from "../components/BackButton";
 
 interface Score {
   address: string;
@@ -38,6 +39,9 @@ export default function LeaderboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <div className="mb-4">
+        <BackButton to="/" />
+      </div>
       <div className="text-center mb-6 sm:mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-[var(--color-primary)]">
           🏆 LEADERBOARD
@@ -113,7 +117,9 @@ export default function LeaderboardPage() {
                   <p className="text-lg sm:text-2xl font-bold text-[var(--color-primary)]">
                     {score.score.toLocaleString()}
                   </p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">→ View details</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">
+                    → View details
+                  </p>
                 </div>
               </a>
             );
