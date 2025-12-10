@@ -79,17 +79,6 @@ export default function AttractMode({ onExit }: AttractModeProps) {
         />
 
         <div className="text-center max-w-4xl px-4 relative z-10">
-          {/* Demo mode header */}
-          <h1
-            className="text-4xl sm:text-6xl font-bold mb-8 animate-pulse"
-            style={{
-              color: "var(--color-primary)",
-              textShadow: "0 0 30px rgba(245, 245, 240, 0.5)",
-            }}
-          >
-            GAME PREVIEW
-          </h1>
-
           {/* Game features showcase */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="card p-6 animate-fade-in">
