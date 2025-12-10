@@ -192,7 +192,7 @@ export default function EnhancedMainMenu({
           intensity="medium"
         />
 
-        <div className="container mx-auto px-4 py-4 relative z-10 min-h-screen flex flex-col justify-center">
+        <div className="px-4 py-4 relative z-10 min-h-screen flex flex-col justify-center">
           {/* Enhanced header with glow effect */}
           <div
             className={`flex items-center justify-between mb-4 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
