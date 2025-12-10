@@ -24,12 +24,12 @@ export default function Header() {
         borderColor: "var(--color-card-border)",
       }}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <span
-              className="text-2xl font-bold"
+              className="text-xl sm:text-2xl font-bold"
               style={{ color: "var(--color-primary)" }}
             >
               PERFECT?
@@ -61,7 +61,7 @@ export default function Header() {
           </nav>
 
           {/* Theme Selector & Wallet Button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <ThemeSelector />
             {address && <appkit-button />}
           </div>

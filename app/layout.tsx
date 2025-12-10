@@ -1,35 +1,43 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { minikitConfig } from "@/minikit.config";
 import ContextProvider from "./context";
 import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const Header = dynamic(() => import("@/app/components/Header"), { ssr: false });
+const ConditionalHeader = dynamic(
+  () => import("@/app/components/ConditionalHeader"),
+  { ssr: false },
+);
 const BottomNavigation = dynamic(
   () => import("@/app/components/BottomNavigation"),
   { ssr: false },
 );
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: minikitConfig.miniapp.name,
-    description: minikitConfig.miniapp.description,
-    other: {
-      "fc:miniapp": JSON.stringify({
-        version: minikitConfig.miniapp.version,
-        imageUrl: minikitConfig.miniapp.heroImageUrl,
-        button: {
-          title: `Launch ${minikitConfig.miniapp.name}`,
-          action: {
-            name: `Launch ${minikitConfig.miniapp.name}`,
-            type: "launch_miniapp",
-          },
+export const metadata: Metadata = {
+  title: minikitConfig.miniapp.name,
+  description: minikitConfig.miniapp.description,
+  other: {
+    "fc:miniapp": JSON.stringify({
+      version: minikitConfig.miniapp.version,
+      imageUrl: minikitConfig.miniapp.heroImageUrl,
+      button: {
+        title: `Launch ${minikitConfig.miniapp.name}`,
+        action: {
+          name: `Launch ${minikitConfig.miniapp.name}`,
+          type: "launch_miniapp",
         },
-      }),
-    },
-  };
-}
+      },
+    }),
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 // Using JetBrains Mono from Google Fonts
 import { JetBrains_Mono } from "next/font/google";
@@ -50,9 +58,11 @@ export default function RootLayout({
       <body className={jetbrainsMono.variable}>
         <ContextProvider>
           <div className="min-h-screen flex flex-col">
-            <Header />
+            <ConditionalHeader />
             <main className="flex-1 pb-20 lg:pb-4">
-              <div className="container mx-auto px-4 py-4">{children}</div>
+              <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+                {children}
+              </div>
             </main>
             <BottomNavigation />
           </div>

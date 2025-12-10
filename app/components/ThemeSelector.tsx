@@ -29,14 +29,14 @@ export default function ThemeSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:scale-105"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all hover:scale-105 active:scale-95"
         style={{
           backgroundColor: theme.colors.cardBg,
           borderColor: theme.colors.cardBorder,
           border: "1px solid",
         }}
       >
-        <span className="text-2xl">🎨</span>
+        <span className="text-xl sm:text-2xl">🎨</span>
         <span className="hidden sm:inline text-sm">{theme.name}</span>
       </button>
 
@@ -47,15 +47,15 @@ export default function ThemeSelector() {
             onClick={() => setIsOpen(false)}
           />
           <div
-            className="absolute right-0 mt-2 w-80 rounded-xl border z-50 max-h-96 overflow-y-auto"
+            className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-xl border z-50 max-h-[70vh] sm:max-h-96 overflow-y-auto"
             style={{
               backgroundColor: theme.colors.backgroundSecondary,
               borderColor: theme.colors.cardBorder,
             }}
           >
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <h3
-                className="text-lg font-bold mb-3"
+                className="text-base sm:text-lg font-bold mb-2 sm:mb-3"
                 style={{ color: theme.colors.text }}
               >
                 Choose Theme
@@ -65,7 +65,7 @@ export default function ThemeSelector() {
                   <button
                     key={t.id}
                     onClick={() => handleThemeChange(t.id)}
-                    className={`w-full text-left p-3 rounded-lg transition-all hover:scale-[1.02] ${
+                    className={`w-full text-left p-2 sm:p-3 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] ${
                       currentTheme === t.id ? "ring-2" : ""
                     }`}
                     style={{
@@ -79,30 +79,30 @@ export default function ThemeSelector() {
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span
-                        className="font-bold"
+                        className="font-bold text-sm sm:text-base"
                         style={{ color: t.colors.text }}
                       >
                         {t.name}
                       </span>
-                      {currentTheme === t.id && <span>✓</span>}
+                      {currentTheme === t.id && <span className="text-sm sm:text-base">✓</span>}
                     </div>
                     <p
-                      className="text-xs"
+                      className="text-[10px] sm:text-xs"
                       style={{ color: t.colors.textSecondary }}
                     >
                       {t.description}
                     </p>
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
                       <div
-                        className="w-6 h-6 rounded"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded"
                         style={{ backgroundColor: t.colors.primary }}
                       />
                       <div
-                        className="w-6 h-6 rounded"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded"
                         style={{ backgroundColor: t.colors.secondary }}
                       />
                       <div
-                        className="w-6 h-6 rounded"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded"
                         style={{ backgroundColor: t.colors.accent }}
                       />
                     </div>

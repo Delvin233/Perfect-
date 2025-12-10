@@ -1,11 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd perfect-timer
-
 # Run full lint check first
 echo "Running full lint check..."
 npm run lint
 
 # Then run lint-staged for auto-fixes
 npx lint-staged
+npm run lint && npx lint-staged

@@ -58,7 +58,7 @@ export default function ProfilePage() {
         <div className="card text-center py-12">
           <p className="text-gray-400 mb-4">Player not found</p>
           <button onClick={() => router.back()} className="btn btn-secondary">
-            ← Go Back
+            Go Back
           </button>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function ProfilePage() {
         onClick={() => router.back()}
         className="mb-4 text-gray-400 hover:text-white transition-colors"
       >
-        ← Back to Leaderboard
+        Back to Leaderboard
       </button>
 
       {/* Player Header */}
