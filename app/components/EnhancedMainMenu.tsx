@@ -108,13 +108,13 @@ export default function EnhancedMainMenu({
   };
 
   const handleMarketplaceClick = () => {
-    setScreenEffect("confetti");
+    setScreenEffect("flash");
     setTimeout(() => {
       success("🛒 Marketplace coming soon!");
       setTimeout(() => {
         info("NFTs will transfer all stats to buyers when ready!");
       }, 1500);
-    }, 1000);
+    }, 300);
   };
 
   const handleDisconnect = () => {
