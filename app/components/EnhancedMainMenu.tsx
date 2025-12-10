@@ -238,10 +238,10 @@ export default function EnhancedMainMenu({
             )}
           </div>
 
-          {/* Main content with enhanced layout - more spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 flex-1 items-center">
-            {/* Enhanced menu items - more compact */}
-            <div className="lg:col-span-2 space-y-2">
+          {/* Main content with enhanced layout - MUCH more spacing */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 flex-1 items-center">
+            {/* Enhanced menu items - left side */}
+            <div className="lg:col-span-4 space-y-2">
               <h2
                 className={`text-lg font-bold mb-3 ${isLoaded ? "enhanced-fade-in stagger-1" : "opacity-0"}`}
                 style={{ color: "var(--color-text-secondary)" }}
@@ -360,9 +360,9 @@ export default function EnhancedMainMenu({
               </div>
             </div>
 
-            {/* Enhanced stats panel - more space */}
+            {/* Enhanced stats panel - right side with huge gap */}
             <div
-              className={`lg:col-span-2 ${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
+              className={`lg:col-span-4 lg:col-start-9 ${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
             >
               <StatsPanel stats={userStats} />
             </div>
