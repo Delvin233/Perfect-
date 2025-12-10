@@ -5,12 +5,20 @@ import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { LuClock1 } from "react-icons/lu";
 import { SiProgress } from "react-icons/si";
 import { FaRankingStar } from "react-icons/fa6";
+import { getRankForLevel } from "@/lib/ranks";
+import MainMenu from "./components/MainMenu";
+import LoadingScreen from "./components/LoadingScreen";
 
 interface UserStats {
+  address: string;
   totalGames: number;
   highestLevel: number;
   bestScore: number;
   averageScore: number;
+  highScore: number;
+  rank: string;
+  perfectHits: number;
+  totalHits: number;
 }
 
 interface ScoreData {
@@ -20,9 +28,11 @@ interface ScoreData {
 
 export default function Home() {
   const { address, isConnected } = useAppKitAccount();
-  const { open } = useAppKit();
+  const { open, disconnect } = useAppKit();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const fetchUserStats = useCallback(async () => {
     if (!address) return;
@@ -42,7 +52,19 @@ export default function Home() {
             )
           : 0;
 
-      setStats({ totalGames, highestLevel, bestScore, averageScore });
+      const rank = getRankForLevel(highestLevel);
+
+      setStats({
+        address,
+        totalGames,
+        highestLevel,
+        bestScore,
+        averageScore,
+        highScore: bestScore,
+        rank: rank.name,
+        perfectHits: 0, // TODO: Track this in database
+        totalHits: 0, // TODO: Track this in database
+      });
     } catch (error) {
       console.error("Failed to fetch stats:", error);
     } finally {
@@ -52,11 +74,42 @@ export default function Home() {
 
   useEffect(() => {
     if (address) {
+      setShowLoading(true);
       fetchUserStats();
     } else {
       setLoading(false);
+      setShowMenu(false);
     }
   }, [address, fetchUserStats]);
+
+  // Show menu after loading completes
+  useEffect(() => {
+    if (!loading && isConnected && !showMenu) {
+      // Loading screen will call this after its duration
+      setShowMenu(true);
+    }
+  }, [loading, isConnected, showMenu]);
+
+  const handleLoadingComplete = () => {
+    setShowLoading(false);
+    setShowMenu(true);
+  };
+
+  const handleDisconnect = () => {
+    disconnect();
+    setShowMenu(false);
+    setStats(null);
+  };
+
+  // Show loading screen when connecting
+  if (showLoading && !loading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
+
+  // Show main menu when connected and loaded
+  if (isConnected && showMenu && stats) {
+    return <MainMenu userStats={stats} onDisconnect={handleDisconnect} />;
+  }
 
   if (!isConnected) {
     return (
