@@ -238,10 +238,10 @@ export default function EnhancedMainMenu({
             )}
           </div>
 
-          {/* Main content with enhanced layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Enhanced menu items */}
-            <div className="lg:col-span-2 space-y-4">
+          {/* Main content with enhanced layout - more spacing */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+            {/* Enhanced menu items - more compact */}
+            <div className="lg:col-span-2 space-y-3">
               <h2
                 className={`text-xl font-bold mb-4 ${isLoaded ? "enhanced-fade-in stagger-1" : "opacity-0"}`}
                 style={{ color: "var(--color-text-secondary)" }}
@@ -259,7 +259,7 @@ export default function EnhancedMainMenu({
                       setHoveredIndex(index);
                     }}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    className={`w-full text-left p-4 rounded-lg menu-item-enhanced transition-all duration-300 ${
+                    className={`w-full text-left p-3 rounded-lg menu-item-enhanced transition-all duration-300 ${
                       isLoaded ? "enhanced-fade-in" : "opacity-0"
                     } ${
                       selectedIndex === index
@@ -293,13 +293,13 @@ export default function EnhancedMainMenu({
                           ▶
                         </span>
                       )}
-                      <span className="text-2xl transform transition-transform duration-200 hover:scale-110">
+                      <span className="text-xl transform transition-transform duration-200 hover:scale-110">
                         {item.icon}
                       </span>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`font-bold text-lg transition-colors duration-200 ${
+                            className={`font-bold text-base transition-colors duration-200 ${
                               selectedIndex === index
                                 ? "text-[var(--color-primary)]"
                                 : "text-[var(--color-text)]"
@@ -327,13 +327,13 @@ export default function EnhancedMainMenu({
                 ))}
               </div>
 
-              {/* Enhanced description panel */}
+              {/* Enhanced description panel - more compact */}
               <div
-                className={`card p-4 relative overflow-hidden ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
+                className={`card p-3 relative overflow-hidden ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
                 <p
-                  className="text-sm text-center relative z-10"
+                  className="text-xs text-center relative z-10"
                   style={{ color: "var(--color-text-secondary)" }}
                 >
                   {menuItems[selectedIndex].description}
@@ -358,9 +358,9 @@ export default function EnhancedMainMenu({
               </div>
             </div>
 
-            {/* Enhanced stats panel */}
+            {/* Enhanced stats panel - more space */}
             <div
-              className={`${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
+              className={`lg:col-span-2 ${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
             >
               <StatsPanel stats={userStats} />
             </div>
