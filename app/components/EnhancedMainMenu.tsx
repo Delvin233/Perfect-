@@ -110,7 +110,7 @@ export default function EnhancedMainMenu({
   const handleMarketplaceClick = () => {
     setScreenEffect("flash");
     setTimeout(() => {
-      success("🛒 Marketplace coming soon!");
+      success("Marketplace coming soon!");
     }, 300);
   };
 
@@ -266,10 +266,7 @@ export default function EnhancedMainMenu({
                           : ""
                     }`}
                     style={{
-                      background:
-                        selectedIndex === index
-                          ? "var(--color-card-bg)"
-                          : "rgba(255, 255, 255, 0.03)",
+                      background: "transparent",
                       borderLeft:
                         selectedIndex === index
                           ? `4px solid var(--color-primary)`
@@ -277,8 +274,8 @@ export default function EnhancedMainMenu({
                       animationDelay: `${0.1 + index * 0.05}s`,
                       boxShadow:
                         selectedIndex === index
-                          ? "0 8px 32px rgba(0,0,0,0.3), 0 0 20px var(--color-primary)"
-                          : "0 4px 12px rgba(0,0,0,0.1)",
+                          ? "0 0 8px var(--color-primary)"
+                          : "none",
                     }}
                   >
                     <div className="flex items-center gap-3 relative z-10">
