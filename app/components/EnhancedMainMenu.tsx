@@ -316,19 +316,6 @@ export default function EnhancedMainMenu({
                 ))}
               </div>
 
-              {/* Enhanced description panel - more compact */}
-              <div
-                className={`card p-3 relative overflow-hidden ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
-                <p
-                  className="text-xs text-center relative z-10"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  {menuItems[selectedIndex].description}
-                </p>
-              </div>
-
               {/* Enhanced keyboard controls - more compact */}
               <div
                 className={`text-center text-xs space-x-2 mt-3 ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
