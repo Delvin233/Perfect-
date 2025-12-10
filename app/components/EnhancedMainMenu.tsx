@@ -234,18 +234,7 @@ export default function EnhancedMainMenu({
                 style={{ width: "100%" }}
               />
             </h1>
-            {userStats && (
-              <div
-                className="text-sm px-3 py-1 rounded-full border"
-                style={{
-                  color: "var(--color-text-secondary)",
-                  borderColor: "var(--color-card-border)",
-                  background: "var(--color-card-bg)",
-                }}
-              >
-                {userStats.address.slice(0, 6)}...{userStats.address.slice(-4)}
-              </div>
-            )}
+            {userStats && <appkit-button />}
           </div>
 
           {/* Main content with enhanced layout - MUCH more spacing */}
