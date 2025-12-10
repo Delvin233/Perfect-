@@ -100,33 +100,23 @@ export default function EnhancedMainMenu({
   ];
 
   const handleNavigate = (path: string) => {
-    setScreenEffect("flash");
     setIsTransitioning(true);
-    setTimeout(() => {
-      router.push(path);
-    }, 300);
+    router.push(path);
   };
 
   const handleMarketplaceClick = () => {
-    setScreenEffect("flash");
-    setTimeout(() => {
-      success("Marketplace coming soon!");
-    }, 300);
+    success("🛒 Marketplace coming soon!");
   };
 
   const handleDisconnect = () => {
-    setScreenEffect("flash");
     setIsTransitioning(true);
-    setTimeout(() => {
-      onDisconnect();
-    }, 300);
+    onDisconnect();
   };
 
   const { selectedIndex, setSelectedIndex } = useKeyboardNav({
     itemCount: menuItems.length,
     onSelect: (index) => {
-      setScreenEffect("flash");
-      setTimeout(() => menuItems[index].action(), 100);
+      menuItems[index].action();
     },
     onBack: () => setShowDisconnectConfirm(false),
     enabled: !isTransitioning && !showDisconnectConfirm,
