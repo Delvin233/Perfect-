@@ -182,7 +182,7 @@ export default function EnhancedMainMenu({
       />
 
       <div
-        className={`min-h-screen transition-all duration-500 ${
+        className={`min-h-screen transition-all duration-500 relative ${
           isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
         }`}
       >
@@ -192,7 +192,7 @@ export default function EnhancedMainMenu({
           intensity="medium"
         />
 
-        <div className="relative z-10 min-h-screen flex flex-col justify-center">
+        <div className="absolute inset-0 z-10 flex flex-col justify-center">
           {/* Enhanced header with glow effect */}
           <div
             className={`flex items-center justify-between mb-4 px-4 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
