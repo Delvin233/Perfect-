@@ -14,6 +14,12 @@ async function ensureDatabase() {
 export async function GET(request: Request) {
   await ensureDatabase();
 
+  // Return empty scores if database is not available
+  if (!turso) {
+    console.warn("Database not available - returning empty scores");
+    return NextResponse.json({ scores: [] });
+  }
+
   const { searchParams } = new URL(request.url);
   const address = searchParams.get("address");
 
@@ -59,6 +65,15 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   await ensureDatabase();
+
+  // Return success but don't save if database is not available
+  if (!turso) {
+    console.warn("Database not available - score not saved");
+    return NextResponse.json({
+      success: true,
+      warning: "Database not available",
+    });
+  }
 
   const { address, score, level, perfectHits, totalHits } =
     await request.json();

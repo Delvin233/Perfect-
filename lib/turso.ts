@@ -1,12 +1,23 @@
 import { createClient } from "@libsql/client";
 
-export const turso = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
+// Create client only if environment variables are available
+export const turso =
+  process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN
+    ? createClient({
+        url: process.env.TURSO_DATABASE_URL,
+        authToken: process.env.TURSO_AUTH_TOKEN,
+      })
+    : null;
 
 // Initialize the leaderboard table
 export async function initDatabase() {
+  if (!turso) {
+    console.warn(
+      "Turso client not initialized - database operations will be skipped",
+    );
+    return;
+  }
+
   await turso.execute(`
     CREATE TABLE IF NOT EXISTS leaderboard (
       address TEXT PRIMARY KEY,
