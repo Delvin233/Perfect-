@@ -17,7 +17,10 @@ interface StatsPanelProps {
   compact?: boolean;
 }
 
-export default function StatsPanel({ stats, compact = false }: StatsPanelProps) {
+export default function StatsPanel({
+  stats,
+  compact = false,
+}: StatsPanelProps) {
   if (!stats) {
     return (
       <div className={`${compact ? "p-4" : "p-6"} card`}>
@@ -44,7 +47,10 @@ export default function StatsPanel({ stats, compact = false }: StatsPanelProps) 
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-400">Best Level</span>
-          <span className="text-lg font-bold" style={{ color: "var(--color-secondary)" }}>
+          <span
+            className="text-lg font-bold"
+            style={{ color: "var(--color-secondary)" }}
+          >
             Level {stats.highestLevel}
           </span>
         </div>
@@ -62,82 +68,88 @@ export default function StatsPanel({ stats, compact = false }: StatsPanelProps) 
   }
 
   return (
-    <div className="card p-6 space-y-4">
+    <div className="card p-4 space-y-3">
       <h3
-        className="text-lg font-bold text-center mb-4"
+        className="text-sm font-bold text-center mb-3"
         style={{ color: "var(--color-primary)" }}
       >
         YOUR STATS
       </h3>
 
       {/* High Score */}
-      <div className="text-center pb-4 border-b border-gray-700">
+      <div className="text-center pb-2 border-b border-gray-700/50">
         <p className="text-xs text-gray-400 mb-1">HIGH SCORE</p>
-        <p className="text-4xl font-bold text-orange-500">
+        <p className="text-2xl font-bold text-orange-500">
           {stats.highScore.toLocaleString()}
         </p>
       </div>
 
       {/* Best Level */}
-      <div className="text-center pb-4 border-b border-gray-700">
+      <div className="text-center pb-2 border-b border-gray-700/50">
         <p className="text-xs text-gray-400 mb-1">BEST LEVEL</p>
-        <p className="text-2xl font-bold" style={{ color: "var(--color-secondary)" }}>
+        <p
+          className="text-lg font-bold"
+          style={{ color: "var(--color-secondary)" }}
+        >
           Level {stats.highestLevel}
         </p>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500">
           Stage {stage} • {((stats.highestLevel - 1) % 10) + 1}/10
         </p>
       </div>
 
       {/* Rank */}
-      <div className="text-center pb-4 border-b border-gray-700">
-        <p className="text-xs text-gray-400 mb-2">RANK</p>
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <span className="text-3xl">{rank.emoji}</span>
-          <span className={`text-xl font-bold ${getRankColor(rank.tier)}`}>
+      <div className="text-center pb-2 border-b border-gray-700/50">
+        <p className="text-xs text-gray-400 mb-1">RANK</p>
+        <div className="flex items-center justify-center gap-1 mb-1">
+          <span className="text-xl">{rank.emoji}</span>
+          <span className={`text-sm font-bold ${getRankColor(rank.tier)}`}>
             {rank.name}
           </span>
         </div>
         <span
-          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getRankBgColor(rank.tier)} ${getRankColor(rank.tier)}`}
+          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${getRankBgColor(rank.tier)} ${getRankColor(rank.tier)}`}
         >
           {rank.tier}
         </span>
       </div>
 
       {/* Total Games */}
-      <div className="text-center pb-4 border-b border-gray-700">
+      <div className="text-center pb-2 border-b border-gray-700/50">
         <p className="text-xs text-gray-400 mb-1">TOTAL GAMES</p>
-        <p className="text-2xl font-bold" style={{ color: "var(--color-primary)" }}>
+        <p
+          className="text-lg font-bold"
+          style={{ color: "var(--color-primary)" }}
+        >
           {stats.totalGames}
         </p>
       </div>
 
       {/* Perfect Hits */}
-      <div className="text-center">
+      <div className="text-center pb-2 border-b border-gray-700/50">
         <p className="text-xs text-gray-400 mb-1">PERFECT HITS</p>
-        <p className="text-xl font-bold text-green-500">
+        <p className="text-sm font-bold text-green-500">
           {stats.perfectHits}/{stats.totalHits}
         </p>
-        <p className="text-xs text-gray-500 mt-1">{perfectRatio}% accuracy</p>
+        <p className="text-xs text-gray-500">{perfectRatio}% accuracy</p>
       </div>
 
       {/* Stages Completed */}
-      <div className="text-center pt-4 border-t border-gray-700">
-        <p className="text-xs text-gray-400 mb-2">STAGES COMPLETED</p>
-        <div className="flex justify-center gap-2">
+      <div className="text-center pt-2">
+        <p className="text-xs text-gray-400 mb-1">STAGES COMPLETED</p>
+        <div className="flex justify-center gap-1">
           <span
-            className={`text-2xl ${stage >= 1 ? "opacity-100" : "opacity-30"}`}
+            className={`text-lg ${stage >= 1 ? "opacity-100" : "opacity-30"}`}
           >
             ⚡
           </span>
           <span
-            className={`text-2xl ${stage >= 2 ? "opacity-100" : "opacity-30"}`}
+            className={`text-lg ${stage >= 2 ? "opacity-100" : "opacity-30"}`}
           >
             🔥
           </span>
           <span
-            className={`text-2xl ${stage >= 3 ? "opacity-100" : "opacity-30"}`}
+            className={`text-lg ${stage >= 3 ? "opacity-100" : "opacity-30"}`}
           >
             💀
           </span>

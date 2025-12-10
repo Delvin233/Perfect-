@@ -192,10 +192,10 @@ export default function EnhancedMainMenu({
           intensity="medium"
         />
 
-        <div className="px-4 py-4 relative z-10 min-h-screen flex flex-col justify-center">
+        <div className="relative z-10 min-h-screen flex flex-col justify-center">
           {/* Enhanced header with glow effect */}
           <div
-            className={`flex items-center justify-between mb-4 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
+            className={`flex items-center justify-between mb-4 px-4 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
           >
             <h1
               className="text-3xl sm:text-4xl font-bold relative"
@@ -226,7 +226,7 @@ export default function EnhancedMainMenu({
           </div>
 
           {/* Main content with enhanced layout - MUCH more spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 flex-1 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 flex-1 items-center px-4">
             {/* Enhanced menu items - left side */}
             <div className="lg:col-span-4 space-y-2">
               <h2
