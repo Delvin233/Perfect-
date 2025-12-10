@@ -151,7 +151,10 @@ export default function EnhancedMainMenu({
           effect={screenEffect}
           onComplete={() => setScreenEffect(null)}
         />
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+        >
           <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden">
             {/* Animated border */}
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 via-orange-500/20 to-red-500/20 animate-pulse" />
