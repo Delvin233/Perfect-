@@ -127,6 +127,21 @@ export default function EnhancedMainMenu({
     enabled: !isTransitioning && !showDisconnectConfirm,
   });
 
+  // ESC key handler for disconnect modal
+  useEffect(() => {
+    if (!showDisconnectConfirm) return;
+
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setShowDisconnectConfirm(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, [showDisconnectConfirm]);
+
   // Disconnect confirmation modal with enhanced animations
   if (showDisconnectConfirm) {
     return (
@@ -136,7 +151,7 @@ export default function EnhancedMainMenu({
           effect={screenEffect}
           onComplete={() => setScreenEffect(null)}
         />
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
           <div className="card max-w-md mx-4 p-6 space-y-4 enhanced-fade-in relative overflow-hidden">
             {/* Animated border */}
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/20 via-orange-500/20 to-red-500/20 animate-pulse" />
