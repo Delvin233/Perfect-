@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import {
+  useAppKit,
+  useAppKitAccount,
+  useDisconnect,
+} from "@reown/appkit/react";
 import { LuClock1 } from "react-icons/lu";
 import { SiProgress } from "react-icons/si";
 import { FaRankingStar } from "react-icons/fa6";
@@ -28,7 +32,8 @@ interface ScoreData {
 
 export default function Home() {
   const { address, isConnected } = useAppKitAccount();
-  const { open, disconnect } = useAppKit();
+  const { open } = useAppKit();
+  const { disconnect } = useDisconnect();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
@@ -149,7 +154,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left mb-6 sm:mb-8">
             <div className="card p-4 sm:p-6">
               <LuClock1 className="text-3xl sm:text-4xl mb-2 text-red-500" />
-              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">Precision Timing</h3>
+              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">
+                Precision Timing
+              </h3>
               <p className="text-xs sm:text-sm text-gray-400">
                 Test your reflexes with millisecond accuracy
               </p>
@@ -157,7 +164,9 @@ export default function Home() {
 
             <div className="card p-4 sm:p-6">
               <SiProgress className="text-3xl sm:text-4xl mb-2 text-cyan-500" />
-              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">Progressive Difficulty</h3>
+              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">
+                Progressive Difficulty
+              </h3>
               <p className="text-xs sm:text-sm text-gray-400">
                 Each stage gets harder with tighter timing windows
               </p>
@@ -165,7 +174,9 @@ export default function Home() {
 
             <div className="card p-4 sm:p-6">
               <FaRankingStar className="text-3xl sm:text-4xl mb-2 text-orange-500" />
-              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">Global Leaderboard</h3>
+              <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">
+                Global Leaderboard
+              </h3>
               <p className="text-xs sm:text-sm text-gray-400">
                 Compete with players worldwide for the top spot
               </p>
@@ -181,7 +192,9 @@ export default function Home() {
               <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30">
                 <span className="text-xl sm:text-2xl flex-shrink-0">⚡</span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-cyan-400 text-sm sm:text-base">Stage 1: Learning</p>
+                  <p className="font-bold text-cyan-400 text-sm sm:text-base">
+                    Stage 1: Learning
+                  </p>
                   <p className="text-[10px] sm:text-xs text-gray-400">
                     Levels 1-10 • Target: 5.000s • Tolerance: 50ms → 10ms
                   </p>
