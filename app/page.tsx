@@ -107,6 +107,18 @@ export default function Home() {
     // The wallet connection will be handled by the AttractMode component
   };
 
+  // Fallback to attract mode if user doesn't connect
+  useEffect(() => {
+    if (!isConnected && !showAttractMode && !showLoading) {
+      // If user is not connected and not on attract mode, return to attract mode after delay
+      const timeoutId = setTimeout(() => {
+        setShowAttractMode(true);
+      }, 5000); // 5 seconds timeout
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isConnected, showAttractMode, showLoading]);
+
   // Show loading screen when connecting
   if (showLoading && !loading) {
     return <EnhancedLoadingScreen onComplete={handleLoadingComplete} />;
