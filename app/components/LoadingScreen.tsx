@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FaLightbulb } from "react-icons/fa";
 import { getRandomTip } from "@/lib/menuTips";
 
 interface LoadingScreenProps {
@@ -69,7 +70,10 @@ export default function LoadingScreen({
         <div className="flex justify-center">
           <div
             className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin"
-            style={{ borderColor: "var(--color-primary)", borderTopColor: "transparent" }}
+            style={{
+              borderColor: "var(--color-primary)",
+              borderTopColor: "transparent",
+            }}
           />
         </div>
 
@@ -87,7 +91,10 @@ export default function LoadingScreen({
               }}
             />
           </div>
-          <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>
+          <p
+            className="text-sm"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
             Loading... {Math.floor(progress)}%
           </p>
         </div>
@@ -102,7 +109,7 @@ export default function LoadingScreen({
             className="text-sm sm:text-base animate-fade-in"
             style={{ color: "var(--color-text-secondary)" }}
           >
-            💡 {currentTip.tip}
+            <FaLightbulb className="inline mr-2" /> {currentTip.tip}
           </p>
         </div>
       </div>

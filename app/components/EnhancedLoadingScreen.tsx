@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FaLightbulb } from "react-icons/fa";
 import { getRandomTip } from "@/lib/menuTips";
 
 interface EnhancedLoadingScreenProps {
@@ -220,7 +221,7 @@ export default function EnhancedLoadingScreen({
             className="text-sm sm:text-base animate-fade-in relative z-10 font-medium"
             style={{ color: "var(--color-text-secondary)" }}
           >
-            💡 {currentTip.tip}
+            <FaLightbulb className="inline mr-2" /> {currentTip.tip}
           </p>
         </div>
       </div>
