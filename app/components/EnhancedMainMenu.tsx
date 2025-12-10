@@ -205,10 +205,10 @@ export default function EnhancedMainMenu({
           intensity="medium"
         />
 
-        <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="container mx-auto px-4 py-4 relative z-10 min-h-screen flex flex-col justify-center">
           {/* Enhanced header with glow effect */}
           <div
-            className={`flex items-center justify-between mb-8 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
+            className={`flex items-center justify-between mb-4 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
           >
             <h1
               className="text-3xl sm:text-4xl font-bold relative"
@@ -239,17 +239,17 @@ export default function EnhancedMainMenu({
           </div>
 
           {/* Main content with enhanced layout - more spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 flex-1 items-center">
             {/* Enhanced menu items - more compact */}
-            <div className="lg:col-span-2 space-y-3">
+            <div className="lg:col-span-2 space-y-2">
               <h2
-                className={`text-xl font-bold mb-4 ${isLoaded ? "enhanced-fade-in stagger-1" : "opacity-0"}`}
+                className={`text-lg font-bold mb-3 ${isLoaded ? "enhanced-fade-in stagger-1" : "opacity-0"}`}
                 style={{ color: "var(--color-text-secondary)" }}
               >
                 MAIN MENU
               </h2>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {menuItems.map((item, index) => (
                   <button
                     key={item.id}
@@ -340,21 +340,23 @@ export default function EnhancedMainMenu({
                 </p>
               </div>
 
-              {/* Enhanced keyboard controls */}
+              {/* Enhanced keyboard controls - more compact */}
               <div
-                className={`text-center text-xs space-x-4 ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
+                className={`text-center text-xs space-x-2 mt-3 ${isLoaded ? "enhanced-fade-in stagger-6" : "opacity-0"}`}
                 style={{ color: "var(--color-text-secondary)" }}
               >
-                <span className="px-2 py-1 bg-white/5 rounded">
+                <span className="px-1.5 py-0.5 bg-white/5 rounded text-xs">
                   [ENTER] Select
                 </span>
-                <span className="px-2 py-1 bg-white/5 rounded">
+                <span className="px-1.5 py-0.5 bg-white/5 rounded text-xs">
                   [↑↓] Navigate
                 </span>
-                <span className="px-2 py-1 bg-white/5 rounded">
-                  [1-6] Quick Select
+                <span className="px-1.5 py-0.5 bg-white/5 rounded text-xs">
+                  [1-6] Quick
                 </span>
-                <span className="px-2 py-1 bg-white/5 rounded">[ESC] Back</span>
+                <span className="px-1.5 py-0.5 bg-white/5 rounded text-xs">
+                  [ESC] Back
+                </span>
               </div>
             </div>
 
