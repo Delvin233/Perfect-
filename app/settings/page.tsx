@@ -261,9 +261,6 @@ export default function SettingsPage() {
               </p>
               <p>Built for Base and WalletConnect hackathons</p>
               <p>One mistake = Game Over. No continues.</p>
-              <p className="text-xs mt-4 opacity-70">
-                Phase 2 Complete: Enhanced animations and arcade navigation
-              </p>
             </div>
           </div>
         </div>
