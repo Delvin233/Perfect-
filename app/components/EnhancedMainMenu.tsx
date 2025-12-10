@@ -43,7 +43,7 @@ export default function EnhancedMainMenu({
   const [screenEffect, setScreenEffect] = useState<
     "shake" | "flash" | "confetti" | null
   >(null);
-  const { toasts, removeToast, success } = useToast();
+  const { toasts, removeToast } = useToast();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -105,7 +105,7 @@ export default function EnhancedMainMenu({
   };
 
   const handleMarketplaceClick = () => {
-    success("🛒 Marketplace coming soon!");
+    // Do nothing - "COMING SOON" badge is already visible
   };
 
   const handleDisconnect = () => {
