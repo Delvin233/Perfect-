@@ -344,9 +344,9 @@ export default function EnhancedMainMenu({
               </div>
             </div>
 
-            {/* Enhanced stats panel - right side with huge gap */}
+            {/* Enhanced stats panel - smaller width to match menu */}
             <div
-              className={`lg:col-span-4 lg:col-start-9 ${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
+              className={`lg:col-span-3 lg:col-start-10 ${isLoaded ? "enhanced-fade-in stagger-3" : "opacity-0"}`}
             >
               <StatsPanel stats={userStats} />
             </div>
