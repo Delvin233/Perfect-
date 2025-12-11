@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
+import { useBatchAddressDisplay } from "@/hooks/useBatchAddressDisplay";
 import BackButton from "../components/BackButton";
 
 interface Score {
@@ -20,6 +21,14 @@ export default function LeaderboardPage() {
   const { address } = useAppKitAccount();
   const [scores, setScores] = useState<Score[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Extract addresses for batch name resolution
+  const addresses = scores.map((score) => score.address);
+  const {
+    displayNames,
+    sources,
+    isLoading: namesLoading,
+  } = useBatchAddressDisplay(addresses);
 
   useEffect(() => {
     fetchScores();
@@ -58,6 +67,13 @@ export default function LeaderboardPage() {
             Loading scores...
           </p>
         </div>
+      ) : namesLoading && scores.length > 0 ? (
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-[var(--color-primary)] border-t-transparent"></div>
+          <p className="mt-4 text-[var(--color-text-secondary)]">
+            Resolving player names...
+          </p>
+        </div>
       ) : scores.length === 0 ? (
         <div className="card text-center py-12">
           <p className="text-[var(--color-text-secondary)] mb-4">
@@ -90,9 +106,25 @@ export default function LeaderboardPage() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1 sm:gap-2 mb-1">
-                      <p className="font-bold truncate text-sm sm:text-base">
-                        {score.address.slice(0, 6)}...{score.address.slice(-4)}
+                      <p
+                        className="font-bold truncate text-sm sm:text-base"
+                        title={score.address} // Show full address on hover
+                      >
+                        {displayNames.get(score.address.toLowerCase()) ||
+                          `${score.address.slice(0, 6)}...${score.address.slice(-4)}`}
                       </p>
+                      {/* Show name source badge for ENS/Base names */}
+                      {sources.get(score.address.toLowerCase()) === "ens" && (
+                        <span className="text-[10px] px-1 py-0.5 bg-blue-500/20 text-blue-400 rounded flex-shrink-0">
+                          ENS
+                        </span>
+                      )}
+                      {sources.get(score.address.toLowerCase()) ===
+                        "basename" && (
+                        <span className="text-[10px] px-1 py-0.5 bg-purple-500/20 text-purple-400 rounded flex-shrink-0">
+                          BASE
+                        </span>
+                      )}
                       {isCurrentUser && (
                         <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded flex-shrink-0">
                           You
