@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useKeyboardNav } from "@/app/hooks/useKeyboardNav";
+import { useDisplayName } from "@/hooks/useDisplayName";
 import StatsPanel from "./StatsPanel";
 import MenuBackground from "./MenuBackground";
+import NameBadge from "./NameBadge";
 
 interface UserStats {
   address: string;
@@ -34,6 +36,13 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
   const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
+
+  // Resolve display name for current user
+  const {
+    displayName,
+    ensType,
+    isLoading: nameLoading,
+  } = useDisplayName(userStats?.address);
 
   const menuItems: MenuItem[] = [
     {
@@ -159,11 +168,21 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
             PERFECT?
           </h1>
           {userStats && (
-            <div
-              className="text-sm"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              {userStats.address.slice(0, 6)}...{userStats.address.slice(-4)}
+            <div className="flex items-center gap-2 justify-center">
+              {nameLoading ? (
+                <div className="text-sm text-gray-500">Resolving name...</div>
+              ) : (
+                <>
+                  <div
+                    className="text-sm"
+                    style={{ color: "var(--color-text-secondary)" }}
+                    title={userStats.address}
+                  >
+                    {displayName}
+                  </div>
+                  <NameBadge source={ensType || "wallet"} />
+                </>
+              )}
             </div>
           )}
         </div>

@@ -5,6 +5,7 @@ import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
 import { useBatchAddressDisplay } from "@/hooks/useBatchAddressDisplay";
 import BackButton from "../components/BackButton";
+import NameBadge from "../components/NameBadge";
 
 interface Score {
   address: string;
@@ -113,18 +114,12 @@ export default function LeaderboardPage() {
                         {displayNames.get(score.address.toLowerCase()) ||
                           `${score.address.slice(0, 6)}...${score.address.slice(-4)}`}
                       </p>
-                      {/* Show name source badge for ENS/Base names */}
-                      {sources.get(score.address.toLowerCase()) === "ens" && (
-                        <span className="text-[10px] px-1 py-0.5 bg-blue-500/20 text-blue-400 rounded flex-shrink-0">
-                          ENS
-                        </span>
-                      )}
-                      {sources.get(score.address.toLowerCase()) ===
-                        "basename" && (
-                        <span className="text-[10px] px-1 py-0.5 bg-purple-500/20 text-purple-400 rounded flex-shrink-0">
-                          BASE
-                        </span>
-                      )}
+                      {/* Show name source badge using reusable component */}
+                      <NameBadge
+                        source={
+                          sources.get(score.address.toLowerCase()) || "wallet"
+                        }
+                      />
                       {isCurrentUser && (
                         <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded flex-shrink-0">
                           You

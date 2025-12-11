@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
+import { useAddressDisplay } from "@/hooks/useAddressDisplay";
+import NameBadge from "@/app/components/NameBadge";
 
 interface PlayerData {
   address: string;
@@ -21,6 +23,13 @@ export default function ProfilePage() {
   const address = params.address as string;
   const [player, setPlayer] = useState<PlayerData | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Resolve display name for the profile address
+  const {
+    displayName,
+    source,
+    isLoading: nameLoading,
+  } = useAddressDisplay(address);
 
   useEffect(() => {
     fetchPlayerData();
@@ -89,9 +98,19 @@ export default function ProfilePage() {
           <h1 className={`text-3xl font-bold mb-2 ${getRankColor(rank.tier)}`}>
             {rank.name}
           </h1>
-          <p className="text-gray-400 font-mono">
-            {player.address.slice(0, 10)}...{player.address.slice(-10)}
-          </p>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            {nameLoading ? (
+              <p className="text-gray-400 text-sm">Resolving name...</p>
+            ) : (
+              <>
+                <p className="text-gray-400 font-mono" title={player.address}>
+                  {displayName}
+                </p>
+                <NameBadge source={source} />
+              </>
+            )}
+          </div>
+          <p className="text-xs text-gray-500 font-mono">{player.address}</p>
         </div>
 
         {/* Main Stats */}
