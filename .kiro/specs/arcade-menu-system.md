@@ -521,7 +521,7 @@ interface StatsPanelProps {
 
 - [x] Attract mode displays on page load (no wallet)
 - [x] Any key/click exits attract mode
-- [ ] Demo mode triggers after 30s idle
+- [x] Demo mode triggers after 30s idle
 - [x] Loading screen shows for 1.5-5s
 - [x] Tips rotate every 3 seconds
 - [x] Main menu displays after loading
@@ -543,8 +543,8 @@ interface StatsPanelProps {
 - [x] Selection animation smooth (0.2s)
 - [x] Transition out smooth (0.3s)
 - [x] No animation jank or stuttering
-- [ ] 60fps maintained throughout
-- [ ] Parallax works on mouse move
+- [x] 60fps maintained throughout
+- [x] Parallax works on mouse move
 
 ### Sound Testing
 
@@ -713,4 +713,4 @@ Before implementation begins:
 
 **Status**: Ready for Review
 **Created**: 2025-12-08
-**Last Updated**: 2025-12-08
+**Last Updated**: 2025-12-11
