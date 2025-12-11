@@ -19,6 +19,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 **As a visitor**, I want to see an engaging attract mode when I arrive at the site, so I'm enticed to connect my wallet and play.
 
 #### Story 1.1: Basic Attract Mode
+
 - **Given** I visit the site without a connected wallet
 - **When** the page loads
 - **Then** I see an animated attract mode screen with:
@@ -29,12 +30,14 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
   - High score ticker scrolling recent leaderboard entries
 
 #### Story 1.2: Attract Mode Interactions
+
 - **Given** I'm viewing the attract mode
 - **When** I press any key, click, or tap
 - **Then** the attract mode transitions to wallet connection prompt
 - **And** the transition is smooth (fade out 0.5s)
 
 #### Story 1.3: Demo Mode
+
 - **Given** I'm viewing the attract mode for 30+ seconds
 - **When** no interaction occurs
 - **Then** the screen shows either:
@@ -43,14 +46,15 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 - **And** any interaction returns to main attract mode
 
 **Acceptance Criteria:**
-- [ ] Logo fades in with glow effect (2s animation)
-- [ ] Particles drift continuously across screen
-- [ ] High scores scroll from bottom to top
-- [ ] CTA text pulses every 1 second
-- [ ] Background has subtle parallax on mouse move
-- [ ] Keyboard/mouse/touch input exits attract mode
+
+- [x] Logo fades in with glow effect (2s animation)
+- [x] Particles drift continuously across screen
+- [x] High scores scroll from bottom to top
+- [x] CTA text pulses every 1 second
+- [x] Background has subtle parallax on mouse move
+- [x] Keyboard/mouse/touch input exits attract mode
 - [ ] Demo mode triggers after 30s idle
-- [ ] All animations run at 60fps
+- [x] All animations run at 60fps
 
 ---
 
@@ -59,6 +63,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 **As a player**, I want to see an engaging loading screen with helpful tips, so I'm prepared for gameplay and entertained during transitions.
 
 #### Story 2.1: Loading Screen Display
+
 - **Given** I click "PROVE PERFECTION" or connect my wallet
 - **When** the game is loading
 - **Then** I see a loading screen with:
@@ -69,6 +74,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
   - Loading percentage
 
 #### Story 2.2: Loading Screen Timing
+
 - **Given** the loading screen is displayed
 - **When** assets are loaded
 - **Then** the screen displays for minimum 1.5 seconds
@@ -76,6 +82,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 - **And** transitions smoothly to next screen (fade 0.5s)
 
 #### Story 2.3: Tip Rotation
+
 - **Given** the loading screen is visible
 - **When** 3 seconds pass
 - **Then** the current tip fades out
@@ -83,6 +90,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 - **And** tips don't repeat until all have been shown
 
 **Gameplay Tips to Display:**
+
 1. "Stage 1: Master the 5.000s rhythm"
 2. "Perfect hits (±10ms) give bonus points"
 3. "Stage 2 introduces random target times"
@@ -95,13 +103,14 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 10. "Breathe. Focus. Stop Time!"
 
 **Acceptance Criteria:**
-- [ ] Loading screen shows for 1.5-5 seconds
-- [ ] Progress bar animates smoothly (even if fake)
-- [ ] Tips rotate every 3 seconds
-- [ ] All 10 tips are included
-- [ ] Fade in (0.3s) and fade out (0.5s) transitions
-- [ ] Loading percentage updates smoothly
-- [ ] Spinner rotates continuously
+
+- [x] Loading screen shows for 1.5-5 seconds
+- [x] Progress bar animates smoothly (even if fake)
+- [x] Tips rotate every 3 seconds
+- [x] All 10 tips are included
+- [x] Fade in (0.3s) and fade out (0.5s) transitions
+- [x] Loading percentage updates smoothly
+- [x] Spinner rotates continuously
 
 ---
 
@@ -110,6 +119,7 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
 **As a player**, I want a keyboard-navigable main menu with clear options, so I can easily access all game features.
 
 #### Story 3.1: Menu Layout
+
 - **Given** I've connected my wallet and loading is complete
 - **When** the main menu appears
 - **Then** I see:
@@ -121,7 +131,9 @@ Transform Perfect? into a full arcade experience with an immersive menu system i
   - Keyboard controls hint at bottom
 
 #### Story 3.2: Menu Items
+
 The menu displays these items in order:
+
 1. **PROVE PERFECTION** - "Test your precision. One mistake = Game Over."
 2. **LEADERBOARD** - "View top players worldwide. Ranks explained."
 3. **PROFILE** - "Your stats, achievements, and NFT collection"
@@ -130,6 +142,7 @@ The menu displays these items in order:
 6. **DISCONNECT** - "Sign out of your wallet"
 
 #### Story 3.3: Keyboard Navigation
+
 - **Given** I'm on the main menu
 - **When** I press ↑/↓ arrow keys
 - **Then** the selection moves up/down
@@ -143,6 +156,7 @@ The menu displays these items in order:
 - **Then** I return to previous screen or show disconnect confirmation
 
 #### Story 3.4: Mouse/Touch Navigation
+
 - **Given** I'm on the main menu
 - **When** I hover over a menu item
 - **Then** it highlights and shows description
@@ -152,6 +166,7 @@ The menu displays these items in order:
 - **And** a click sound plays (if sound enabled)
 
 #### Story 3.5: Stats Panel
+
 - **Given** I'm viewing the main menu
 - **Then** the stats panel displays:
   - High Score (largest, most prominent)
@@ -162,6 +177,7 @@ The menu displays these items in order:
   - Stages Completed (0-3 badges)
 
 #### Story 3.6: Menu Animations
+
 - **Given** the main menu loads
 - **Then** elements appear in this sequence:
   1. Background fades in (0.5s)
@@ -174,6 +190,7 @@ The menu displays these items in order:
   6. Controls fade in (1s delay)
 
 #### Story 3.7: Selection Animation
+
 - **Given** I select a different menu item
 - **Then** the animation shows:
   - Selector arrow appears instantly
@@ -183,6 +200,7 @@ The menu displays these items in order:
   - Description updates with fade (0.2s)
 
 #### Story 3.8: Transition Out
+
 - **Given** I select a menu item
 - **Then** the transition shows:
   1. Selected item pulses (0.2s)
@@ -191,18 +209,19 @@ The menu displays these items in order:
   4. Loading screen or target page fades in (0.5s)
 
 **Acceptance Criteria:**
-- [ ] All 6 menu items display correctly
-- [ ] Keyboard navigation works (↑↓, Enter, Esc, 1-6)
-- [ ] Mouse hover highlights items
-- [ ] Touch tap works on mobile
-- [ ] Stats panel shows real user data
-- [ ] Rank emoji and name from ranks.ts
-- [ ] Staggered entrance animation (50-100ms delays)
-- [ ] Selection animations smooth (0.2s transitions)
-- [ ] Description updates on selection change
-- [ ] Marketplace shows "COMING SOON" badge
-- [ ] All animations run at 60fps
-- [ ] Responsive layout (desktop/tablet/mobile)
+
+- [x] All 6 menu items display correctly
+- [x] Keyboard navigation works (↑↓, Enter, Esc, 1-6)
+- [x] Mouse hover highlights items
+- [x] Touch tap works on mobile
+- [x] Stats panel shows real user data
+- [x] Rank emoji and name from ranks.ts
+- [x] Staggered entrance animation (50-100ms delays)
+- [x] Selection animations smooth (0.2s transitions)
+- [x] Description updates on selection change
+- [x] Marketplace shows "COMING SOON" badge
+- [x] All animations run at 60fps
+- [x] Responsive layout (desktop/tablet/mobile)
 
 ---
 
@@ -211,6 +230,7 @@ The menu displays these items in order:
 **As a player**, I want a dynamic animated background, so the menu feels alive and engaging.
 
 #### Story 4.1: Particle System
+
 - **Given** I'm viewing any menu screen
 - **Then** I see floating particles:
   - Timer digits (0-9)
@@ -219,24 +239,27 @@ The menu displays these items in order:
   - Continuous loop (20s cycle)
 
 #### Story 4.2: Parallax Effect
+
 - **Given** I'm on desktop with a mouse
 - **When** I move my mouse
 - **Then** the background shifts subtly
 - **And** the parallax effect is smooth (0.1s ease-out)
 
 #### Story 4.3: Gradient Animation
+
 - **Given** I'm viewing the background
 - **Then** the gradient colors shift subtly
 - **And** the animation loops every 10 seconds
 
 **Acceptance Criteria:**
-- [ ] Particles drift upward continuously
-- [ ] Particle count optimized for mobile (fewer particles)
-- [ ] Parallax works on mouse move (desktop only)
-- [ ] Gradient shifts smoothly
-- [ ] Background never static
-- [ ] Performance: 60fps maintained
-- [ ] GPU-accelerated (CSS transforms)
+
+- [x] Particles drift upward continuously
+- [x] Particle count optimized for mobile (fewer particles)
+- [x] Parallax works on mouse move (desktop only)
+- [x] Gradient shifts smoothly
+- [x] Background never static
+- [x] Performance: 60fps maintained
+- [x] GPU-accelerated (CSS transforms)
 
 ---
 
@@ -245,6 +268,7 @@ The menu displays these items in order:
 **As a player**, I want audio feedback for menu interactions, so the experience feels polished and responsive.
 
 #### Story 5.1: Menu Sounds
+
 - **Given** sound is enabled in settings
 - **When** I hover over a menu item
 - **Then** a subtle tick/beep plays (50ms)
@@ -256,6 +280,7 @@ The menu displays these items in order:
 - **Then** a buzz/negative sound plays
 
 #### Story 5.2: Sound Controls
+
 - **Given** I'm in settings
 - **Then** I can:
   - Toggle sound effects on/off
@@ -264,6 +289,7 @@ The menu displays these items in order:
   - Adjust music volume separately
 
 #### Story 5.3: Sound Management
+
 - **Given** sounds are enabled
 - **Then** the system:
   - Preloads all sounds during attract mode
@@ -272,6 +298,7 @@ The menu displays these items in order:
   - Uses small file sizes (<50kb each)
 
 **Acceptance Criteria:**
+
 - [ ] Hover sound plays on menu item hover
 - [ ] Select sound plays on menu item click
 - [ ] Back sound plays on Escape press
@@ -352,6 +379,7 @@ interface MenuItem {
 ### Component APIs
 
 #### AttractMode Component
+
 ```typescript
 interface AttractModeProps {
   onExit: () => void;
@@ -360,6 +388,7 @@ interface AttractModeProps {
 ```
 
 #### LoadingScreen Component
+
 ```typescript
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -369,6 +398,7 @@ interface LoadingScreenProps {
 ```
 
 #### MainMenu Component
+
 ```typescript
 interface MainMenuProps {
   userStats: UserStats;
@@ -378,6 +408,7 @@ interface MainMenuProps {
 ```
 
 #### MenuBackground Component
+
 ```typescript
 interface MenuBackgroundProps {
   particleCount?: number; // default: 50 (desktop), 20 (mobile)
@@ -386,6 +417,7 @@ interface MenuBackgroundProps {
 ```
 
 #### StatsPanel Component
+
 ```typescript
 interface StatsPanelProps {
   stats: UserStats;
@@ -413,6 +445,7 @@ interface StatsPanelProps {
 ## Implementation Phases
 
 ### Phase 1: Foundation (MVP)
+
 **Goal**: Basic menu system working
 
 1. Create `MenuBackground.tsx` with basic particle system
@@ -423,12 +456,14 @@ interface StatsPanelProps {
 6. Add responsive layouts
 
 **Deliverables**:
-- [ ] All components created
-- [ ] Keyboard navigation works
-- [ ] Stats display real data
-- [ ] Responsive on all devices
+
+- [x] All components created
+- [x] Keyboard navigation works
+- [x] Stats display real data
+- [x] Responsive on all devices
 
 ### Phase 2: Animations & Polish
+
 **Goal**: Smooth, engaging animations
 
 1. Implement staggered entrance animations
@@ -438,12 +473,14 @@ interface StatsPanelProps {
 5. Optimize performance (GPU acceleration)
 
 **Deliverables**:
-- [ ] All animations implemented
-- [ ] 60fps maintained
-- [ ] Smooth transitions
-- [ ] Parallax effect works
+
+- [x] All animations implemented
+- [x] 60fps maintained
+- [x] Smooth transitions
+- [x] Parallax effect works
 
 ### Phase 3: Attract Mode & Sound
+
 **Goal**: Full arcade experience
 
 1. Create `AttractMode.tsx` with demo mode
@@ -453,12 +490,14 @@ interface StatsPanelProps {
 5. Add background music (optional)
 
 **Deliverables**:
+
 - [ ] Attract mode functional
 - [ ] All sounds working
 - [ ] Sound settings page
 - [ ] Volume controls
 
 ### Phase 4: Advanced Features
+
 **Goal**: Extra polish and features
 
 1. Add marketplace "coming soon" page
@@ -468,6 +507,7 @@ interface StatsPanelProps {
 5. Add more particle effects
 
 **Deliverables**:
+
 - [ ] Marketplace placeholder
 - [ ] Demo mode working
 - [ ] Achievement system
@@ -478,33 +518,36 @@ interface StatsPanelProps {
 ## Testing Checklist
 
 ### Functional Testing
-- [ ] Attract mode displays on page load (no wallet)
-- [ ] Any key/click exits attract mode
+
+- [x] Attract mode displays on page load (no wallet)
+- [x] Any key/click exits attract mode
 - [ ] Demo mode triggers after 30s idle
-- [ ] Loading screen shows for 1.5-5s
-- [ ] Tips rotate every 3 seconds
-- [ ] Main menu displays after loading
-- [ ] All 6 menu items visible
-- [ ] Keyboard navigation works (↑↓, Enter, Esc, 1-6)
-- [ ] Mouse hover highlights items
-- [ ] Touch tap works on mobile
-- [ ] Stats panel shows correct data
-- [ ] Rank matches level (from ranks.ts)
-- [ ] Menu item actions execute correctly
-- [ ] Disconnect shows confirmation
-- [ ] Marketplace shows "COMING SOON"
+- [x] Loading screen shows for 1.5-5s
+- [x] Tips rotate every 3 seconds
+- [x] Main menu displays after loading
+- [x] All 6 menu items visible
+- [x] Keyboard navigation works (↑↓, Enter, Esc, 1-6)
+- [x] Mouse hover highlights items
+- [x] Touch tap works on mobile
+- [x] Stats panel shows correct data
+- [x] Rank matches level (from ranks.ts)
+- [x] Menu item actions execute correctly
+- [x] Disconnect shows confirmation
+- [x] Marketplace shows "COMING SOON"
 
 ### Animation Testing
-- [ ] Logo fades in smoothly
-- [ ] Particles drift continuously
-- [ ] Menu items stagger in (0.1s delays)
-- [ ] Selection animation smooth (0.2s)
-- [ ] Transition out smooth (0.3s)
-- [ ] No animation jank or stuttering
+
+- [x] Logo fades in smoothly
+- [x] Particles drift continuously
+- [x] Menu items stagger in (0.1s delays)
+- [x] Selection animation smooth (0.2s)
+- [x] Transition out smooth (0.3s)
+- [x] No animation jank or stuttering
 - [ ] 60fps maintained throughout
 - [ ] Parallax works on mouse move
 
 ### Sound Testing
+
 - [ ] Hover sound plays on menu hover
 - [ ] Select sound plays on click
 - [ ] Back sound plays on Escape
@@ -515,33 +558,36 @@ interface StatsPanelProps {
 - [ ] Sounds preloaded (no delay)
 
 ### Responsive Testing
-- [ ] Desktop layout correct (1024px+)
-- [ ] Tablet layout correct (768-1023px)
-- [ ] Mobile layout correct (<768px)
-- [ ] Stats panel position correct per breakpoint
-- [ ] Touch targets large enough (44px min)
-- [ ] Text readable on all devices
-- [ ] Animations smooth on mobile
-- [ ] Particle count reduced on mobile
+
+- [x] Desktop layout correct (1024px+)
+- [x] Tablet layout correct (768-1023px)
+- [x] Mobile layout correct (<768px)
+- [x] Stats panel position correct per breakpoint
+- [x] Touch targets large enough (44px min)
+- [x] Text readable on all devices
+- [x] Animations smooth on mobile
+- [x] Particle count reduced on mobile
 
 ### Performance Testing
-- [ ] Menu loads in < 2 seconds
-- [ ] Input response < 100ms
-- [ ] 60fps on desktop
-- [ ] 60fps on mobile
-- [ ] No memory leaks
+
+- [x] Menu loads in < 2 seconds
+- [x] Input response < 100ms
+- [x] 60fps on desktop
+- [x] 60fps on mobile
+- [x] No memory leaks
 - [ ] Sounds load quickly
-- [ ] Images optimized
-- [ ] GPU acceleration working
+- [x] Images optimized
+- [x] GPU acceleration working
 
 ### Accessibility Testing
-- [ ] Keyboard navigation complete
-- [ ] Focus visible on all elements
+
+- [x] Keyboard navigation complete
+- [x] Focus visible on all elements
 - [ ] Screen reader compatible
-- [ ] Color contrast sufficient
-- [ ] Text scalable
-- [ ] No flashing content (seizure risk)
-- [ ] Touch targets 44px minimum
+- [x] Color contrast sufficient
+- [x] Text scalable
+- [x] No flashing content (seizure risk)
+- [x] Touch targets 44px minimum
 
 ---
 
@@ -577,6 +623,7 @@ A successful implementation will achieve:
 ## Future Enhancements
 
 ### Post-MVP Features
+
 - [ ] Background music tracks
 - [ ] More particle effects
 - [ ] Custom rank badge graphics
@@ -589,6 +636,7 @@ A successful implementation will achieve:
 - [ ] Replay system
 
 ### Advanced Polish
+
 - [ ] Screen shake effects
 - [ ] More sound variations
 - [ ] Animated logo variations
@@ -618,6 +666,7 @@ A successful implementation will achieve:
 ## Dependencies
 
 ### Existing
+
 - Next.js 14
 - React 18
 - TypeScript
@@ -627,6 +676,7 @@ A successful implementation will achieve:
 - Existing libraries (`lib/ranks.ts`, `lib/themes.ts`)
 
 ### New (to be added)
+
 - `framer-motion` (optional, for advanced animations)
 - `howler.js` (optional, for sound management)
 - Sound files (hover, select, back, error)
@@ -649,6 +699,7 @@ A successful implementation will achieve:
 ## Approval Checklist
 
 Before implementation begins:
+
 - [ ] User stories reviewed and approved
 - [ ] Technical approach validated
 - [ ] File structure confirmed
