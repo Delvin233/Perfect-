@@ -71,6 +71,42 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
     };
   }, [isRunning]);
 
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Prevent default behavior for space and enter
+      if (event.code === "Space" || event.code === "Enter") {
+        event.preventDefault();
+
+        // Don't handle keys during stage completion screen
+        if (showStageComplete) return;
+
+        // Game state logic
+        if (!isRunning && !result) {
+          // Ready to start - start the timer
+          startTimer();
+        } else if (isRunning) {
+          // Timer is running - stop it
+          stopTimer();
+        } else if (result === "perfect" || result === "close") {
+          // Won the level - go to next level
+          nextLevel();
+        } else if (result === "fail") {
+          // Lost - restart game
+          gameOver();
+        }
+      }
+    };
+
+    // Add event listener
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }); // No dependencies - use current state values
+
   const startTimer = () => {
     setTime(0);
     setResult(null);
@@ -486,6 +522,17 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
       {/* Info */}
       <div className="card text-center text-xs sm:text-sm text-[var(--color-text-secondary)] p-2 sm:p-3">
         <p>Tolerance: ±{(tolerance * 1000).toFixed(0)}ms</p>
+        <p className="mt-1 text-[10px] sm:text-xs text-gray-500">
+          💡 Use{" "}
+          <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">
+            SPACE
+          </kbd>{" "}
+          or{" "}
+          <kbd className="px-1 py-0.5 bg-gray-700 rounded text-[10px]">
+            ENTER
+          </kbd>{" "}
+          to play
+        </p>
       </div>
     </div>
   );
