@@ -90,7 +90,7 @@ export default function LeaderboardPage() {
                 key={`${score.address}-${score.rank}`}
                 className={`card flex items-center justify-between cursor-pointer transition-colors active:scale-[0.98] p-3 sm:p-6 ${
                   isCurrentUser ? "border-[var(--color-primary)]" : ""
-                } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""} ${score.stage >= 3 ? "border-purple-500/50 bg-purple-500/5" : ""}`}
+                } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""} ${score.stage && score.stage >= 3 ? "border-purple-500/50 bg-purple-500/5" : ""}`}
               >
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                   <span className="text-xl sm:text-2xl font-bold text-[var(--color-text-secondary)] w-8 sm:w-12 flex-shrink-0">
