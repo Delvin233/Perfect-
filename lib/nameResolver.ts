@@ -11,6 +11,7 @@
 
 import { createPublicClient, http, isAddress } from "viem";
 import { mainnet } from "viem/chains";
+import { circuitBreakers, ExponentialBackoff } from "./circuitBreaker";
 
 // Types
 export interface NameResolution {
@@ -69,7 +70,7 @@ export function truncateAddress(address: string): string {
 }
 
 /**
- * Resolve ENS name for an address with timeout
+ * Resolve ENS name for an address with timeout and circuit breaker
  */
 export async function resolveENS(
   address: string,
@@ -83,18 +84,21 @@ export async function resolveENS(
   }
 
   try {
-    // Create timeout promise
-    const timeoutPromise = new Promise<null>((_, reject) => {
-      setTimeout(() => reject(new Error("ENS resolution timeout")), timeout);
-    });
+    // Use circuit breaker for ENS resolution
+    const ensName = await circuitBreakers.ens.execute(async () => {
+      // Create timeout promise
+      const timeoutPromise = new Promise<null>((_, reject) => {
+        setTimeout(() => reject(new Error("ENS resolution timeout")), timeout);
+      });
 
-    // Race between ENS resolution and timeout
-    const ensName = await Promise.race([
-      mainnetClient.getEnsName({
-        address: validatedAddress as `0x${string}`,
-      }),
-      timeoutPromise,
-    ]);
+      // Race between ENS resolution and timeout
+      return await Promise.race([
+        mainnetClient.getEnsName({
+          address: validatedAddress as `0x${string}`,
+        }),
+        timeoutPromise,
+      ]);
+    });
 
     return ensName;
   } catch (error) {
@@ -104,7 +108,7 @@ export async function resolveENS(
 }
 
 /**
- * Resolve Base name using Alchemy API with timeout
+ * Resolve Base name using Alchemy API with timeout and circuit breaker
  */
 export async function resolveBasename(
   address: string,
@@ -128,34 +132,42 @@ export async function resolveBasename(
   }
 
   try {
-    // Create timeout controller
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    // Use circuit breaker and exponential backoff for Base name resolution
+    const backoff = new ExponentialBackoff(500, 5000, 2);
 
-    const url = `https://base-mainnet.g.alchemy.com/nft/v2/${alchemyKey}/getNFTs?owner=${validatedAddress}&contractAddresses[]=${BASENAME_CONTRACT}`;
+    const basename = await circuitBreakers.basename.execute(async () => {
+      return await backoff.execute(async () => {
+        // Create timeout controller
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        Accept: "application/json",
-      },
+        const url = `https://base-mainnet.g.alchemy.com/nft/v2/${alchemyKey}/getNFTs?owner=${validatedAddress}&contractAddresses[]=${BASENAME_CONTRACT}`;
+
+        const response = await fetch(url, {
+          signal: controller.signal,
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`Alchemy API returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.ownedNfts && data.ownedNfts.length > 0) {
+          const basename = data.ownedNfts[0]?.name || data.ownedNfts[0]?.title;
+          return basename || null;
+        }
+
+        return null;
+      });
     });
 
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      console.warn(`[NameResolver] Alchemy API returned ${response.status}`);
-      return null;
-    }
-
-    const data = await response.json();
-
-    if (data.ownedNfts && data.ownedNfts.length > 0) {
-      const basename = data.ownedNfts[0]?.name || data.ownedNfts[0]?.title;
-      return basename || null;
-    }
-
-    return null;
+    return basename;
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
       console.warn("[NameResolver] Base name resolution timeout");
