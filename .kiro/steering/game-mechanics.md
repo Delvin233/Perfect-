@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Perfect? is a precision timing game built for Base and WalletConnect hackathons. Players stop a timer at exact moments to progress through stages and levels.
+Perfect? is a precision timing game. Players stop a timer at exact moments to progress through stages and levels.
 
 ## Tech Stack
 

@@ -1,6 +1,6 @@
 # Perfect?
 
-A precision timing game built for Base and WalletConnect hackathons. Stop the timer at the exact moment to progress through levels and climb the leaderboard.
+A precision timing game. Stop the timer at the exact moment to progress through levels and climb the leaderboard.
 
 ## Features
 
@@ -86,6 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) to play!
 ### PerfectLeaderboard.sol
 
 Stores player scores on-chain with the following features:
+
 - Submit scores (only updates if new score is higher)
 - Get player scores
 - Get top N players
