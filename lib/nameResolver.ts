@@ -23,6 +23,8 @@ export interface NameResolution {
 export interface ResolveOptions {
   timeout?: number;
   skipCache?: boolean;
+  enableEns?: boolean;
+  enableBasenames?: boolean;
 }
 
 // Constants
@@ -171,6 +173,7 @@ export async function resolveDisplayName(
   address: string,
   options: ResolveOptions = {},
 ): Promise<NameResolution> {
+  const { enableEns = true, enableBasenames = true } = options;
   const validatedAddress = validateAddress(address);
   const timestamp = Date.now();
 
@@ -184,26 +187,30 @@ export async function resolveDisplayName(
   }
 
   try {
-    // Try ENS first (highest priority)
-    const ensName = await resolveENS(validatedAddress, options);
-    if (ensName) {
-      return {
-        address: validatedAddress,
-        name: ensName,
-        source: "ens",
-        timestamp,
-      };
+    // Try ENS first (highest priority) - only if enabled
+    if (enableEns) {
+      const ensName = await resolveENS(validatedAddress, options);
+      if (ensName) {
+        return {
+          address: validatedAddress,
+          name: ensName,
+          source: "ens",
+          timestamp,
+        };
+      }
     }
 
-    // Try Base name second
-    const basename = await resolveBasename(validatedAddress, options);
-    if (basename) {
-      return {
-        address: validatedAddress,
-        name: basename,
-        source: "basename",
-        timestamp,
-      };
+    // Try Base name second - only if enabled
+    if (enableBasenames) {
+      const basename = await resolveBasename(validatedAddress, options);
+      if (basename) {
+        return {
+          address: validatedAddress,
+          name: basename,
+          source: "basename",
+          timestamp,
+        };
+      }
     }
 
     // Fallback to truncated address

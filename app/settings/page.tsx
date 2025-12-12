@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import BackButton from "../components/BackButton";
 import ThemeSelector from "../components/ThemeSelector";
@@ -12,6 +12,53 @@ export default function SettingsPage() {
   const { toasts, removeToast, success, info } = useToast();
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [volume, setVolume] = useState(75);
+
+  // Name Resolution Settings
+  const [nameResolutionEnabled, setNameResolutionEnabled] = useState(true);
+  const [ensEnabled, setEnsEnabled] = useState(true);
+  const [baseNamesEnabled, setBaseNamesEnabled] = useState(true);
+  const [nameDisplayFormat, setNameDisplayFormat] = useState<
+    "name-only" | "name-with-badge" | "name-and-address"
+  >("name-with-badge");
+  const [privacyMode, setPrivacyMode] = useState(false);
+
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedSettings = localStorage.getItem("perfect-name-settings");
+    if (savedSettings) {
+      try {
+        const settings = JSON.parse(savedSettings);
+        setNameResolutionEnabled(settings.nameResolutionEnabled ?? true);
+        setEnsEnabled(settings.ensEnabled ?? true);
+        setBaseNamesEnabled(settings.baseNamesEnabled ?? true);
+        setNameDisplayFormat(settings.nameDisplayFormat ?? "name-with-badge");
+        setPrivacyMode(settings.privacyMode ?? false);
+      } catch (error) {
+        console.warn("Failed to load name resolution settings:", error);
+      }
+    }
+  }, []);
+
+  // Save settings to localStorage when they change
+  const saveNameSettings = (
+    newSettings: Partial<{
+      nameResolutionEnabled: boolean;
+      ensEnabled: boolean;
+      baseNamesEnabled: boolean;
+      nameDisplayFormat: "name-only" | "name-with-badge" | "name-and-address";
+      privacyMode: boolean;
+    }>,
+  ) => {
+    const settings = {
+      nameResolutionEnabled,
+      ensEnabled,
+      baseNamesEnabled,
+      nameDisplayFormat,
+      privacyMode,
+      ...newSettings,
+    };
+    localStorage.setItem("perfect-name-settings", JSON.stringify(settings));
+  };
 
   return (
     <div>
@@ -66,6 +113,185 @@ export default function SettingsPage() {
               Choose your preferred visual theme
             </p>
             <ThemeSelector />
+          </div>
+
+          {/* Name Resolution Settings */}
+          <div className="card p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
+              🏷️ Name Resolution
+            </h2>
+            <p className="text-sm text-[var(--color-text-secondary)] mb-4">
+              Configure how wallet addresses are displayed
+            </p>
+            <div className="space-y-4">
+              {/* Enable Name Resolution */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Enable Name Resolution</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    Show ENS and Base names instead of addresses
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    const newValue = !nameResolutionEnabled;
+                    setNameResolutionEnabled(newValue);
+                    saveNameSettings({ nameResolutionEnabled: newValue });
+                    success(
+                      newValue
+                        ? "Name resolution enabled"
+                        : "Name resolution disabled",
+                    );
+                  }}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    nameResolutionEnabled ? "bg-green-500" : "bg-gray-600"
+                  }`}
+                >
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      nameResolutionEnabled
+                        ? "translate-x-6"
+                        : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* ENS Names */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">ENS Names</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    Resolve Ethereum Name Service names
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    const newValue = !ensEnabled;
+                    setEnsEnabled(newValue);
+                    saveNameSettings({ ensEnabled: newValue });
+                    info(
+                      newValue
+                        ? "ENS resolution enabled"
+                        : "ENS resolution disabled",
+                    );
+                  }}
+                  disabled={!nameResolutionEnabled}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    ensEnabled && nameResolutionEnabled
+                      ? "bg-blue-500"
+                      : "bg-gray-600"
+                  } ${!nameResolutionEnabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      ensEnabled && nameResolutionEnabled
+                        ? "translate-x-6"
+                        : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Base Names */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Base Names</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    Resolve Base network names
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    const newValue = !baseNamesEnabled;
+                    setBaseNamesEnabled(newValue);
+                    saveNameSettings({ baseNamesEnabled: newValue });
+                    info(
+                      newValue ? "Base names enabled" : "Base names disabled",
+                    );
+                  }}
+                  disabled={!nameResolutionEnabled}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    baseNamesEnabled && nameResolutionEnabled
+                      ? "bg-purple-500"
+                      : "bg-gray-600"
+                  } ${!nameResolutionEnabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      baseNamesEnabled && nameResolutionEnabled
+                        ? "translate-x-6"
+                        : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Display Format */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-medium">Display Format</p>
+                </div>
+                <select
+                  value={nameDisplayFormat}
+                  onChange={(e) => {
+                    const newValue = e.target.value as
+                      | "name-only"
+                      | "name-with-badge"
+                      | "name-and-address";
+                    setNameDisplayFormat(newValue);
+                    saveNameSettings({ nameDisplayFormat: newValue });
+                    success(`Display format: ${newValue.replace("-", " ")}`);
+                  }}
+                  disabled={!nameResolutionEnabled}
+                  className={`w-full p-2 rounded bg-gray-700 border border-gray-600 text-white ${
+                    !nameResolutionEnabled
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  <option value="name-only">Name Only</option>
+                  <option value="name-with-badge">
+                    Name with Badge (Recommended)
+                  </option>
+                  <option value="name-and-address">Name and Address</option>
+                </select>
+                <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                  How names are displayed in leaderboards and profiles
+                </p>
+              </div>
+
+              {/* Privacy Mode */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Privacy Mode</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    Hide your resolved name from other players
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    const newValue = !privacyMode;
+                    setPrivacyMode(newValue);
+                    saveNameSettings({ privacyMode: newValue });
+                    info(
+                      newValue
+                        ? "Privacy mode enabled - your name is hidden"
+                        : "Privacy mode disabled - your name is visible",
+                    );
+                  }}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    privacyMode ? "bg-orange-500" : "bg-gray-600"
+                  }`}
+                >
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      privacyMode ? "translate-x-6" : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Audio Settings */}

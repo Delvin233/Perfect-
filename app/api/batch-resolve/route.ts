@@ -7,6 +7,10 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    // Get configuration parameters from request body
+    const ensEnabled = body.ensEnabled !== false;
+    const baseNamesEnabled = body.baseNamesEnabled !== false;
+
     // Validate batch parameters
     const validation = validateApiBatchParams({
       addresses: body.addresses,
@@ -26,10 +30,21 @@ export async function POST(request: NextRequest) {
     const addresses = validation.addresses!;
     const cache = getNameCache();
 
-    // Check cache for existing resolutions
-    const cachedResults = cache.getBatch(addresses);
-    const uncachedAddresses = addresses.filter(
-      (addr) => !cachedResults.has(addr.toLowerCase()),
+    // Create configuration-aware cache keys
+    const configSuffix = `-${ensEnabled}-${baseNamesEnabled}`;
+    const configAwareAddresses = addresses.map(
+      (addr) => `${addr}${configSuffix}`,
+    );
+
+    // Check cache for existing resolutions using config-aware keys
+    const cachedResults = cache.getBatch(configAwareAddresses);
+    const uncachedConfigKeys = configAwareAddresses.filter(
+      (configKey) => !cachedResults.has(configKey.toLowerCase()),
+    );
+
+    // Extract original addresses from uncached config keys
+    const uncachedAddresses = uncachedConfigKeys.map((configKey) =>
+      configKey.replace(configSuffix, ""),
     );
 
     // Resolve uncached addresses
@@ -37,10 +52,18 @@ export async function POST(request: NextRequest) {
     if (uncachedAddresses.length > 0) {
       newResolutions = await batchResolveDisplayNames(uncachedAddresses, {
         timeout: 5000,
+        enableEns: ensEnabled,
+        enableBasenames: baseNamesEnabled,
       });
 
-      // Cache new resolutions
-      cache.setBatch(Array.from(newResolutions.values()));
+      // Cache new resolutions with config-aware keys
+      const configAwareResolutions = Array.from(newResolutions.values()).map(
+        (resolution) => ({
+          ...resolution,
+          address: `${resolution.address}${configSuffix}`, // Use config-aware key for caching
+        }),
+      );
+      cache.setBatch(configAwareResolutions);
     }
 
     // Combine cached and new results
@@ -53,9 +76,10 @@ export async function POST(request: NextRequest) {
       }
     > = {};
 
-    // Add cached results
-    for (const [address, resolution] of cachedResults) {
-      allResults[address] = {
+    // Add cached results (convert config-aware keys back to original addresses)
+    for (const [configKey, resolution] of cachedResults) {
+      const originalAddress = configKey.replace(configSuffix, "");
+      allResults[originalAddress] = {
         name: resolution.name,
         source: resolution.source,
         cached: true,

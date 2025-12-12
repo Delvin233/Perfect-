@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useKeyboardNav } from "@/app/hooks/useKeyboardNav";
-import { useDisplayName } from "@/hooks/useDisplayName";
+import { useNamePreloader } from "@/hooks/useNamePreloader";
 import StatsPanel from "./StatsPanel";
 import MenuBackground from "./MenuBackground";
-import NameBadge from "./NameBadge";
+import { SimpleAddressDisplay } from "./AddressDisplay";
 
 interface UserStats {
   address: string;
@@ -37,12 +37,13 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
 
-  // Resolve display name for current user
-  const {
-    displayName,
-    ensType,
-    isLoading: nameLoading,
-  } = useDisplayName(userStats?.address);
+  // Preload leaderboard names for better performance
+  const { smartPreload } = useNamePreloader();
+
+  useEffect(() => {
+    // Preload leaderboard addresses when main menu loads
+    smartPreload("/");
+  }, [smartPreload]);
 
   const menuItems: MenuItem[] = [
     {
@@ -168,22 +169,12 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
             PERFECT?
           </h1>
           {userStats && (
-            <div className="flex items-center gap-2 justify-center">
-              {nameLoading ? (
-                <div className="text-sm text-gray-500">Resolving name...</div>
-              ) : (
-                <>
-                  <div
-                    className="text-sm"
-                    style={{ color: "var(--color-text-secondary)" }}
-                    title={userStats.address}
-                  >
-                    {displayName}
-                  </div>
-                  <NameBadge source={ensType || "wallet"} />
-                </>
-              )}
-            </div>
+            <SimpleAddressDisplay
+              address={userStats.address}
+              className="text-sm justify-center"
+              showBadge={true}
+              copyable={false}
+            />
           )}
         </div>
 

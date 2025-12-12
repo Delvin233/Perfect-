@@ -8,6 +8,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const addressParam = searchParams.get("address");
 
+    // Get configuration parameters from query
+    const ensEnabled = searchParams.get("ensEnabled") !== "false";
+    const baseNamesEnabled = searchParams.get("baseNamesEnabled") !== "false";
+
     // Validate address parameter
     const validation = validateApiAddressParam(addressParam);
     if (!validation.isValid) {
@@ -24,8 +28,11 @@ export async function GET(request: NextRequest) {
     const address = validation.address!;
     const cache = getNameCache();
 
+    // Create cache key that includes configuration
+    const cacheKey = `${address}-${ensEnabled}-${baseNamesEnabled}`;
+
     // Check cache first
-    const cached = cache.get(address);
+    const cached = cache.get(cacheKey);
     if (cached) {
       return NextResponse.json({
         name: cached.name,
@@ -34,11 +41,18 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Resolve name with timeout
-    const resolution = await resolveDisplayName(address, { timeout: 5000 });
+    // Resolve name with configuration options
+    const resolution = await resolveDisplayName(address, {
+      timeout: 5000,
+      enableEns: ensEnabled,
+      enableBasenames: baseNamesEnabled,
+    });
 
-    // Cache the result
-    cache.set(resolution);
+    // Cache the result with the configuration-specific key
+    cache.set({
+      ...resolution,
+      address: cacheKey, // Use the config-specific key for caching
+    });
 
     return NextResponse.json({
       name: resolution.name,

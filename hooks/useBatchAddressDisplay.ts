@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { getNameConfig } from "@/lib/nameConfig";
 
 export interface UseBatchAddressDisplayReturn {
   displayNames: Map<string, string>;
@@ -16,6 +17,9 @@ export interface UseBatchAddressDisplayReturn {
 export function useBatchAddressDisplay(
   addresses: string[],
 ): UseBatchAddressDisplayReturn {
+  // Get user configuration
+  const config = getNameConfig();
+
   // Memoize unique addresses to avoid unnecessary re-queries
   const uniqueAddresses = useMemo(() => {
     const unique = Array.from(new Set(addresses.filter(Boolean)));
@@ -23,13 +27,13 @@ export function useBatchAddressDisplay(
   }, [addresses]);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["batch-address-display", uniqueAddresses],
+    queryKey: ["batch-address-display", uniqueAddresses, config],
     queryFn: async () => {
       if (uniqueAddresses.length === 0) {
         return { results: {} };
       }
 
-      // Use batch API for efficiency
+      // Use batch API for efficiency with configuration
       const response = await fetch("/api/batch-resolve", {
         method: "POST",
         headers: {
@@ -37,6 +41,9 @@ export function useBatchAddressDisplay(
         },
         body: JSON.stringify({
           addresses: uniqueAddresses,
+          ensEnabled: config.ensEnabled && config.nameResolutionEnabled,
+          baseNamesEnabled:
+            config.baseNamesEnabled && config.nameResolutionEnabled,
         }),
       });
 

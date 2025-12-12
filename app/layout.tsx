@@ -13,6 +13,17 @@ const BottomNavigation = dynamic(
   () => import("@/app/components/BottomNavigation"),
   { ssr: false },
 );
+const NameResolutionMonitor = dynamic(
+  () => import("@/app/components/NameResolutionMonitor"),
+  { ssr: false },
+);
+const NameResolutionDebugPanel = dynamic(
+  () =>
+    import("@/app/components/NameResolutionMonitor").then((mod) => ({
+      default: mod.NameResolutionDebugPanel,
+    })),
+  { ssr: false },
+);
 
 export const metadata: Metadata = {
   title: minikitConfig.miniapp.name,
@@ -65,6 +76,10 @@ export default function RootLayout({
               </div>
             </main>
             <BottomNavigation />
+
+            {/* Development/Debug Components */}
+            <NameResolutionMonitor />
+            <NameResolutionDebugPanel />
           </div>
         </ContextProvider>
         <Analytics />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { isNameResolutionEnabled, getNameConfig } from "@/lib/nameConfig";
 
 export interface UseAddressDisplayReturn {
   displayName: string;
@@ -15,8 +16,12 @@ export interface UseAddressDisplayReturn {
 export function useAddressDisplay(
   address: string | null | undefined,
 ): UseAddressDisplayReturn {
+  // Check if name resolution is enabled
+  const nameResolutionEnabled = isNameResolutionEnabled();
+  const config = getNameConfig();
+
   const { data, isLoading } = useQuery({
-    queryKey: ["address-display", address],
+    queryKey: ["address-display", address, config],
     queryFn: async () => {
       if (!address) {
         return {
@@ -25,7 +30,22 @@ export function useAddressDisplay(
         };
       }
 
-      const response = await fetch(`/api/resolve-name?address=${address}`);
+      // If name resolution is disabled, return truncated address
+      if (!nameResolutionEnabled) {
+        return {
+          name: `${address.slice(0, 6)}...${address.slice(-4)}`,
+          source: "wallet" as const,
+        };
+      }
+
+      // Build query parameters based on user preferences
+      const params = new URLSearchParams({
+        address,
+        ensEnabled: config.ensEnabled.toString(),
+        baseNamesEnabled: config.baseNamesEnabled.toString(),
+      });
+
+      const response = await fetch(`/api/resolve-name?${params}`);
       if (!response.ok) {
         // Fallback to truncated address on API error
         return {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
-import { useBatchAddressDisplay } from "@/hooks/useBatchAddressDisplay";
+import { useProgressiveBatchAddressDisplay } from "@/hooks/useMobileOptimization";
 import BackButton from "../components/BackButton";
 import NameBadge from "../components/NameBadge";
 
@@ -23,13 +23,17 @@ export default function LeaderboardPage() {
   const [scores, setScores] = useState<Score[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Extract addresses for batch name resolution
+  // Extract addresses for batch name resolution with mobile optimization
   const addresses = scores.map((score) => score.address);
   const {
     displayNames,
     sources,
     isLoading: namesLoading,
-  } = useBatchAddressDisplay(addresses);
+    loadMore,
+    hasMore,
+    loadedCount,
+    totalCount,
+  } = useProgressiveBatchAddressDisplay(addresses);
 
   useEffect(() => {
     fetchScores();
@@ -155,7 +159,23 @@ export default function LeaderboardPage() {
       )}
 
       {!loading && scores.length > 0 && (
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-y-4">
+          {hasMore && (
+            <div className="text-center">
+              <button
+                onClick={loadMore}
+                className="btn btn-secondary"
+                disabled={namesLoading}
+              >
+                {namesLoading
+                  ? "Loading names..."
+                  : `Load More Names (${loadedCount}/${totalCount})`}
+              </button>
+              <p className="text-xs text-gray-500 mt-2">
+                Loading names progressively for better performance
+              </p>
+            </div>
+          )}
           <button onClick={fetchScores} className="btn btn-secondary">
             🔄 Refresh
           </button>
