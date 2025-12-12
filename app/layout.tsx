@@ -10,6 +10,11 @@ const ConditionalHeader = dynamic(
   { ssr: false },
 );
 
+const FloatingAppKitButton = dynamic(
+  () => import("@/app/components/FloatingAppKitButton"),
+  { ssr: false },
+);
+
 const NameResolutionMonitor = dynamic(
   () => import("@/app/components/NameResolutionMonitor"),
   { ssr: false },
@@ -73,6 +78,7 @@ export default function RootLayout({
         <ContextProvider>
           <div className="min-h-screen flex flex-col">
             <ConditionalHeader />
+            <FloatingAppKitButton />
             <main className="flex-1">
               <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
                 {children}
