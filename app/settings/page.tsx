@@ -167,7 +167,7 @@ export default function SettingsPage() {
             >
               {THEMES.map((theme) => (
                 <option key={theme.id} value={theme.id}>
-                  {theme.name} - {theme.description}
+                  {theme.name}
                 </option>
               ))}
             </select>
