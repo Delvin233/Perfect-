@@ -1,6 +1,6 @@
 "use client";
 
 export default function ConditionalHeader() {
-  // Hide header on all pages for full arcade experience
+  // Always hide header - use AppKit button on menu screen for login
   return null;
 }

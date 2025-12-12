@@ -1,8 +1,10 @@
-# Perfect? 🎯
+# Perfect?
 
 A precision timing arcade game built for Base and Celo networks. Stop the timer at the exact moment to progress through increasingly difficult stages and climb the global leaderboard.
 
-## 🎮 Game Features
+**LIVE ON MAINNET**: Deployed and verified on Base and Celo networks with hybrid blockchain + database leaderboard system.
+
+## Game Features
 
 ### Core Gameplay
 
@@ -14,19 +16,24 @@ A precision timing arcade game built for Base and Celo networks. Stop the timer 
 
 ### Web3 Integration
 
-- **Multi-Chain Support**: Base and Celo networks
+- **Multi-Chain Support**: Base and Celo mainnets (verified contracts)
+- **Hybrid Leaderboard**: Blockchain primary + database backup system
+- **Manual Blockchain Submission**: Users choose when to submit to blockchain
 - **ENS/Base Names**: Automatic wallet address resolution
-- **On-Chain Leaderboard**: Immutable score tracking
-- **WalletConnect Integration**: Seamless wallet connectivity
+- **Smart Contract Verified**: Deployed and verified on both networks
+- **WalletConnect Integration**: Seamless wallet connectivity via Reown AppKit
 - **Base Mini App**: Optimized for Base ecosystem
 
 ### UI/UX Features
 
 - **8 Visual Themes**: From classic arcade to neon cyberpunk
+- **Arcade Menu System**: Full attract mode, loading screens, main menu
+- **Floating Wallet Button**: Always accessible AppKit button when connected
+- **Keyboard Controls**: Space/Enter keys for game interactions
 - **PC Arcade Experience**: Consistent interface across all devices
 - **Name Resolution**: Display ENS and Base names instead of addresses
 - **Responsive Design**: Optimized for desktop and mobile
-- **Clean Interface**: Removed distracting animations for focused gameplay
+- **Clean Interface**: Focused gameplay without header distractions
 
 ## 🛠 Tech Stack
 
@@ -84,8 +91,9 @@ NEXT_PUBLIC_ALCHEMY_API_KEY="your_alchemy_key"  # For client-side WebSocket
 # Optional: OnchainKit for Base features (get from https://portal.cdp.coinbase.com/)
 NEXT_PUBLIC_ONCHAINKIT_API_KEY="your_key_here"
 
-# Optional: Smart contract integration (after deployment)
-NEXT_PUBLIC_LEADERBOARD_CONTRACT="0x..."
+# Smart Contract Addresses (Mainnet - Already Deployed)
+NEXT_PUBLIC_LEADERBOARD_CONTRACT_BASE="0x7Dc827C3178a4093c6Df6497D2A81850e98f7c44"
+NEXT_PUBLIC_LEADERBOARD_CONTRACT_CELO="0x094785B0213065a68e7b3f7DD64E2f385a894a11"
 
 # Optional: For contract deployment only (KEEP SECRET!)
 PRIVATE_KEY="your_private_key_here"
@@ -96,21 +104,28 @@ NEXT_PUBLIC_URL="http://localhost:3000"
 
 **Minimum Required**: Only `NEXT_PUBLIC_REOWN_PROJECT_ID`, `TURSO_DATABASE_URL`, and `TURSO_AUTH_TOKEN` are required to run the app.
 
-### 3. Deploy Smart Contract
+### 3. Smart Contracts (Already Deployed)
 
-Deploy to Base Sepolia (testnet):
+The smart contracts are already deployed and verified on mainnet:
+
+- **Base Mainnet**: `0x7Dc827C3178a4093c6Df6497D2A81850e98f7c44` ✅ Verified
+- **Celo Mainnet**: `0x094785B0213065a68e7b3f7DD64E2f385a894a11` ✅ Verified
+
+To verify contracts are working:
 
 ```bash
-npx hardhat run scripts/deploy.ts --network baseSepolia
+node scripts/verify-contracts.js
 ```
 
-Deploy to Base Mainnet:
+**Optional**: Deploy your own contracts:
 
 ```bash
-npx hardhat run scripts/deploy.ts --network base
-```
+# Deploy to Base Mainnet
+npx hardhat run scripts/deploy.js --network base
 
-Copy the deployed contract address to your `.env` file as `NEXT_PUBLIC_LEADERBOARD_CONTRACT`.
+# Deploy to Celo Mainnet
+npx hardhat run scripts/deploy.js --network celo
+```
 
 ### 4. Run Development Server
 
@@ -120,7 +135,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to play!
 
-## 🎯 How to Play
+## How to Play
 
 ### Basic Gameplay
 
@@ -145,19 +160,45 @@ Open [http://localhost:3000](http://localhost:3000) to play!
 ### Arcade Rules
 
 - **One Run Only**: No saves, no continues - pure skill test
-- **Global Leaderboard**: Compete with players worldwide
+- **Hybrid Leaderboard**: Database for instant updates + blockchain for verified records
+- **Manual Blockchain Submission**: Choose when to submit your best scores on-chain
+- **Global Competition**: Compete with players worldwide
 - **Name Resolution**: Your ENS/Base name appears on leaderboard
+- **Keyboard Controls**: Space/Enter keys for all game interactions
 
-## Smart Contracts
+## 🔗 Smart Contracts
 
-### PerfectLeaderboard.sol
+### Deployed Contracts
 
-Stores player scores on-chain with the following features:
+| Network          | Address                                      | Status      | Explorer                                                                            |
+| ---------------- | -------------------------------------------- | ----------- | ----------------------------------------------------------------------------------- |
+| **Base Mainnet** | `0x7Dc827C3178a4093c6Df6497D2A81850e98f7c44` | ✅ Verified | [BaseScan](https://basescan.org/address/0x7Dc827C3178a4093c6Df6497D2A81850e98f7c44) |
+| **Celo Mainnet** | `0x094785B0213065a68e7b3f7DD64E2f385a894a11` | ✅ Verified | [CeloScan](https://celoscan.io/address/0x094785B0213065a68e7b3f7DD64E2f385a894a11)  |
 
-- Submit scores (only updates if new score is higher)
-- Get player scores
-- Get top N players
-- Track total players
+### PerfectLeaderboard.sol Features
+
+**Core Functions:**
+
+- ✅ Submit scores (manual blockchain submission)
+- ✅ Get player statistics and rankings
+- ✅ Global leaderboard with top N players
+- ✅ Achievement system (8 achievements via bitfield)
+- ✅ Multi-network support with network-specific fees
+- ✅ Revenue tracking for continue system
+
+**Advanced Features:**
+
+- Gas-optimized packed structs for storage
+- Security: ReentrancyGuard, Pausable, Ownable
+- Comprehensive game statistics
+- Achievement unlocking system
+- Continue purchase system (Web3 twist on arcade continues)
+
+**Hybrid System:**
+
+- **Database**: Instant score saves, always available
+- **Blockchain**: Manual submission for permanent, verified records
+- **Fallback**: Graceful degradation if blockchain unavailable
 
 ## Development
 
@@ -167,42 +208,50 @@ Stores player scores on-chain with the following features:
 Perfect?/
 ├── app/
 │   ├── components/
-│   │   ├── TimerGame.tsx              # Main game logic
+│   │   ├── TimerGame.tsx              # Main game logic with keyboard controls
 │   │   ├── EnhancedMainMenu.tsx       # Arcade-style main menu
 │   │   ├── AttractMode.tsx            # Idle screen animation
-│   │   ├── LoadingScreen.tsx          # Loading with tips
+│   │   ├── EnhancedLoadingScreen.tsx  # Loading with gameplay tips
+│   │   ├── FloatingAppKitButton.tsx   # Always-visible wallet button
+│   │   ├── ConditionalHeader.tsx      # Hidden header (arcade experience)
 │   │   ├── AddressDisplay.tsx         # ENS/Base name resolution
 │   │   └── ThemeSelector.tsx          # Visual theme selection
 │   ├── config/
 │   │   └── wagmi.ts                   # Multi-chain AppKit config
 │   ├── api/
-│   │   ├── scores/route.ts            # Leaderboard API
+│   │   ├── scores/route.ts            # Hybrid leaderboard API
 │   │   ├── resolve-name/route.ts      # Name resolution API
 │   │   └── batch-resolve/route.ts     # Batch name resolution
 │   ├── hooks/
+│   │   ├── useContract.ts             # Smart contract interactions
+│   │   ├── useHybridLeaderboard.ts    # Blockchain + database system
 │   │   ├── useAddressDisplay.ts       # Name resolution hooks
 │   │   └── useWebSocketNameResolver.ts # WebSocket name resolution
 │   ├── lib/
+│   │   ├── contracts.ts               # Contract ABIs and addresses
 │   │   ├── turso.ts                   # Database client
 │   │   ├── nameResolver.ts            # ENS/Base name resolution
 │   │   ├── nameCache.ts               # Caching system
 │   │   ├── themes.ts                  # Visual theme system
 │   │   └── ranks.ts                   # Player ranking system
-│   ├── leaderboard/page.tsx           # Global rankings
+│   ├── leaderboard/page.tsx           # Hybrid global rankings
 │   ├── profile/[address]/page.tsx     # Player profiles
 │   ├── settings/page.tsx              # User preferences
-│   └── play/page.tsx                  # Game interface
+│   └── play/page.tsx                  # Game interface with blockchain integration
 ├── contracts/
-│   └── PerfectLeaderboard.sol         # Smart contract (future)
+│   └── PerfectLeaderboard.sol         # Deployed smart contract
 └── scripts/
-    └── deploy.ts                      # Contract deployment
+    ├── deploy.js                      # Contract deployment
+    └── verify-contracts.js            # Contract verification
 ```
 
 ### Testing Locally
 
 1. Start the dev server: `npm run dev`
-2. Connect your wallet (use Base Sepolia for testing)
-3. Play the game and test score submission
+2. Connect your wallet (Base or Celo mainnet)
+3. Play the game - scores save to database automatically
+4. Optionally submit best scores to blockchain manually
+5. Test contract verification: `node scripts/verify-contracts.js`
 
 ## 🚀 Deployment
 
@@ -250,7 +299,7 @@ This project is open source! Contributions welcome.
 
 MIT
 
-## 🎨 Features & Customization
+## Features & Customization
 
 ### Visual Themes
 
@@ -273,7 +322,7 @@ MIT
 - **Privacy Mode**: Hide resolved names from other players
 - **Display Formats**: Choose how names appear on leaderboard
 
-## 🔗 Links & Resources
+## Links & Resources
 
 ### Documentation
 

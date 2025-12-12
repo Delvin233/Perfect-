@@ -27,79 +27,68 @@ export default function PlayPage() {
   ) => {
     if (!address) return;
 
-    // Always save to backup database first (fast and reliable)
-    const saveToDatabase = async () => {
-      try {
-        await fetch("/api/scores", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            address,
-            score,
-            level,
-            perfectHits,
-            totalHits,
-          }),
-        });
-        return true;
-      } catch (error) {
-        console.error("Failed to save to database:", error);
-        return false;
-      }
-    };
-
-    // Try blockchain submission (primary)
-    const saveToBlockchain = async () => {
-      try {
-        setSubmissionStatus("Submitting to blockchain...");
-
-        // Calculate longest streak (for now, use perfectHits as approximation)
-        const longestStreak = perfectHits || 0;
-
-        const hash = await submitScore(
+    // Always save to database (fast and reliable)
+    try {
+      await fetch("/api/scores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address,
           score,
           level,
-          perfectHits || 0,
-          totalHits || 0,
-          longestStreak,
-          0, // continuesUsed - will be implemented later
-        );
-
-        setSubmissionStatus(`✅ Blockchain: ${hash.slice(0, 10)}...`);
-        return true;
-      } catch (error) {
-        console.error("Failed to submit score to blockchain:", error);
-        setSubmissionStatus("❌ Blockchain failed, using backup");
-        return false;
-      }
-    };
-
-    // Execute both saves
-    const [dbResult, blockchainResult] = await Promise.allSettled([
-      saveToDatabase(),
-      saveToBlockchain(),
-    ]);
-
-    // Update status based on results
-    const dbSuccess = dbResult.status === "fulfilled" && dbResult.value;
-    const blockchainSuccess =
-      blockchainResult.status === "fulfilled" && blockchainResult.value;
-
-    if (blockchainSuccess && dbSuccess) {
-      // Both success - best case
-      setTimeout(
-        () => setSubmissionStatus("✅ Score saved to blockchain & backup"),
-        2000,
-      );
-    } else if (dbSuccess) {
-      // Database success, blockchain failed
-      setSubmissionStatus("✅ Score saved to backup database");
-    } else if (blockchainSuccess) {
-      // Blockchain success, database failed
-      setSubmissionStatus("✅ Score saved to blockchain");
-    } else {
-      // Both failed
+          perfectHits,
+          totalHits,
+        }),
+      });
+      setSubmissionStatus("✅ Score saved to database");
+    } catch (error) {
+      console.error("Failed to save to database:", error);
       setSubmissionStatus("❌ Failed to save score");
+    }
+
+    // Clear status after 3 seconds
+    setTimeout(() => setSubmissionStatus(null), 3000);
+  };
+
+  // Manual blockchain submission
+  const handleBlockchainSubmit = async () => {
+    if (!address) return;
+
+    // Get the latest score from database or game state
+    // For now, we'll need to pass the current game data
+    // This would ideally get the user's highest score from database
+    try {
+      setSubmissionStatus("Submitting to blockchain...");
+
+      // TODO: Get actual user's best score from database
+      // For now, this is a placeholder - we'd need to fetch user's best score
+      const response = await fetch(`/api/scores?address=${address}`);
+      const data = await response.json();
+
+      if (!data.scores || data.scores.length === 0) {
+        setSubmissionStatus("❌ No scores to submit");
+        setTimeout(() => setSubmissionStatus(null), 3000);
+        return;
+      }
+
+      const bestScore = data.scores[0]; // Assuming API returns sorted by score
+      const longestStreak = bestScore.perfectHits || 0;
+
+      const hash = await submitScore(
+        bestScore.score,
+        bestScore.level,
+        bestScore.perfectHits || 0,
+        bestScore.totalHits || 0,
+        longestStreak,
+        0, // continuesUsed
+      );
+
+      setSubmissionStatus(`✅ Blockchain: ${hash.slice(0, 10)}...`);
+    } catch (error) {
+      console.error("Failed to submit to blockchain:", error);
+      setSubmissionStatus(
+        `❌ Blockchain failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
 
     // Clear status after 5 seconds
@@ -168,6 +157,31 @@ export default function PlayPage() {
             </p>
           </div>
         )}
+
+        {/* Manual Blockchain Submission */}
+        <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <p className="text-sm text-blue-400 font-medium">
+                🔗 Submit to Blockchain
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                Submit your best score to the blockchain for permanent storage &
+                global leaderboard
+              </p>
+              <p className="text-xs text-blue-300 mt-1">
+                💡 Requires wallet signature & small gas fee
+              </p>
+            </div>
+            <button
+              onClick={handleBlockchainSubmit}
+              disabled={submitting}
+              className="btn btn-secondary text-sm px-4 py-2 disabled:opacity-50 ml-3"
+            >
+              {submitting ? "Submitting..." : "Submit Best Score"}
+            </button>
+          </div>
+        </div>
 
         <TimerGame onScoreUpdate={handleScoreUpdate} />
       </div>

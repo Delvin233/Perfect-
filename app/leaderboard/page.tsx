@@ -7,7 +7,6 @@ import { useProgressiveBatchAddressDisplay } from "@/hooks/useMobileOptimization
 import { useHybridLeaderboard } from "@/hooks/useHybridLeaderboard";
 import BackButton from "../components/BackButton";
 import NameBadge from "../components/NameBadge";
-import NetworkIndicator from "../components/NetworkIndicator";
 
 // Interface moved to useHybridLeaderboard hook
 
@@ -42,7 +41,6 @@ export default function LeaderboardPage() {
         <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-2">
           Top players worldwide
         </p>
-        <NetworkIndicator />
       </div>
 
       {loading ? (

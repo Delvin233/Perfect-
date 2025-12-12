@@ -164,7 +164,7 @@ export default function EnhancedMainMenu({
         <div className="absolute inset-0 z-10 flex flex-col lg:justify-center pt-8 pb-8 overflow-y-auto min-h-screen">
           {/* Enhanced header with glow effect */}
           <div
-            className={`flex items-center justify-between mb-4 px-6 lg:px-12 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
+            className={`flex items-center justify-center mb-4 px-6 lg:px-12 ${isLoaded ? "enhanced-fade-in" : "opacity-0"}`}
           >
             <h1
               className="text-3xl sm:text-4xl font-bold relative"
@@ -180,7 +180,6 @@ export default function EnhancedMainMenu({
                 style={{ width: "100%" }}
               />
             </h1>
-            {userStats && <appkit-button />}
           </div>
 
           {/* Main content with enhanced layout - MUCH more spacing */}
