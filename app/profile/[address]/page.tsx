@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
+import { FullAddressDisplay } from "@/app/components/AddressDisplay";
 
 interface PlayerData {
   address: string;
@@ -89,9 +90,11 @@ export default function ProfilePage() {
           <h1 className={`text-3xl font-bold mb-2 ${getRankColor(rank.tier)}`}>
             {rank.name}
           </h1>
-          <p className="text-gray-400 font-mono">
-            {player.address.slice(0, 10)}...{player.address.slice(-10)}
-          </p>
+          <FullAddressDisplay
+            address={player.address}
+            className="text-center"
+            copyable={true}
+          />
         </div>
 
         {/* Main Stats */}

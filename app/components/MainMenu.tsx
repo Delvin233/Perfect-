@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useKeyboardNav } from "@/app/hooks/useKeyboardNav";
+import { useNamePreloader } from "@/hooks/useNamePreloader";
 import StatsPanel from "./StatsPanel";
 import MenuBackground from "./MenuBackground";
+import { SimpleAddressDisplay } from "./AddressDisplay";
 
 interface UserStats {
   address: string;
@@ -34,6 +36,14 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
   const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showDisconnectConfirm, setShowDisconnectConfirm] = useState(false);
+
+  // Preload leaderboard names for better performance
+  const { smartPreload } = useNamePreloader();
+
+  useEffect(() => {
+    // Preload leaderboard addresses when main menu loads
+    smartPreload("/");
+  }, [smartPreload]);
 
   const menuItems: MenuItem[] = [
     {
@@ -159,12 +169,12 @@ export default function MainMenu({ userStats, onDisconnect }: MainMenuProps) {
             PERFECT?
           </h1>
           {userStats && (
-            <div
-              className="text-sm"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              {userStats.address.slice(0, 6)}...{userStats.address.slice(-4)}
-            </div>
+            <SimpleAddressDisplay
+              address={userStats.address}
+              className="text-sm justify-center"
+              showBadge={true}
+              copyable={false}
+            />
           )}
         </div>
 
