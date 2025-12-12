@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -346,11 +346,9 @@ contract PerfectLeaderboard is Ownable, ReentrancyGuard, Pausable {
     /**
      * @dev Purchase a continue to resume game from current level
      * @param _currentLevel Level to continue from
-     * @param _currentScore Current score when continuing
      */
     function purchaseContinue(
-        uint16 _currentLevel,
-        uint128 /* _currentScore */
+        uint16 _currentLevel
     ) external payable nonReentrant whenNotPaused {
         require(continueEnabled, "Continue system disabled");
         require(msg.value >= continueFee, "Insufficient continue fee");
@@ -535,9 +533,9 @@ contract PerfectLeaderboard is Ownable, ReentrancyGuard, Pausable {
         uint32 stage1Completors,
         uint32 stage2Completors,
         uint32 stage3Completors,
-        uint256 totalRevenue,
+        uint256 totalRevenueAmount,
         string memory network,
-        uint256 chainId
+        uint256 networkChainId
     ) {
         return (
             totalPlayersCount,
@@ -813,7 +811,7 @@ contract PerfectLeaderboard is Ownable, ReentrancyGuard, Pausable {
     function getContractInfo() external view returns (
         string memory name,
         string memory network,
-        uint256 chainId,
+        uint256 contractChainId,
         uint256 deployedBlock,
         address contractOwner
     ) {
@@ -857,7 +855,7 @@ contract PerfectLeaderboard is Ownable, ReentrancyGuard, Pausable {
      */
     function getNetworkConfig() external view returns (
         string memory network,
-        uint256 chain,
+        uint256 networkChain,
         uint256 submissionFeeWei,
         uint256 continueFeeWei,
         uint256 dailyChallengeFeeWei,

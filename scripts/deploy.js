@@ -1,13 +1,13 @@
-import { ethers, network } from "hardhat";
+import hre from "hardhat";
 
 async function main() {
-  console.log(`\n🚀 Deploying PerfectLeaderboard to ${network.name}...`);
+  console.log(`\n🚀 Deploying PerfectLeaderboard to ${hre.network.name}...`);
 
   // Determine network name for contract
-  let networkName: string;
-  let expectedChainId: number;
+  let networkName;
+  let expectedChainId;
 
-  switch (network.name) {
+  switch (hre.network.name) {
     case "base":
       networkName = "Base";
       expectedChainId = 8453;
@@ -30,7 +30,7 @@ async function main() {
       expectedChainId = 31337;
       break;
     default:
-      networkName = network.name;
+      networkName = hre.network.name;
       expectedChainId = 0;
   }
 
@@ -38,32 +38,29 @@ async function main() {
   console.log(`🔗 Chain ID: ${expectedChainId}`);
 
   // Get deployer account
-  const [deployer] = await ethers.getSigners();
+  const [deployer] = await hre.ethers.getSigners();
   console.log(`👤 Deployer: ${deployer.address}`);
 
   // Check balance
-  const balance = await ethers.provider.getBalance(deployer.address);
-  console.log(`💰 Balance: ${ethers.formatEther(balance)} ETH`);
+  const balance = await deployer.getBalance();
+  console.log(`💰 Balance: ${hre.ethers.utils.formatEther(balance)} ETH`);
 
-  if (balance === 0n) {
+  if (balance.isZero()) {
     throw new Error("❌ Deployer account has no funds!");
   }
 
   // Deploy contract
   console.log("\n📦 Deploying contract...");
   const PerfectLeaderboard =
-    await ethers.getContractFactory("PerfectLeaderboard");
+    await hre.ethers.getContractFactory("PerfectLeaderboard");
   const leaderboard = await PerfectLeaderboard.deploy(networkName);
 
   console.log("⏳ Waiting for deployment...");
-  await leaderboard.waitForDeployment();
-
-  const address = await leaderboard.getAddress();
-  const deploymentTx = leaderboard.deploymentTransaction();
+  await leaderboard.deployed();
 
   console.log("\n✅ Deployment successful!");
-  console.log(`📍 Contract Address: ${address}`);
-  console.log(`🧾 Transaction Hash: ${deploymentTx?.hash}`);
+  console.log(`📍 Contract Address: ${leaderboard.address}`);
+  console.log(`🧾 Transaction Hash: ${leaderboard.deployTransaction.hash}`);
 
   // Verify contract configuration
   console.log("\n🔍 Verifying contract configuration...");
@@ -76,21 +73,23 @@ async function main() {
     console.log(`✅ Chain ID: ${contractInfo[2]}`);
     console.log(`✅ Owner: ${contractInfo[4]}`);
     console.log(
-      `✅ Submission Fee: ${ethers.formatEther(networkConfig[2])} ETH`,
+      `✅ Submission Fee: ${hre.ethers.utils.formatEther(networkConfig[2])} ETH`,
     );
-    console.log(`✅ Continue Fee: ${ethers.formatEther(networkConfig[3])} ETH`);
     console.log(
-      `✅ Daily Challenge Fee: ${ethers.formatEther(networkConfig[4])} ETH`,
+      `✅ Continue Fee: ${hre.ethers.utils.formatEther(networkConfig[3])} ETH`,
     );
-  } catch {
-    console.log("⚠️  Could not verify contract configuration");
+    console.log(
+      `✅ Daily Challenge Fee: ${hre.ethers.utils.formatEther(networkConfig[4])} ETH`,
+    );
+  } catch (error) {
+    console.log("⚠️  Could not verify contract configuration:", error.message);
   }
 
   // Environment variable instructions
   console.log("\n📝 Environment Variables:");
   console.log("Add this to your .env file:");
   console.log(
-    `NEXT_PUBLIC_LEADERBOARD_CONTRACT_${networkName.toUpperCase().replace(" ", "_")}=${address}`,
+    `NEXT_PUBLIC_LEADERBOARD_CONTRACT_${networkName.toUpperCase().replace(/ /g, "_")}=${leaderboard.address}`,
   );
 
   if (
@@ -100,27 +99,23 @@ async function main() {
   ) {
     console.log("\n🧪 Testnet Deployment Complete!");
     console.log("This is a testnet deployment. For mainnet, use:");
-    console.log("- npx hardhat run scripts/deploy.ts --network base");
-    console.log("- npx hardhat run scripts/deploy.ts --network celo");
+    console.log("- npx hardhat run scripts/deploy.js --network base");
+    console.log("- npx hardhat run scripts/deploy.js --network celo");
   } else {
     console.log("\n🌐 Mainnet Deployment Complete!");
     console.log("⚠️  This is a MAINNET deployment with real funds!");
   }
 
   // Gas usage info
-  if (deploymentTx) {
-    const receipt = await deploymentTx.wait();
-    if (receipt) {
-      const gasUsed = receipt.gasUsed;
-      const gasPrice = deploymentTx.gasPrice || 0n;
-      const deploymentCost = gasUsed * gasPrice;
+  const receipt = await leaderboard.deployTransaction.wait();
+  const gasUsed = receipt.gasUsed;
+  const gasPrice = leaderboard.deployTransaction.gasPrice;
+  const deploymentCost = gasUsed.mul(gasPrice);
 
-      console.log(`\n⛽ Gas Used: ${gasUsed.toLocaleString()}`);
-      console.log(
-        `💸 Deployment Cost: ${ethers.formatEther(deploymentCost)} ETH`,
-      );
-    }
-  }
+  console.log(`\n⛽ Gas Used: ${gasUsed.toNumber().toLocaleString()}`);
+  console.log(
+    `💸 Deployment Cost: ${hre.ethers.utils.formatEther(deploymentCost)} ETH`,
+  );
 
   console.log("\n🎯 Next Steps:");
   console.log("1. Add the contract address to your .env file");
@@ -131,7 +126,7 @@ async function main() {
   if (!networkName.includes("Local")) {
     console.log("\n🔍 Verify contract (optional):");
     console.log(
-      `npx hardhat verify --network ${network.name} ${address} "${networkName}"`,
+      `npx hardhat verify --network ${hre.network.name} ${leaderboard.address} "${networkName}"`,
     );
   }
 }
