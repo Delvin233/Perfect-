@@ -86,13 +86,15 @@ export async function POST(request: NextRequest) {
       };
     }
 
-    // Add new results
+    // Add new results and broadcast updates
     for (const [address, resolution] of newResolutions) {
       allResults[address] = {
         name: resolution.name,
         source: resolution.source,
         cached: false,
       };
+
+      // No real-time broadcasting needed with WebSocket RPC approach
     }
 
     return NextResponse.json({

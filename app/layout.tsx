@@ -24,6 +24,12 @@ const NameResolutionDebugPanel = dynamic(
     })),
   { ssr: false },
 );
+const WebSocketTestPanel = dynamic(
+  () => import("@/app/components/WebSocketTestPanel"),
+  {
+    ssr: false,
+  },
+);
 
 export const metadata: Metadata = {
   title: minikitConfig.miniapp.name,
@@ -80,6 +86,7 @@ export default function RootLayout({
             {/* Development/Debug Components */}
             <NameResolutionMonitor />
             <NameResolutionDebugPanel />
+            <WebSocketTestPanel />
           </div>
         </ContextProvider>
         <Analytics />

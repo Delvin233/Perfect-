@@ -6,6 +6,7 @@
  */
 
 import { useAddressDisplay } from "@/hooks/useAddressDisplay";
+import { useWebSocketAddressDisplay } from "@/hooks/useWebSocketNameResolver";
 import { getDisplayFormat, isPrivacyModeEnabled } from "@/lib/nameConfig";
 import NameBadge from "./NameBadge";
 
@@ -18,6 +19,7 @@ interface AddressDisplayProps {
   showTooltip?: boolean;
   copyable?: boolean;
   loading?: boolean;
+  useWebSocket?: boolean; // Enable WebSocket RPC for faster resolution
 }
 
 export default function AddressDisplay({
@@ -29,8 +31,15 @@ export default function AddressDisplay({
   showTooltip = true,
   copyable = false,
   loading = false,
+  useWebSocket = false,
 }: AddressDisplayProps) {
-  const { displayName, source, isLoading } = useAddressDisplay(address);
+  // Use WebSocket hooks if enabled, otherwise use regular hooks
+  const regularResult = useAddressDisplay(address);
+  const wsResult = useWebSocketAddressDisplay(useWebSocket ? address : null);
+
+  const { displayName, source, isLoading } = useWebSocket
+    ? wsResult
+    : regularResult;
 
   // Apply user's preferred display format if no specific mode is provided
   const userPreferredFormat = getDisplayFormat();
@@ -154,6 +163,7 @@ interface SimpleAddressDisplayProps {
   showBadge?: boolean;
   className?: string;
   copyable?: boolean;
+  useWebSocket?: boolean;
 }
 
 export function SimpleAddressDisplay({
@@ -161,6 +171,7 @@ export function SimpleAddressDisplay({
   showBadge = true,
   className = "",
   copyable = false,
+  useWebSocket = false,
 }: SimpleAddressDisplayProps) {
   return (
     <AddressDisplay
@@ -168,6 +179,7 @@ export function SimpleAddressDisplay({
       mode={showBadge ? "name-with-badge" : "name-only"}
       className={className}
       copyable={copyable}
+      useWebSocket={useWebSocket}
     />
   );
 }
