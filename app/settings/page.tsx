@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import BackButton from "../components/BackButton";
-import ThemeSelector from "../components/ThemeSelector";
+import { THEMES, applyTheme, getTheme } from "@/lib/themes";
 import { useToast } from "../hooks/useToast";
 import ToastContainer from "../components/ToastContainer";
 
@@ -16,6 +16,9 @@ export default function SettingsPage() {
   // Gameplay Settings
   const [screenShakeEnabled, setScreenShakeEnabled] = useState(true);
   const [particleEffectsEnabled, setParticleEffectsEnabled] = useState(true);
+
+  // Theme Settings
+  const [currentTheme, setCurrentTheme] = useState("delvin233");
 
   // Name Resolution Settings
   const [nameResolutionEnabled, setNameResolutionEnabled] = useState(true);
@@ -54,6 +57,13 @@ export default function SettingsPage() {
       } catch (error) {
         console.warn("Failed to load gameplay settings:", error);
       }
+    }
+
+    // Load theme settings
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setCurrentTheme(savedTheme);
+      applyTheme(getTheme(savedTheme));
     }
   }, []);
 
@@ -144,7 +154,23 @@ export default function SettingsPage() {
             <p className="text-sm text-[var(--color-text-secondary)] mb-4">
               Choose your preferred visual theme
             </p>
-            <ThemeSelector />
+            <select
+              value={currentTheme}
+              onChange={(e) => {
+                const newTheme = e.target.value;
+                setCurrentTheme(newTheme);
+                applyTheme(getTheme(newTheme));
+                localStorage.setItem("theme", newTheme);
+                success(`Theme changed to ${getTheme(newTheme).name}`);
+              }}
+              className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-[var(--color-primary)] focus:outline-none"
+            >
+              {THEMES.map((theme) => (
+                <option key={theme.id} value={theme.id}>
+                  {theme.name} - {theme.description}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Name Resolution Settings */}
