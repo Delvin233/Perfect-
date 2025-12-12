@@ -163,7 +163,7 @@ export class AlchemyWebSocketRPC extends EventEmitter {
 
       // Send request - now we know the WebSocket is ready
       try {
-        this.ws.send(JSON.stringify(request));
+        this.ws!.send(JSON.stringify(request));
       } catch (error) {
         this.pendingRequests.delete(id);
         clearTimeout(timeout);
