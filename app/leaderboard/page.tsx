@@ -1,30 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
 import { useProgressiveBatchAddressDisplay } from "@/hooks/useMobileOptimization";
+import { useHybridLeaderboard } from "@/hooks/useHybridLeaderboard";
 import BackButton from "../components/BackButton";
 import NameBadge from "../components/NameBadge";
+import NetworkIndicator from "../components/NetworkIndicator";
 
-interface Score {
-  address: string;
-  score: number;
-  level: number;
-  timestamp: number;
-  totalAttempts?: number;
-  stagesCompleted?: number;
-  perfectHits?: number;
-  totalHits?: number;
-}
+// Interface moved to useHybridLeaderboard hook
 
 export default function LeaderboardPage() {
   const { address } = useAppKitAccount();
-  const [scores, setScores] = useState<Score[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // Use hybrid leaderboard (blockchain + database)
+  const { leaderboard, loading, error, dataSource, refetch } =
+    useHybridLeaderboard(50);
 
   // Extract addresses for batch name resolution with mobile optimization
-  const addresses = scores.map((score) => score.address);
+  const addresses = leaderboard.map((score) => score.address);
   const {
     displayNames,
     sources,
@@ -35,22 +30,6 @@ export default function LeaderboardPage() {
     totalCount,
   } = useProgressiveBatchAddressDisplay(addresses);
 
-  useEffect(() => {
-    fetchScores();
-  }, []);
-
-  const fetchScores = async () => {
-    try {
-      const response = await fetch("/api/scores");
-      const data = await response.json();
-      setScores(data.scores || []);
-    } catch (error) {
-      console.error("Failed to fetch scores:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="mb-4">
@@ -60,29 +39,37 @@ export default function LeaderboardPage() {
         <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-[var(--color-primary)]">
           🏆 LEADERBOARD
         </h1>
-        <p className="text-sm sm:text-base text-[var(--color-text-secondary)]">
+        <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-2">
           Top players worldwide
         </p>
+        <NetworkIndicator />
       </div>
 
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[var(--color-primary)] border-t-transparent"></div>
           <p className="mt-4 text-[var(--color-text-secondary)]">
-            Loading scores...
+            Loading leaderboard from blockchain...
           </p>
         </div>
-      ) : namesLoading && scores.length > 0 ? (
+      ) : error ? (
+        <div className="card text-center py-12">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button onClick={refetch} className="btn btn-primary">
+            Try Again
+          </button>
+        </div>
+      ) : namesLoading && leaderboard.length > 0 ? (
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-[var(--color-primary)] border-t-transparent"></div>
           <p className="mt-4 text-[var(--color-text-secondary)]">
             Resolving player names...
           </p>
         </div>
-      ) : scores.length === 0 ? (
+      ) : leaderboard.length === 0 ? (
         <div className="card text-center py-12">
           <p className="text-[var(--color-text-secondary)] mb-4">
-            No scores yet. Be the first to play!
+            No scores yet on this network. Be the first to play!
           </p>
           <a href="/play" className="btn btn-primary inline-block">
             Play Now
@@ -90,20 +77,20 @@ export default function LeaderboardPage() {
         </div>
       ) : (
         <div className="space-y-2">
-          {scores.map((score, index) => {
+          {leaderboard.map((score) => {
             const isCurrentUser =
               address && score.address.toLowerCase() === address.toLowerCase();
-            const rank = index + 1;
+            const rank = score.rank;
             const medal =
               rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
 
             return (
               <a
                 href={`/profile/${score.address}`}
-                key={`${score.address}-${score.timestamp}`}
+                key={`${score.address}-${score.rank}`}
                 className={`card flex items-center justify-between cursor-pointer transition-colors active:scale-[0.98] p-3 sm:p-6 ${
                   isCurrentUser ? "border-[var(--color-primary)]" : ""
-                } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""}`}
+                } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""} ${score.stage >= 3 ? "border-purple-500/50 bg-purple-500/5" : ""}`}
               >
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                   <span className="text-xl sm:text-2xl font-bold text-[var(--color-text-secondary)] w-8 sm:w-12 flex-shrink-0">
@@ -129,6 +116,28 @@ export default function LeaderboardPage() {
                           You
                         </span>
                       )}
+                      {/* Stage indicators */}
+                      {score.stage && score.stage >= 2 && (
+                        <span className="text-[10px] px-1 py-0.5 bg-purple-500/20 text-purple-400 rounded">
+                          MASTER
+                        </span>
+                      )}
+                      {score.stage && score.stage >= 3 && (
+                        <span className="text-[10px] px-1 py-0.5 bg-red-500/20 text-red-400 rounded">
+                          EXTREME
+                        </span>
+                      )}
+                      {/* Data source indicator */}
+                      {score.source === "blockchain" && (
+                        <span className="text-[10px] px-1 py-0.5 bg-blue-500/20 text-blue-400 rounded">
+                          ⛓️
+                        </span>
+                      )}
+                      {score.source === "merged" && (
+                        <span className="text-[10px] px-1 py-0.5 bg-green-500/20 text-green-400 rounded">
+                          🔗
+                        </span>
+                      )}
                     </div>
                     <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
                       <span className="text-xs">
@@ -140,6 +149,9 @@ export default function LeaderboardPage() {
                         )}
                       >
                         {getRankForLevel(score.level).name}
+                      </span>
+                      <span className="text-gray-500">
+                        • Level {score.level}
                       </span>
                     </div>
                   </div>
@@ -158,7 +170,7 @@ export default function LeaderboardPage() {
         </div>
       )}
 
-      {!loading && scores.length > 0 && (
+      {!loading && leaderboard.length > 0 && (
         <div className="mt-8 text-center space-y-4">
           {hasMore && (
             <div className="text-center">
@@ -176,9 +188,19 @@ export default function LeaderboardPage() {
               </p>
             </div>
           )}
-          <button onClick={fetchScores} className="btn btn-secondary">
-            🔄 Refresh
+          <button
+            onClick={refetch}
+            className="btn btn-secondary"
+            disabled={loading}
+          >
+            🔄 Refresh Leaderboard
           </button>
+          <p className="text-xs text-gray-500">
+            {dataSource === "hybrid" &&
+              "🔗 Hybrid: Blockchain + Database backup"}
+            {dataSource === "blockchain" && "⛓️ Data from smart contract"}
+            {dataSource === "database" && "💾 Data from backup database"}
+          </p>
         </div>
       )}
     </div>
