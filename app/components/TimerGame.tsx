@@ -115,29 +115,14 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
       onScoreUpdate(newScore, level, newPerfectHits, newTotalHits);
 
-      // Visual feedback - flash screen
-      triggerFlash(isPerfect ? "perfect" : "success");
+      // Visual feedback removed for cleaner experience
     } else {
       setResult("fail");
-      // Visual feedback - flash screen red
-      triggerFlash("fail");
+      // Visual feedback removed for cleaner experience
     }
   };
 
-  const triggerFlash = (type: "perfect" | "success" | "fail") => {
-    const flash = document.createElement("div");
-    flash.className = `fixed inset-0 pointer-events-none z-50 ${
-      type === "perfect"
-        ? "bg-green-500"
-        : type === "success"
-          ? "bg-cyan-500"
-          : "bg-red-500"
-    }`;
-    flash.style.opacity = "0.3";
-    flash.style.animation = "flash 0.3s ease-out";
-    document.body.appendChild(flash);
-    setTimeout(() => flash.remove(), 300);
-  };
+  // Flash effects removed for cleaner experience
 
   const nextLevel = () => {
     const newLevel = level + 1;
@@ -178,7 +163,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
     return (
       <div className="max-w-2xl mx-auto animate-fade-in">
-        <div className="card text-center py-10 sm:py-16 px-4 sm:px-6">
+        <div className="card text-center py-6 sm:py-8 px-4 sm:px-6">
           <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">
             {completedStage === 1 ? "🎉" : "🔥"}
           </div>
@@ -213,7 +198,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
               <div className="mt-4 sm:mt-6 text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                 <p>Final challenge: New random times</p>
                 <p className="text-red-400 font-bold">Tolerance: ±5ms</p>
-                <p className="text-[10px] sm:text-xs mt-2">Only the perfect survive</p>
+                <p className="text-[10px] sm:text-xs mt-2">
+                  Only the perfect survive
+                </p>
               </div>
             </>
           )}
@@ -223,10 +210,10 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6 animate-fade-in">
+    <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4 animate-fade-in">
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4">
-        <div className="card text-center p-3 sm:p-6">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="card text-center p-2 sm:p-3">
           <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
             Stage
           </p>
@@ -250,12 +237,14 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
             {stage === 1 ? "Learning" : stage === 2 ? "Master" : "Extreme"}
           </p>
         </div>
-        <div className="card text-center p-3 sm:p-6">
+        <div className="card text-center p-2 sm:p-3">
           <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
             Rank
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
-            <span className="text-lg sm:text-xl">{getRankForLevel(level).emoji}</span>
+            <span className="text-lg sm:text-xl">
+              {getRankForLevel(level).emoji}
+            </span>
             <p
               className={`text-sm sm:text-xl font-bold ${getRankColor(getRankForLevel(level).tier)}`}
             >
@@ -266,7 +255,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
             Lv {level} • {((level - 1) % 10) + 1}/10
           </p>
         </div>
-        <div className="card text-center p-3 sm:p-6">
+        <div className="card text-center p-2 sm:p-3">
           <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
             Score
           </p>
@@ -279,13 +268,13 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
       {/* Timer Display */}
       <div
-        className={`card text-center py-6 sm:py-12 transition-all ${
+        className={`card text-center py-4 sm:py-6 transition-all ${
           isRunning && Math.abs(time - targetTime) <= tolerance
             ? "ring-4 ring-green-500 ring-opacity-50 animate-pulse"
             : ""
         }`}
       >
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-3 sm:mb-4">
           {stage === 2 && (
             <span className="inline-block px-3 py-1 sm:px-4 sm:py-2 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm font-bold mb-2 sm:mb-3">
               🔥 STAGE 2: MASTER MODE
@@ -302,9 +291,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
         </div>
 
         {/* Main Timer - Responsive Size */}
-        <div className="relative mb-4 sm:mb-6">
+        <div className="relative mb-3 sm:mb-4">
           <p
-            className={`text-6xl sm:text-8xl md:text-9xl font-bold font-mono transition-all ${
+            className={`text-5xl sm:text-6xl md:text-7xl font-bold font-mono transition-all ${
               isRunning && Math.abs(time - targetTime) <= tolerance * 2
                 ? "text-yellow-400"
                 : isRunning && Math.abs(time - targetTime) <= tolerance
@@ -314,7 +303,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           >
             {time.toFixed(3)}
           </p>
-          <p className="text-lg sm:text-2xl text-gray-500 mt-2">seconds</p>
+          <p className="text-base sm:text-lg text-gray-500 mt-1">seconds</p>
         </div>
 
         {/* Progress Bar with Danger Zones */}
@@ -366,10 +355,10 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
       {/* Result */}
       {result && (
-        <div className="card text-center py-6 sm:py-8">
+        <div className="card text-center py-4 sm:py-5">
           {result === "perfect" && (
             <>
-              <p className="text-3xl sm:text-4xl font-bold text-[var(--color-success)] mb-2">
+              <p className="text-2xl sm:text-3xl font-bold text-[var(--color-success)] mb-2">
                 🎯 PERFECT!
               </p>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)]">
@@ -379,7 +368,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           )}
           {result === "close" && (
             <>
-              <p className="text-3xl sm:text-4xl font-bold text-[var(--color-secondary)] mb-2">
+              <p className="text-2xl sm:text-3xl font-bold text-[var(--color-secondary)] mb-2">
                 ✓ CLOSE!
               </p>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)]">
@@ -389,7 +378,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
           )}
           {result === "fail" && (
             <>
-              <p className="text-3xl sm:text-4xl font-bold text-[var(--color-error)] mb-3 sm:mb-4">
+              <p className="text-2xl sm:text-3xl font-bold text-[var(--color-error)] mb-2 sm:mb-3">
                 💀 GAME OVER
               </p>
 
@@ -434,7 +423,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
               {/* Final score */}
               <div className="pt-3 sm:pt-4 border-t border-gray-700">
-                <p className="text-xs sm:text-sm text-gray-400 mb-1">Final Score</p>
+                <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                  Final Score
+                </p>
                 <p className="text-2xl sm:text-3xl font-bold text-orange-500">
                   {score.toLocaleString()}
                 </p>
@@ -460,7 +451,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
         {!isRunning && !result && (
           <button
             onClick={startTimer}
-            className="btn btn-primary flex-1 text-lg sm:text-xl py-4 sm:py-6 active:scale-95"
+            className="btn btn-primary flex-1 text-lg sm:text-xl py-3 sm:py-4 active:scale-95"
           >
             START
           </button>
@@ -469,7 +460,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
         {isRunning && (
           <button
             onClick={stopTimer}
-            className="btn btn-primary flex-1 text-lg sm:text-xl py-4 sm:py-6 animate-pulse active:scale-95"
+            className="btn btn-primary flex-1 text-lg sm:text-xl py-3 sm:py-4 animate-pulse active:scale-95"
           >
             STOP
           </button>
@@ -478,14 +469,14 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
         {result === "perfect" || result === "close" ? (
           <button
             onClick={nextLevel}
-            className="btn btn-secondary flex-1 text-lg sm:text-xl py-4 sm:py-6 active:scale-95"
+            className="btn btn-secondary flex-1 text-lg sm:text-xl py-3 sm:py-4 active:scale-95"
           >
             NEXT LEVEL →
           </button>
         ) : result === "fail" ? (
           <button
             onClick={gameOver}
-            className="btn btn-primary flex-1 text-lg sm:text-xl py-4 sm:py-6 active:scale-95"
+            className="btn btn-primary flex-1 text-lg sm:text-xl py-3 sm:py-4 active:scale-95"
           >
             TRY AGAIN
           </button>
@@ -493,7 +484,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
       </div>
 
       {/* Info */}
-      <div className="card text-center text-xs sm:text-sm text-[var(--color-text-secondary)] p-3 sm:p-6">
+      <div className="card text-center text-xs sm:text-sm text-[var(--color-text-secondary)] p-2 sm:p-3">
         <p>Tolerance: ±{(tolerance * 1000).toFixed(0)}ms</p>
       </div>
     </div>

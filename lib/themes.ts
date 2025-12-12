@@ -22,27 +22,27 @@ export interface Theme {
 
 export const THEMES: Theme[] = [
   {
-    id: "delvin233",
-    name: "delvin233's default",
-    description: "Soft minimal - warm neutral base that lets game colors shine",
+    id: "minimal",
+    name: "Pure Minimal",
+    description: "",
     colors: {
-      primary: "#F5F5F0",
-      secondary: "#D4C5B9",
-      accent: "#A89F91",
-      background: "#1C1C1E",
-      backgroundSecondary: "#2C2C2E",
-      text: "#FAF9F6",
-      textSecondary: "#D4C5B9",
-      cardBg: "rgba(212, 197, 185, 0.1)",
-      cardBorder: "#A89F91",
-      success: "#10b981",
-      error: "#ef4444",
+      primary: "#FFFFFF",
+      secondary: "#E5E5E5",
+      accent: "#999999",
+      background: "#000000",
+      backgroundSecondary: "#0a0a0a",
+      text: "#FFFFFF",
+      textSecondary: "#999999",
+      cardBg: "rgba(255, 255, 255, 0.05)",
+      cardBorder: "#333333",
+      success: "#FFFFFF",
+      error: "#FFFFFF",
     },
   },
   {
     id: "classic",
     name: "Classic Arcade",
-    description: "Warm retro vibes - Pac-Man & Donkey Kong era",
+    description: "",
     colors: {
       primary: "#FFD700",
       secondary: "#FF8C00",
@@ -60,7 +60,7 @@ export const THEMES: Theme[] = [
   {
     id: "neon",
     name: "Neon Nights",
-    description: "80s arcade - hot pink & electric blue",
+    description: "",
     colors: {
       primary: "#FF1493",
       secondary: "#00BFFF",
@@ -78,7 +78,7 @@ export const THEMES: Theme[] = [
   {
     id: "retro",
     name: "Retro Console",
-    description: "NES/SNES era - bright primary colors",
+    description: "",
     colors: {
       primary: "#E52521",
       secondary: "#0066CC",
@@ -96,7 +96,7 @@ export const THEMES: Theme[] = [
   {
     id: "sunset",
     name: "Sunset Drive",
-    description: "OutRun vibes - magenta, orange & yellow gradient",
+    description: "",
     colors: {
       primary: "#FF006E",
       secondary: "#FF6B35",
@@ -114,7 +114,7 @@ export const THEMES: Theme[] = [
   {
     id: "candy",
     name: "Candy Land",
-    description: "Playful bright - Bubble Bobble inspired",
+    description: "",
     colors: {
       primary: "#FF69B4",
       secondary: "#87CEEB",
@@ -132,7 +132,7 @@ export const THEMES: Theme[] = [
   {
     id: "vector",
     name: "Vector Display",
-    description: "Monochrome green - Asteroids style",
+    description: "",
     colors: {
       primary: "#00FF41",
       secondary: "#00FFFF",
@@ -148,21 +148,21 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "minimal",
-    name: "Pure Minimal",
-    description: "Ultra-clean monochrome - Apple-like",
+    id: "delvin233",
+    name: "delvin233's default",
+    description: "",
     colors: {
-      primary: "#FFFFFF",
-      secondary: "#E5E5E5",
-      accent: "#999999",
-      background: "#000000",
-      backgroundSecondary: "#0a0a0a",
-      text: "#FFFFFF",
-      textSecondary: "#999999",
-      cardBg: "rgba(255, 255, 255, 0.05)",
-      cardBorder: "#333333",
-      success: "#FFFFFF",
-      error: "#FFFFFF",
+      primary: "#F5F5F0",
+      secondary: "#D4C5B9",
+      accent: "#A89F91",
+      background: "#1C1C1E",
+      backgroundSecondary: "#2C2C2E",
+      text: "#FAF9F6",
+      textSecondary: "#D4C5B9",
+      cardBg: "rgba(212, 197, 185, 0.1)",
+      cardBorder: "#A89F91",
+      success: "#10b981",
+      error: "#ef4444",
     },
   },
 ];

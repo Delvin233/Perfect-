@@ -55,7 +55,7 @@ export default function BackButton({
       className={`
         group flex items-center gap-2 px-4 py-2 rounded-lg
         transition-all duration-200 font-semibold text-sm
-        hover:scale-105 active:scale-95
+        active:scale-95
         ${isPressed ? "scale-95" : ""}
         ${className}
       `}

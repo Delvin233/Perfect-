@@ -235,9 +235,7 @@ export default function EnhancedMainMenu({
                           ▶
                         </span>
                       )}
-                      <span className="text-xl transform transition-transform duration-200 hover:scale-110">
-                        {item.icon}
-                      </span>
+                      <span className="text-xl">{item.icon}</span>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <span

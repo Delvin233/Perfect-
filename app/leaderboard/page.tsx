@@ -101,7 +101,7 @@ export default function LeaderboardPage() {
               <a
                 href={`/profile/${score.address}`}
                 key={`${score.address}-${score.timestamp}`}
-                className={`card flex items-center justify-between cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] p-3 sm:p-6 ${
+                className={`card flex items-center justify-between cursor-pointer transition-colors active:scale-[0.98] p-3 sm:p-6 ${
                   isCurrentUser ? "border-[var(--color-primary)]" : ""
                 } ${score.level >= 21 ? "border-red-500/50 bg-red-500/5" : ""}`}
               >

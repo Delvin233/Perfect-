@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import BackButton from "../components/BackButton";
-import ThemeSelector from "../components/ThemeSelector";
+import { THEMES, applyTheme, getTheme } from "@/lib/themes";
 import { useToast } from "../hooks/useToast";
 import ToastContainer from "../components/ToastContainer";
 
@@ -12,6 +12,13 @@ export default function SettingsPage() {
   const { toasts, removeToast, success, info } = useToast();
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [volume, setVolume] = useState(75);
+
+  // Gameplay Settings
+  const [screenShakeEnabled, setScreenShakeEnabled] = useState(true);
+  const [particleEffectsEnabled, setParticleEffectsEnabled] = useState(true);
+
+  // Theme Settings
+  const [currentTheme, setCurrentTheme] = useState("delvin233");
 
   // Name Resolution Settings
   const [nameResolutionEnabled, setNameResolutionEnabled] = useState(true);
@@ -37,6 +44,27 @@ export default function SettingsPage() {
         console.warn("Failed to load name resolution settings:", error);
       }
     }
+
+    // Load gameplay settings
+    const savedGameplaySettings = localStorage.getItem(
+      "perfect-gameplay-settings",
+    );
+    if (savedGameplaySettings) {
+      try {
+        const settings = JSON.parse(savedGameplaySettings);
+        setScreenShakeEnabled(settings.screenShakeEnabled ?? true);
+        setParticleEffectsEnabled(settings.particleEffectsEnabled ?? true);
+      } catch (error) {
+        console.warn("Failed to load gameplay settings:", error);
+      }
+    }
+
+    // Load theme settings
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setCurrentTheme(savedTheme);
+      applyTheme(getTheme(savedTheme));
+    }
   }, []);
 
   // Save settings to localStorage when they change
@@ -58,6 +86,20 @@ export default function SettingsPage() {
       ...newSettings,
     };
     localStorage.setItem("perfect-name-settings", JSON.stringify(settings));
+  };
+
+  const saveGameplaySettings = (
+    newSettings: Partial<{
+      screenShakeEnabled: boolean;
+      particleEffectsEnabled: boolean;
+    }>,
+  ) => {
+    const settings = {
+      screenShakeEnabled,
+      particleEffectsEnabled,
+      ...newSettings,
+    };
+    localStorage.setItem("perfect-gameplay-settings", JSON.stringify(settings));
   };
 
   return (
@@ -112,7 +154,23 @@ export default function SettingsPage() {
             <p className="text-sm text-[var(--color-text-secondary)] mb-4">
               Choose your preferred visual theme
             </p>
-            <ThemeSelector />
+            <select
+              value={currentTheme}
+              onChange={(e) => {
+                const newTheme = e.target.value;
+                setCurrentTheme(newTheme);
+                applyTheme(getTheme(newTheme));
+                localStorage.setItem("theme", newTheme);
+                success(`Theme changed to ${getTheme(newTheme).name}`);
+              }}
+              className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-[var(--color-primary)] focus:outline-none"
+            >
+              {THEMES.map((theme) => (
+                <option key={theme.id} value={theme.id}>
+                  {theme.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Name Resolution Settings */}
@@ -387,14 +445,25 @@ export default function SettingsPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() =>
-                    info(
-                      "Screen shake effects are always enabled for the best arcade experience!",
-                    )
-                  }
-                  className="relative w-12 h-6 rounded-full bg-green-500"
+                  onClick={() => {
+                    const newValue = !screenShakeEnabled;
+                    setScreenShakeEnabled(newValue);
+                    saveGameplaySettings({ screenShakeEnabled: newValue });
+                    success(
+                      newValue
+                        ? "Screen shake effects enabled"
+                        : "Screen shake effects disabled",
+                    );
+                  }}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    screenShakeEnabled ? "bg-green-500" : "bg-gray-600"
+                  }`}
                 >
-                  <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-white rounded-full" />
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      screenShakeEnabled ? "translate-x-6" : "translate-x-0.5"
+                    }`}
+                  />
                 </button>
               </div>
 
@@ -406,14 +475,27 @@ export default function SettingsPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() =>
-                    info(
-                      "Particle effects are optimized automatically for your device!",
-                    )
-                  }
-                  className="relative w-12 h-6 rounded-full bg-green-500"
+                  onClick={() => {
+                    const newValue = !particleEffectsEnabled;
+                    setParticleEffectsEnabled(newValue);
+                    saveGameplaySettings({ particleEffectsEnabled: newValue });
+                    success(
+                      newValue
+                        ? "Particle effects enabled"
+                        : "Particle effects disabled",
+                    );
+                  }}
+                  className={`relative w-12 h-6 rounded-full transition-colors ${
+                    particleEffectsEnabled ? "bg-green-500" : "bg-gray-600"
+                  }`}
                 >
-                  <div className="absolute top-0.5 right-0.5 w-5 h-5 bg-white rounded-full" />
+                  <div
+                    className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                      particleEffectsEnabled
+                        ? "translate-x-6"
+                        : "translate-x-0.5"
+                    }`}
+                  />
                 </button>
               </div>
             </div>
@@ -483,9 +565,8 @@ export default function SettingsPage() {
             </h2>
             <div className="space-y-2 text-sm text-[var(--color-text-secondary)]">
               <p>
-                <strong>Perfect?</strong> - Precision timing game
+                <strong>Perfect?</strong> - A Precision timing game
               </p>
-              <p>Built for Base and WalletConnect hackathons</p>
               <p>One mistake = Game Over. No continues.</p>
             </div>
           </div>

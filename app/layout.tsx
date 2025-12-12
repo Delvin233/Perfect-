@@ -9,10 +9,7 @@ const ConditionalHeader = dynamic(
   () => import("@/app/components/ConditionalHeader"),
   { ssr: false },
 );
-const BottomNavigation = dynamic(
-  () => import("@/app/components/BottomNavigation"),
-  { ssr: false },
-);
+
 const NameResolutionMonitor = dynamic(
   () => import("@/app/components/NameResolutionMonitor"),
   { ssr: false },
@@ -76,12 +73,11 @@ export default function RootLayout({
         <ContextProvider>
           <div className="min-h-screen flex flex-col">
             <ConditionalHeader />
-            <main className="flex-1 pb-20 lg:pb-4">
+            <main className="flex-1">
               <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
                 {children}
               </div>
             </main>
-            <BottomNavigation />
 
             {/* Development/Debug Components */}
             <NameResolutionMonitor />
