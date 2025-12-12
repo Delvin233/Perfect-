@@ -25,9 +25,12 @@ export default function ThemeSelector() {
 
   const theme = getTheme(currentTheme);
 
+  const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
+
   return (
     <div className="relative">
       <button
+        ref={setButtonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors"
         style={{
@@ -40,17 +43,20 @@ export default function ThemeSelector() {
         <span className="hidden sm:inline text-sm">{theme.name}</span>
       </button>
 
-      {isOpen && (
+      {isOpen && buttonRef && (
         <>
           <div
-            className="fixed inset-0 z-[9998]"
+            className="fixed inset-0 z-[99998]"
             onClick={() => setIsOpen(false)}
           />
           <div
-            className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-xl border z-[9999] max-h-[70vh] sm:max-h-96 overflow-y-auto"
+            className="fixed w-[calc(100vw-2rem)] sm:w-80 rounded-xl border z-[99999] max-h-[70vh] sm:max-h-96 overflow-y-auto shadow-2xl"
             style={{
               backgroundColor: theme.colors.backgroundSecondary,
               borderColor: theme.colors.cardBorder,
+              top: buttonRef.getBoundingClientRect().bottom + 8,
+              right:
+                window.innerWidth - buttonRef.getBoundingClientRect().right,
             }}
           >
             <div className="p-3 sm:p-4">
