@@ -5,6 +5,8 @@
  * handling name resolution when network is unavailable.
  */
 
+import { useState, useEffect } from "react";
+
 export interface OfflineConfig {
   enableOfflineMode: boolean;
   offlineCacheDuration: number; // How long to use cached data when offline (ms)
@@ -145,10 +147,10 @@ export class OfflineManager {
  * React hook for offline state
  */
 export function useOfflineStatus() {
-  const [isOnline, setIsOnline] = React.useState(true);
-  const [offlineManager] = React.useState(() => OfflineManager.getInstance());
+  const [isOnline, setIsOnline] = useState(true);
+  const [offlineManager] = useState(() => OfflineManager.getInstance());
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsOnline(offlineManager.getOnlineStatus());
 
     const unsubscribe = offlineManager.addListener(setIsOnline);
