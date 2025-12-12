@@ -115,29 +115,14 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
       onScoreUpdate(newScore, level, newPerfectHits, newTotalHits);
 
-      // Visual feedback - flash screen
-      triggerFlash(isPerfect ? "perfect" : "success");
+      // Visual feedback removed for cleaner experience
     } else {
       setResult("fail");
-      // Visual feedback - flash screen red
-      triggerFlash("fail");
+      // Visual feedback removed for cleaner experience
     }
   };
 
-  const triggerFlash = (type: "perfect" | "success" | "fail") => {
-    const flash = document.createElement("div");
-    flash.className = `fixed inset-0 pointer-events-none z-50 ${
-      type === "perfect"
-        ? "bg-green-500"
-        : type === "success"
-          ? "bg-cyan-500"
-          : "bg-red-500"
-    }`;
-    flash.style.opacity = "0.3";
-    flash.style.animation = "flash 0.3s ease-out";
-    document.body.appendChild(flash);
-    setTimeout(() => flash.remove(), 300);
-  };
+  // Flash effects removed for cleaner experience
 
   const nextLevel = () => {
     const newLevel = level + 1;
@@ -213,7 +198,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
               <div className="mt-4 sm:mt-6 text-xs sm:text-sm text-[var(--color-text-secondary)] space-y-1">
                 <p>Final challenge: New random times</p>
                 <p className="text-red-400 font-bold">Tolerance: ±5ms</p>
-                <p className="text-[10px] sm:text-xs mt-2">Only the perfect survive</p>
+                <p className="text-[10px] sm:text-xs mt-2">
+                  Only the perfect survive
+                </p>
               </div>
             </>
           )}
@@ -255,7 +242,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
             Rank
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
-            <span className="text-lg sm:text-xl">{getRankForLevel(level).emoji}</span>
+            <span className="text-lg sm:text-xl">
+              {getRankForLevel(level).emoji}
+            </span>
             <p
               className={`text-sm sm:text-xl font-bold ${getRankColor(getRankForLevel(level).tier)}`}
             >
@@ -434,7 +423,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
 
               {/* Final score */}
               <div className="pt-3 sm:pt-4 border-t border-gray-700">
-                <p className="text-xs sm:text-sm text-gray-400 mb-1">Final Score</p>
+                <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                  Final Score
+                </p>
                 <p className="text-2xl sm:text-3xl font-bold text-orange-500">
                   {score.toLocaleString()}
                 </p>
