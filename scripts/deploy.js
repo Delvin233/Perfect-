@@ -1,4 +1,8 @@
 import hre from "hardhat";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 async function main() {
   console.log(`\n🚀 Deploying PerfectLeaderboard to ${hre.network.name}...`);
@@ -38,7 +42,14 @@ async function main() {
   console.log(`🔗 Chain ID: ${expectedChainId}`);
 
   // Get deployer account
-  const [deployer] = await hre.ethers.getSigners();
+  const signers = await hre.ethers.getSigners();
+  if (signers.length === 0) {
+    throw new Error(
+      "❌ No signers found! Please check your PRIVATE_KEY in .env file",
+    );
+  }
+
+  const [deployer] = signers;
   console.log(`👤 Deployer: ${deployer.address}`);
 
   // Check balance
