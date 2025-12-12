@@ -1,11 +1,9 @@
 import { createPublicClient, http } from "viem";
-import { base, baseSepolia, celo } from "viem/chains";
+import { base, celo } from "viem/chains";
 
 // Contract addresses from environment variables
 export const CONTRACT_ADDRESSES = {
   base: process.env.NEXT_PUBLIC_LEADERBOARD_CONTRACT_BASE as `0x${string}`,
-  baseSepolia: process.env
-    .NEXT_PUBLIC_LEADERBOARD_CONTRACT_BASE_SEPOLIA as `0x${string}`,
   celo: process.env.NEXT_PUBLIC_LEADERBOARD_CONTRACT_CELO as `0x${string}`,
 } as const;
 
@@ -15,11 +13,6 @@ export const NETWORKS = {
     chain: base,
     rpcUrl: "https://mainnet.base.org",
     contractAddress: CONTRACT_ADDRESSES.base,
-  },
-  baseSepolia: {
-    chain: baseSepolia,
-    rpcUrl: "https://sepolia.base.org",
-    contractAddress: CONTRACT_ADDRESSES.baseSepolia,
   },
   celo: {
     chain: celo,
@@ -169,8 +162,6 @@ export function getNetworkFromChainId(chainId: number): NetworkName {
   switch (chainId) {
     case base.id:
       return "base";
-    case baseSepolia.id:
-      return "baseSepolia";
     case celo.id:
       return "celo";
     default:
@@ -218,12 +209,22 @@ export function formatPlayerStats(stats: unknown) {
 }
 
 export function formatLeaderboardData(data: unknown) {
+  // Handle undefined or null data
+  if (!data) {
+    return [];
+  }
+
   const typedData = data as {
     addresses: string[];
     scores: bigint[];
     levels: number[];
     stages: number[];
   };
+
+  // Handle case where addresses array is undefined
+  if (!typedData.addresses || !Array.isArray(typedData.addresses)) {
+    return [];
+  }
 
   return typedData.addresses.map((address: string, index: number) => ({
     address,

@@ -65,7 +65,13 @@ export function useLeaderboard(count: number = 10) {
   const publicClient = usePublicClient();
 
   useEffect(() => {
-    if (!publicClient) return;
+    if (!publicClient) {
+      // No blockchain client available (e.g., social login)
+      setLeaderboard([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
 
     const fetchLeaderboard = async () => {
       setLoading(true);
@@ -73,7 +79,21 @@ export function useLeaderboard(count: number = 10) {
 
       try {
         const network = getNetworkFromChainId(chainId);
+        console.log(
+          "Fetching leaderboard for network:",
+          network,
+          "chainId:",
+          chainId,
+        );
+
         const contractAddress = getContractAddress(network);
+        console.log("Contract address:", contractAddress);
+
+        if (!contractAddress) {
+          throw new Error(
+            `No contract address configured for network: ${network}`,
+          );
+        }
 
         const result = await publicClient.readContract({
           address: contractAddress,
@@ -82,10 +102,14 @@ export function useLeaderboard(count: number = 10) {
           args: [BigInt(count)],
         });
 
+        console.log("Contract result:", result);
         setLeaderboard(formatLeaderboardData(result));
       } catch (err) {
         console.error("Error fetching leaderboard:", err);
-        setError("Failed to fetch leaderboard");
+        setError(
+          `Failed to fetch leaderboard: ${err instanceof Error ? err.message : "Unknown error"}`,
+        );
+        setLeaderboard([]); // Set empty array on error
       } finally {
         setLoading(false);
       }
@@ -95,12 +119,31 @@ export function useLeaderboard(count: number = 10) {
   }, [count, chainId, publicClient]);
 
   const refetch = async () => {
-    if (!publicClient) return;
+    if (!publicClient) {
+      // No blockchain client available (e.g., social login)
+      setLeaderboard([]);
+      setError(null);
+      return;
+    }
 
     setLoading(true);
     try {
       const network = getNetworkFromChainId(chainId);
+      console.log(
+        "Refetching leaderboard for network:",
+        network,
+        "chainId:",
+        chainId,
+      );
+
       const contractAddress = getContractAddress(network);
+      console.log("Contract address:", contractAddress);
+
+      if (!contractAddress) {
+        throw new Error(
+          `No contract address configured for network: ${network}`,
+        );
+      }
 
       const result = await publicClient.readContract({
         address: contractAddress,
@@ -109,10 +152,14 @@ export function useLeaderboard(count: number = 10) {
         args: [BigInt(count)],
       });
 
+      console.log("Contract refetch result:", result);
       setLeaderboard(formatLeaderboardData(result));
     } catch (err) {
       console.error("Error refetching leaderboard:", err);
-      setError("Failed to refresh leaderboard");
+      setError(
+        `Failed to refresh leaderboard: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+      setLeaderboard([]); // Set empty array on error
     } finally {
       setLoading(false);
     }

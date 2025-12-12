@@ -11,12 +11,10 @@ export default function NetworkIndicator() {
     switch (network) {
       case "base":
         return { name: "Base", color: "text-blue-400", emoji: "🔵" };
-      case "baseSepolia":
-        return { name: "Base Sepolia", color: "text-blue-300", emoji: "🧪" };
       case "celo":
         return { name: "Celo", color: "text-green-400", emoji: "🟢" };
       default:
-        return { name: "Unknown", color: "text-gray-400", emoji: "❓" };
+        return { name: "Unsupported", color: "text-red-400", emoji: "⚠️" };
     }
   };
 
