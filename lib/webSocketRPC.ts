@@ -59,10 +59,13 @@ export class AlchemyWebSocketRPC extends EventEmitter {
         this.ws = new WebSocket(wsUrl);
 
         this.ws.onopen = () => {
-          this.isConnected = true;
-          this.reconnectAttempts = 0;
-          this.emit("connected");
-          resolve();
+          // Ensure WebSocket is actually ready
+          if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.isConnected = true;
+            this.reconnectAttempts = 0;
+            this.emit("connected");
+            resolve();
+          }
         };
 
         this.ws.onmessage = (event) => {
@@ -127,8 +130,14 @@ export class AlchemyWebSocketRPC extends EventEmitter {
    * Make RPC call via WebSocket
    */
   async call(method: string, params: unknown[] = []): Promise<unknown> {
+    // Ensure connection is ready
     if (!this.isConnected) {
       await this.connect();
+    }
+
+    // Double-check connection state and WebSocket readiness
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      throw new Error("WebSocket not ready for RPC calls");
     }
 
     return new Promise((resolve, reject) => {
@@ -152,9 +161,9 @@ export class AlchemyWebSocketRPC extends EventEmitter {
         timeout,
       });
 
-      // Send request
+      // Send request - now we know the WebSocket is ready
       try {
-        this.ws?.send(JSON.stringify(request));
+        this.ws!.send(JSON.stringify(request));
       } catch (error) {
         this.pendingRequests.delete(id);
         clearTimeout(timeout);
@@ -168,6 +177,11 @@ export class AlchemyWebSocketRPC extends EventEmitter {
    */
   async resolveENS(address: string): Promise<string | null> {
     try {
+      // Check if WebSocket is ready before attempting RPC call
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+        throw new Error("WebSocket not ready");
+      }
+
       // Use eth_call to query ENS reverse resolver
       await this.call("eth_call", [
         {
@@ -181,7 +195,14 @@ export class AlchemyWebSocketRPC extends EventEmitter {
       // Full implementation would need proper ABI decoding
       return null;
     } catch (error) {
-      console.warn("ENS resolution failed via WebSocket:", error);
+      // Don't log WebSocket connection errors as warnings - they're expected
+      if (error instanceof Error && error.message.includes("WebSocket")) {
+        console.debug(
+          "WebSocket not available for ENS resolution, using HTTP fallback",
+        );
+      } else {
+        console.warn("ENS resolution failed via WebSocket:", error);
+      }
       return null;
     }
   }
