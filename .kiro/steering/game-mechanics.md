@@ -8,10 +8,12 @@ Perfect? is a precision timing game. Players stop a timer at exact moments to pr
 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Web3**: Reown AppKit (WalletConnect), OnchainKit (Base), Wagmi, Viem
-- **Database**: Turso (SQLite) for leaderboard
+- **Networks**: Base (primary), Celo (secondary), Base Sepolia, Celo Alfajores
+- **Database**: Turso (SQLite) for leaderboard and player data
+- **Name Resolution**: ENS and Base Names via Alchemy API with WebSocket optimization
 - **Smart Contracts**: Solidity 0.8.24, Hardhat (for future on-chain integration)
-- **Styling**: Tailwind CSS, CSS Modules
-- **Deployment**: Vercel
+- **Styling**: Tailwind CSS with 8 visual themes
+- **Deployment**: Vercel with edge database
 
 ## Game Mechanics
 
@@ -244,13 +246,25 @@ contracts/
 ### Base Hackathon ✅
 
 - Deployed as Base Mini App
+- Multi-chain support (Base + Celo)
 - Smart contracts ready for Base deployment
-- Uses OnchainKit
+- Uses OnchainKit for Base integration
+- ENS and Base Names resolution
 - Public GitHub repository
 
 ### WalletConnect Hackathon ✅
 
-- Integrates Reown AppKit SDK
-- Multi-wallet support
+- Integrates Reown AppKit SDK v2
+- Multi-wallet and multi-chain support
+- WebSocket RPC optimization for better UX
 - Public GitHub repository
 - Smart contracts generate fees (when deployed)
+
+### Additional Features Implemented ✅
+
+- **Name Resolution System**: ENS and Base Names with caching
+- **Visual Theme System**: 8 arcade-inspired themes
+- **Arcade Menu System**: Attract mode, loading screens, main menu
+- **Settings & Preferences**: Customizable gameplay options
+- **Performance Optimizations**: Component size reduction, hover animation removal
+- **Mobile Optimization**: PC arcade experience across all devices
