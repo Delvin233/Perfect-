@@ -49,13 +49,7 @@
     @apply backdrop-blur-sm rounded-xl p-6 transition-all;
   }
 
-  /* Desktop hover effect */
-  @media (hover: hover) {
-    .card:hover {
-      border-color: var(--color-primary);
-      @apply -translate-y-1;
-    }
-  }
+  /* Removed hover effects for cleaner experience */
 
   /* Mobile tap effect */
   @media (hover: none) {
@@ -87,13 +81,7 @@
     @apply font-bold;
   }
 
-  /* Desktop hover effect */
-  @media (hover: hover) {
-    .btn-primary:hover,
-    .btn-secondary:hover {
-      @apply scale-105;
-    }
-  }
+  /* Removed hover effects for cleaner experience */
 
   /* Mobile tap effect */
   @media (hover: none) {
@@ -237,31 +225,11 @@
   animation: confetti-fall linear forwards;
 }
 
-/* Enhanced menu item animations */
+/* Enhanced menu item animations - hover effects removed */
 .menu-item-enhanced {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-}
-
-.menu-item-enhanced::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transition: left 0.5s;
-}
-
-.menu-item-enhanced:hover::before {
-  left: 100%;
 }
 
 .menu-item-selected {

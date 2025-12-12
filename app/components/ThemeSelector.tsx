@@ -29,7 +29,7 @@ export default function ThemeSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all hover:scale-105 active:scale-95"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors"
         style={{
           backgroundColor: theme.colors.cardBg,
           borderColor: theme.colors.cardBorder,
@@ -43,11 +43,11 @@ export default function ThemeSelector() {
       {isOpen && (
         <>
           <div
-            className="fixed inset-0 z-40"
+            className="fixed inset-0 z-[9998]"
             onClick={() => setIsOpen(false)}
           />
           <div
-            className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-xl border z-50 max-h-[70vh] sm:max-h-96 overflow-y-auto"
+            className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 rounded-xl border z-[9999] max-h-[70vh] sm:max-h-96 overflow-y-auto"
             style={{
               backgroundColor: theme.colors.backgroundSecondary,
               borderColor: theme.colors.cardBorder,
@@ -65,7 +65,7 @@ export default function ThemeSelector() {
                   <button
                     key={t.id}
                     onClick={() => handleThemeChange(t.id)}
-                    className={`w-full text-left p-2 sm:p-3 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                    className={`w-full text-left p-2 sm:p-3 rounded-lg transition-colors ${
                       currentTheme === t.id ? "ring-2" : ""
                     }`}
                     style={{
@@ -84,7 +84,9 @@ export default function ThemeSelector() {
                       >
                         {t.name}
                       </span>
-                      {currentTheme === t.id && <span className="text-sm sm:text-base">✓</span>}
+                      {currentTheme === t.id && (
+                        <span className="text-sm sm:text-base">✓</span>
+                      )}
                     </div>
                     <p
                       className="text-[10px] sm:text-xs"
