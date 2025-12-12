@@ -331,8 +331,3 @@ export function getOfflineMessage(
 
   return OFFLINE_MESSAGES.FALLBACK_MODE;
 }
-
-// Add React import for the hook
-declare global {
-  const React: typeof import("react");
-}
