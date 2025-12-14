@@ -15,7 +15,7 @@ export async function GET() {
     miniapp: {
       version: "1",
       name: "Perfect?",
-      subtitle: "Stop the timer at the perfect moment",
+      subtitle: "Precision timing game",
       description:
         "A precision timing game where you stop the timer at exact moments to progress through levels. Compete on the on-chain leaderboard!",
       screenshotUrls: [],
@@ -24,19 +24,11 @@ export async function GET() {
       splashBackgroundColor: "#0052ff",
       homeUrl: ROOT_URL,
       webhookUrl: `${ROOT_URL}/api/webhook`,
-      primaryCategory: "game",
-      tags: [
-        "game",
-        "timing",
-        "leaderboard",
-        "web3",
-        "arcade",
-        "precision",
-        "farcaster",
-      ],
+      primaryCategory: "games",
+      tags: ["games", "timing", "arcade", "web3", "precision"],
       heroImageUrl: `${ROOT_URL}/hero.png`,
       tagline: "Can you stop time perfectly?",
-      ogTitle: "Perfect? - Precision Timing Game",
+      ogTitle: "Perfect? - Timing Game",
       ogDescription:
         "Stop the timer at the perfect moment and climb the leaderboard",
       ogImageUrl: `${ROOT_URL}/hero.png`,
