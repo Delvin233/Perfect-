@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useAppKitAccount, useDisconnect } from "@reown/appkit/react";
+import {
+  useAppKit,
+  useAppKitAccount,
+  useDisconnect,
+} from "@reown/appkit/react";
 import { getRankForLevel } from "@/lib/ranks";
+import { useFarcaster } from "./context/FarcasterProvider";
 import EnhancedMainMenu from "./components/EnhancedMainMenu";
 import EnhancedLoadingScreen from "./components/EnhancedLoadingScreen";
 import AttractMode from "./components/AttractMode";
+import FarcasterActions from "./components/FarcasterActions";
+import FarcasterProfile from "./components/FarcasterProfile";
 
 interface UserStats {
   address: string;
@@ -26,7 +33,9 @@ interface ScoreData {
 
 export default function Home() {
   const { address, isConnected } = useAppKitAccount();
+  const { open } = useAppKit();
   const { disconnect } = useDisconnect();
+  const { isInMiniApp, isReady: farcasterReady } = useFarcaster();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
@@ -72,7 +81,18 @@ export default function Home() {
   }, [address]);
 
   useEffect(() => {
-    if (address) {
+    // If in Farcaster Mini App, skip attract mode and go straight to game
+    if (isInMiniApp && farcasterReady) {
+      setShowAttractMode(false);
+      if (address) {
+        setShowLoading(true);
+        fetchUserStats();
+      } else {
+        // In Mini App but no wallet connected - show menu anyway
+        setLoading(false);
+        setShowMenu(true);
+      }
+    } else if (address) {
       setShowAttractMode(false);
       setShowLoading(true);
       fetchUserStats();
@@ -81,7 +101,7 @@ export default function Home() {
       setShowMenu(false);
       setShowAttractMode(true);
     }
-  }, [address, fetchUserStats]);
+  }, [address, fetchUserStats, isInMiniApp, farcasterReady]);
 
   // Show menu after loading completes
   useEffect(() => {
@@ -127,7 +147,82 @@ export default function Home() {
   // Show main menu when connected and loaded
   if (isConnected && showMenu && stats) {
     return (
-      <EnhancedMainMenu userStats={stats} onDisconnect={handleDisconnect} />
+      <>
+        <FarcasterProfile />
+        <EnhancedMainMenu userStats={stats} onDisconnect={handleDisconnect} />
+      </>
+    );
+  }
+
+  // Show main menu for Farcaster users without wallet connection
+  if (isInMiniApp && showMenu && !isConnected) {
+    return (
+      <>
+        <FarcasterProfile />
+        <div className="max-w-4xl mx-auto animate-fade-in">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1
+              className="text-3xl sm:text-4xl font-bold mb-2"
+              style={{ color: "var(--color-primary)" }}
+            >
+              PERFECT?
+            </h1>
+            <p
+              className="text-lg sm:text-xl"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              Precision Timing Game
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div className="card text-center p-6">
+              <h3
+                className="text-xl font-bold mb-2"
+                style={{ color: "var(--color-primary)" }}
+              >
+                🎯 Play Now
+              </h3>
+              <p className="text-sm text-gray-400 mb-4">
+                Start playing immediately in Farcaster
+              </p>
+              <a href="/play" className="btn btn-primary w-full">
+                Start Game
+              </a>
+            </div>
+
+            <div className="card text-center p-6">
+              <h3
+                className="text-xl font-bold mb-2"
+                style={{ color: "var(--color-secondary)" }}
+              >
+                🏆 Leaderboard
+              </h3>
+              <p className="text-sm text-gray-400 mb-4">
+                See top players worldwide
+              </p>
+              <a href="/leaderboard" className="btn btn-secondary w-full">
+                View Rankings
+              </a>
+            </div>
+          </div>
+
+          <div className="card p-6 text-center">
+            <h3 className="text-lg font-bold mb-2">
+              💡 Connect Wallet for More
+            </h3>
+            <p className="text-sm text-gray-400 mb-4">
+              Connect your wallet to save scores and compete on the global
+              leaderboard
+            </p>
+            <button onClick={() => open()} className="btn btn-outline">
+              Connect Wallet
+            </button>
+          </div>
+
+          <FarcasterActions />
+        </div>
+      </>
     );
   }
 

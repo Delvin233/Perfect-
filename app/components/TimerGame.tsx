@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
+import FarcasterActions from "./FarcasterActions";
 
 interface TimerGameProps {
   onScoreUpdate: (
@@ -477,6 +478,9 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
                       ? "Good effort! Keep practicing."
                       : "Don't give up! You'll get better."}
               </p>
+
+              {/* Farcaster Actions */}
+              <FarcasterActions score={score} level={level} />
             </>
           )}
         </div>

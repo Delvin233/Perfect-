@@ -5,13 +5,18 @@ import { useAppKitAccount } from "@reown/appkit/react";
 import { getRankForLevel, getRankColor } from "@/lib/ranks";
 import { useProgressiveBatchAddressDisplay } from "@/hooks/useMobileOptimization";
 import { useHybridLeaderboard } from "@/hooks/useHybridLeaderboard";
+import { useFarcaster } from "../context/FarcasterProvider";
 import BackButton from "../components/BackButton";
 import NameBadge from "../components/NameBadge";
+import FarcasterProfile from "../components/FarcasterProfile";
+import FarcasterActions from "../components/FarcasterActions";
+import FarcasterNameBadge from "../components/FarcasterNameBadge";
 
 // Interface moved to useHybridLeaderboard hook
 
 export default function LeaderboardPage() {
   const { address } = useAppKitAccount();
+  const { isInMiniApp } = useFarcaster();
 
   // Use hybrid leaderboard (blockchain + database)
   const { leaderboard, loading, error, dataSource, refetch } =
@@ -31,6 +36,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <FarcasterProfile />
       <div className="mb-4">
         <BackButton to="/" />
       </div>
@@ -108,6 +114,11 @@ export default function LeaderboardPage() {
                         source={
                           sources.get(score.address.toLowerCase()) || "wallet"
                         }
+                      />
+                      {/* Show Farcaster name badge if available */}
+                      <FarcasterNameBadge
+                        address={score.address}
+                        className="ml-1"
                       />
                       {isCurrentUser && (
                         <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded flex-shrink-0">
@@ -199,6 +210,13 @@ export default function LeaderboardPage() {
             {dataSource === "blockchain" && "⛓️ Data from smart contract"}
             {dataSource === "database" && "💾 Data from backup database"}
           </p>
+        </div>
+      )}
+
+      {/* Farcaster Actions */}
+      {isInMiniApp && (
+        <div className="mt-6">
+          <FarcasterActions />
         </div>
       )}
     </div>
