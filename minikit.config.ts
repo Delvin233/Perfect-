@@ -15,13 +15,14 @@ export const minikitConfig = {
     signature: "",
   },
   baseBuilder: {
-    ownerAddress: "",
+    ownerAddress: process.env.NEXT_PUBLIC_BASE_OWNER_ADDRESS || "",
   },
   miniapp: {
     version: "1",
     name: "Perfect Timer",
     subtitle: "Stop the timer at the perfect moment",
-    description: "A precision timing game where you stop the timer at exact moments to progress through levels. Compete on the on-chain leaderboard!",
+    description:
+      "A precision timing game where you stop the timer at exact moments to progress through levels. Compete on the on-chain leaderboard!",
     screenshotUrls: [],
     iconUrl: `${ROOT_URL}/icon.png`,
     splashImageUrl: `${ROOT_URL}/splash.png`,
@@ -33,7 +34,8 @@ export const minikitConfig = {
     heroImageUrl: `${ROOT_URL}/hero.png`,
     tagline: "Can you stop time perfectly?",
     ogTitle: "Perfect? - Precision Timing Game",
-    ogDescription: "Stop the timer at the perfect moment and climb the leaderboard",
+    ogDescription:
+      "Stop the timer at the perfect moment and climb the leaderboard",
     ogImageUrl: `${ROOT_URL}/hero.png`,
   },
 } as const;

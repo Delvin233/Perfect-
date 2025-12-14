@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { minikitConfig } from "@/minikit.config";
 import ContextProvider from "./context";
 import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/next";
@@ -32,19 +31,41 @@ const WebSocketTestPanel = dynamic(
     ssr: false,
   },
 );
+const FarcasterDebugPanel = dynamic(
+  () => import("@/app/components/FarcasterDebugPanel"),
+  { ssr: false },
+);
 
 export const metadata: Metadata = {
-  title: minikitConfig.miniapp.name,
-  description: minikitConfig.miniapp.description,
+  title: "Perfect? - Precision Timing Game",
+  description:
+    "Stop the timer at the perfect moment and climb the leaderboard. A precision timing game built for Farcaster.",
+  openGraph: {
+    title: "Perfect? - Precision Timing Game",
+    description:
+      "Stop the timer at the perfect moment and climb the leaderboard",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/hero.png`,
+        width: 1200,
+        height: 800,
+        alt: "Perfect? - Precision Timing Game",
+      },
+    ],
+  },
   other: {
+    "base:app_id": "693f3291d19763ca26ddc2e2",
     "fc:miniapp": JSON.stringify({
-      version: minikitConfig.miniapp.version,
-      imageUrl: minikitConfig.miniapp.heroImageUrl,
+      version: "1",
+      imageUrl: `${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/hero.png`,
       button: {
-        title: `Launch ${minikitConfig.miniapp.name}`,
+        title: "Launch Perfect?",
         action: {
-          name: `Launch ${minikitConfig.miniapp.name}`,
           type: "launch_miniapp",
+          name: "Perfect?",
+          url: process.env.NEXT_PUBLIC_URL || "http://localhost:3000",
+          splashImageUrl: `${process.env.NEXT_PUBLIC_URL || "http://localhost:3000"}/splash.png`,
+          splashBackgroundColor: "#0052ff",
         },
       },
     }),
@@ -89,6 +110,7 @@ export default function RootLayout({
             <NameResolutionMonitor />
             <NameResolutionDebugPanel />
             <WebSocketTestPanel />
+            <FarcasterDebugPanel />
           </div>
         </ContextProvider>
         <Analytics />

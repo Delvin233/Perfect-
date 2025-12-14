@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { useSubmitScore } from "@/hooks/useContract";
+import { useFarcaster } from "../context/FarcasterProvider";
 import TimerGame from "../components/TimerGame";
 import BackButton from "../components/BackButton";
+import FarcasterActions from "../components/FarcasterActions";
+import FarcasterProfile from "../components/FarcasterProfile";
 
 export default function PlayPage() {
   const { open } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
+  const { isInMiniApp } = useFarcaster();
   const [isPlaying, setIsPlaying] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
 
@@ -95,7 +99,8 @@ export default function PlayPage() {
     setTimeout(() => setSubmissionStatus(null), 5000);
   };
 
-  if (!isConnected) {
+  // In Farcaster Mini App, allow playing without wallet connection
+  if (!isConnected && !isInMiniApp) {
     return (
       <div className="min-h-[60vh] flex flex-col">
         <div className="mb-4">
@@ -113,7 +118,7 @@ export default function PlayPage() {
               className="mb-6 sm:mb-8 text-sm sm:text-base"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              Connect your wallet to start playing
+              Connect your wallet to start playing and save scores
             </p>
             <button
               onClick={() => open()}
@@ -130,6 +135,7 @@ export default function PlayPage() {
   if (isPlaying) {
     return (
       <div className="max-w-2xl mx-auto">
+        <FarcasterProfile />
         <BackButton
           label=" EXIT GAME"
           onClick={() => setIsPlaying(false)}
@@ -190,6 +196,7 @@ export default function PlayPage() {
 
   return (
     <div className="max-w-2xl mx-auto animate-fade-in">
+      <FarcasterProfile />
       <div className="mb-4">
         <BackButton to="/" />
       </div>
@@ -281,6 +288,13 @@ export default function PlayPage() {
       >
         START GAME
       </button>
+
+      {/* Farcaster Actions */}
+      {isInMiniApp && (
+        <div className="mt-6">
+          <FarcasterActions />
+        </div>
+      )}
     </div>
   );
 }

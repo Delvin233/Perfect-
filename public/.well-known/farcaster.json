@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "baseBuilder": {
+    "ownerAddress": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Perfect?",
+    "subtitle": "Stop the timer at the perfect moment",
+    "description": "A precision timing game where you stop the timer at exact moments to progress through levels. Compete on the on-chain leaderboard!",
+    "screenshotUrls": [],
+    "iconUrl": "https://perfect-timer-game.vercel.app/icon.png",
+    "splashImageUrl": "https://perfect-timer-game.vercel.app/splash.png",
+    "splashBackgroundColor": "#0052ff",
+    "homeUrl": "https://perfect-timer-game.vercel.app",
+    "webhookUrl": "https://perfect-timer-game.vercel.app/api/webhook",
+    "primaryCategory": "game",
+    "tags": ["game", "timing", "leaderboard", "web3", "arcade", "precision"],
+    "heroImageUrl": "https://perfect-timer-game.vercel.app/hero.png",
+    "tagline": "Can you stop time perfectly?",
+    "ogTitle": "Perfect? - Precision Timing Game",
+    "ogDescription": "Stop the timer at the perfect moment and climb the leaderboard",
+    "ogImageUrl": "https://perfect-timer-game.vercel.app/hero.png",
+    "noindex": true
+  }
+}
