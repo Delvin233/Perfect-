@@ -54,14 +54,22 @@ export default function FarcasterDebugPanel() {
                 <strong>Location:</strong>
                 <div className="ml-2">
                   <div>Type: {context.location.type}</div>
-                  {context.location.type === "cast_embed" && (
-                    <div>
-                      Cast Hash: {context.location.cast?.hash?.slice(0, 10)}...
-                    </div>
-                  )}
-                  {context.location.type === "open_miniapp" && (
-                    <div>Referrer: {context.location.referrerDomain}</div>
-                  )}
+                  {context.location.type === "cast_embed" &&
+                    "cast" in context.location &&
+                    typeof context.location.cast === "object" &&
+                    context.location.cast &&
+                    "hash" in context.location.cast && (
+                      <div>
+                        Cast Hash:{" "}
+                        {String(context.location.cast.hash).slice(0, 10)}...
+                      </div>
+                    )}
+                  {context.location.type === "open_miniapp" &&
+                    "referrerDomain" in context.location && (
+                      <div>
+                        Referrer: {String(context.location.referrerDomain)}
+                      </div>
+                    )}
                 </div>
               </div>
             )}

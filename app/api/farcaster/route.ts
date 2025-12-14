@@ -1,20 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@libsql/client";
 
-const turso = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
+function getTursoClient() {
+  if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
+    throw new Error("Database configuration missing");
+  }
+
+  return createClient({
+    url: process.env.TURSO_DATABASE_URL,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+  });
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const action = searchParams.get("action");
 
   try {
+    // Check if database is available
+    if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
+      return NextResponse.json(
+        { success: false, error: "Database not configured" },
+        { status: 503 },
+      );
+    }
     switch (action) {
       case "leaderboard":
         // Get top 10 scores for Farcaster sharing
-        const result = await turso.execute(`
+        const leaderboardClient = getTursoClient();
+        const result = await leaderboardClient.execute(`
           SELECT address, score, level, timestamp 
           FROM leaderboard 
           ORDER BY score DESC 
@@ -33,7 +47,8 @@ export async function GET(request: NextRequest) {
 
       case "stats":
         // Get global stats for sharing
-        const statsResult = await turso.execute(`
+        const statsClient = getTursoClient();
+        const statsResult = await statsClient.execute(`
           SELECT 
             COUNT(*) as total_players,
             MAX(score) as highest_score,
@@ -70,6 +85,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if database is available
+    if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
+      return NextResponse.json(
+        { success: false, error: "Database not configured" },
+        { status: 503 },
+      );
+    }
     const body = await request.json();
     const { action, fid, score, level } = body;
 

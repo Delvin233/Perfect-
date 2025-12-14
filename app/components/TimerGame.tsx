@@ -480,7 +480,7 @@ export default function TimerGame({ onScoreUpdate }: TimerGameProps) {
               </p>
 
               {/* Farcaster Actions */}
-              <FarcasterActions score={score} level={level} isGameOver={true} />
+              <FarcasterActions score={score} level={level} />
             </>
           )}
         </div>

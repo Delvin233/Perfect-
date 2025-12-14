@@ -16,16 +16,58 @@ interface FarcasterUser {
   pfpUrl?: string;
 }
 
-interface FarcasterContext {
-  user: FarcasterUser;
-  location?: {
-    type: string;
+interface CastEmbedLocation {
+  type: "cast_embed";
+  embed: string;
+  cast: {
+    hash: string;
+    author: FarcasterUser;
+    text: string;
     [key: string]: unknown;
   };
+}
+
+interface OpenMiniAppLocation {
+  type: "open_miniapp";
+  referrerDomain: string;
+}
+
+interface LauncherLocation {
+  type: "launcher";
+}
+
+interface NotificationLocation {
+  type: "notification";
+  notification: {
+    notificationId: string;
+    title: string;
+    body: string;
+  };
+}
+
+type FarcasterLocation =
+  | CastEmbedLocation
+  | OpenMiniAppLocation
+  | LauncherLocation
+  | NotificationLocation
+  | {
+      type: string;
+      [key: string]: unknown;
+    };
+
+interface FarcasterContext {
+  user: FarcasterUser;
+  location?: FarcasterLocation;
   client: {
     platformType?: string;
     clientFid: number;
     added: boolean;
+    safeAreaInsets?: {
+      top: number;
+      bottom: number;
+      left: number;
+      right: number;
+    };
   };
 }
 
